@@ -1,26 +1,5 @@
-Men Kjersti da. Kjersti er her.
+#BIOSIM G20
+##Exam Project in INF200 January 2020
+###Authors: Ida Lunde Naalsund & Kjersti Rustad Kvisberg
 
-
-Kuliduli
-
-Nå tester jeg i master.
-
-
-
-Juhuuuu
-
-
-Jul er kult
-
-
-
-
-Lille Hiawatha
-
-
-
-
-
-
-
-Ida her
+In this project we wish to model the ecosystem of Rossumøya.
