@@ -1,4 +1,4 @@
-Men Kjersti da
+Men Kjersti da. Kjersti er her.
 
 
 
