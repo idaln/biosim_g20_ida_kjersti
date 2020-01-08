@@ -137,7 +137,6 @@ class Animal:
         else:
             return min(1, self.gamma * self.fitness * (self.num_animals - 1))
 
-
     def give_birth(self):
         """
         Checks probability of giving birth and finds out if a baby is to be
