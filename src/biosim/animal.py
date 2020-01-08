@@ -76,22 +76,30 @@ class Animal:
             self.fitness = properties["fitness"]
 
     def ageing(self):
-        """ Adds 1 year to the age of the animal for each cycle."""
+        """
+        Adds 1 year to the age of the animal for each cycle.
+        """
         pass
 
     def weight_loss(self):
-        """ Substracts given amount of weight from the animals
-        total weight after each cycle, given by eta*weight"""
+        """
+        Substracts given amount of weight from the animals
+        total weight after each cycle, given by eta*weight
+        """
         pass
 
     def eat(self):
-        """ Adds amount of weight to animals total body weight given by
-        beta*F"""
+        """
+        Adds amount of weight to animals total body weight given by
+        beta*F
+        """
         pass
 
     def fitness(self):
-        """ Updates fitness.
-        Fitness is zero if weight is zero, otherwise given by formula (3)."""
+        """
+        Updates fitness.
+        Fitness is zero if weight is zero, otherwise given by formula (3).
+        """
         pass
 
     def migration(self):
@@ -111,13 +119,20 @@ class Animal:
         pass
 
     def give_birth(self):
-        """ Finds probability of animal giving birth, created new instance of
-        animal and reduces weight of mother."""
+        """
+        Checks probability of giving birth and finds out if a baby is to be
+        born. If so, it finds birth weight of child, reduces weight of
+        mother according to given formula and returns the birth weight of baby.
+        If not, it returns None.
+        :returns baby_weight or None
+        """
         pass
 
     def death(self):
-        """ Finds probability of dying, and returns True if animal dies and
-        False if not. """
+        """
+        Finds probability of dying, and returns True if animal dies and
+        False if not.
+        """
         pass
 
 
