@@ -44,16 +44,23 @@ class TestAnimal:
         assert a.omega == 0.9
 
     def test_ageing(self):
-        """ Checks that animal is one year older than last year."""
+        """
+        Checks that animal is one year older than last year.
+        """
         a = Animal(test_params, test_properties)
-        first_age = a.age
+        initial_age = a.age
         a.ageing()
-        second_age = a.age
-        assert second_age - first_age == 1
+        assert a.age - initial_age == 1
 
-    def test_weight_loss():
-        """ Checks that weight after weight loss is less than initial weight"""
-        pass
+    def test_weight_loss(self):
+        """
+        Checks that weight after weight loss is less than initial weight
+        """
+        a = Animal(test_params, test_properties)
+        initial_weight = a.weight
+        a.weight_loss()
+        assert a.weight < initial_weight
+
 
     def test_eat():
         """ Checks that animal has gained weight after eating."""
