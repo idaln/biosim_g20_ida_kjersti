@@ -50,7 +50,7 @@ class Animal:
     Parent class for herbivores and carnivores
     """
 
-    def __init__(self, params, properties):
+    def __init__(self, params, properties, num_animals):
         """
         Initializing class by unpacking all parameters given as input.
         """
@@ -78,6 +78,8 @@ class Animal:
             self.fitness = None
         else:
             self.fitness = properties["fitness"]
+
+        self.num_animals = num_animals
 
     def ageing(self):
         """
