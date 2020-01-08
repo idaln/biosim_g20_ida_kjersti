@@ -78,7 +78,19 @@ class Animal:
         pass
 
     def migration(self):
-        """ Moves animal"""
+        """
+        Moves animal
+        """
+        pass
+
+    @property
+    def prob_give_birth(self):
+        """
+        Checks that weight of animal is more than given limit. If so,
+        probability of giving birth is calculated from formula (8).
+        :returns prob
+                 Probability of giving birth
+        """
         pass
 
     def give_birth(self):
