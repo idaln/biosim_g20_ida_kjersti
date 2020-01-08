@@ -5,6 +5,7 @@ __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idaln@hotmail.com & kjkv@nmbu.no"
 
 from biosim.animals import Animal
+from pytest import approx
 
 test_params = {
         "w_birth": 6.0,
@@ -74,9 +75,35 @@ class TestAnimal:
 
 
 
-    def test_fitness():
-        """ Checks that fitness is between 0 and 1."""
-        pass
+    def test_fitness_between_zero_and_one(self):
+        """
+        Checks that fitness is between 0 and 1.
+        """
+        a = Animal(test_params, test_properties)
+        a.find_fitness()
+        assert 0 <= a.fitness <= 1
+
+    def test_fitness_zero_if_weight_zero(self):
+        """
+        Checks that fitness is zero if weight is zero.
+        """
+        test_properties = {
+            "species": "animal",
+            "age": 5,
+            "weight": 0
+        }
+        a = Animal(test_params, test_properties)
+        a.find_fitness()
+        assert a.fitness == 0
+
+
+    def test_correct_fitness(self):
+        """
+        Checks that fitness formula yields correct value.
+        """
+        a = Animal(test_params, test_properties)
+        a.find_fitness()
+        assert a.fitness == approx(0.9983411986)
 
     def test_give_birth():
         """ Before birth we check that no birth takes place if there is only one
