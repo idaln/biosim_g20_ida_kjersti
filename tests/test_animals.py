@@ -105,13 +105,42 @@ class TestAnimal:
         a.find_fitness()
         assert a.fitness == approx(0.9983411986)
 
-    def test_give_birth():
-        """ Before birth we check that no birth takes place if there is only one
+    def test_prob_give_birth_one_animal_in_square(self):
+        """
+        Asserts that if there is only one animal in the square, then the
+        probability of giving birth is zero.
+        """
+        a = Animal(test_params, test_properties, 1)
+        assert a.prob_give_birth() == 0
+
+    def test_prob_give_birth_weight_less_than_limit(self):
+        """
+        Asserts that probability of giving birth is zero if the mothers
+        weight is less than a given limit.
+        """
+        a = Animal(test_params, test_properties, 6)
+        assert a.prob_give_birth() == 0
+
+
+    def test_correct_prob(self):
+        """
+        Asserts that the calculated probability is correct.
+        """
+        a = Animal(test_params, test_properties, 6)
+        assert a.prob_give_birth() == approx(0.9983411986)
+
+
+
+    def test_give_birth(self):
+        """
+        Before birth we check that no birth takes place if there is only one
         animal in the cell or the mother's weight is less than a given limit.
         After birth, we check that no birth took place if the predicted baby weight
         times xi is larger than the mother's weight. If birth has taken place,
-        we check that we mother has lost weight xi * baby's birth weight. """
+        we check that we mother has lost weight xi * baby's birth weight.
+        """
         pass
+
 
     def test_death():
         """ Asserts that animal dies if fitness equals zero.
