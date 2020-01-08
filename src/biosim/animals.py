@@ -19,6 +19,7 @@ params_herbivore = {
     "xi": 1.2,
     "omega": 0.4,
     "F": 10.0,
+    "DeltaPhiMax": None
 }
 
 params_carnivore = {
