@@ -86,4 +86,9 @@ class Animal:
         animal and reduces weight of mother."""
         pass
 
+    def death(self):
+        """ Finds probability of dying, and returns True if animal dies and
+        False if not. """
+        pass
+
 
