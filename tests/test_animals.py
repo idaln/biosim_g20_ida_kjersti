@@ -33,4 +33,7 @@ def test_give_birth():
     pass
 
 
-    
+def test_death():
+    """ Asserts that animal dies if fitness equals zero.
+    Assert that animal dies probability of dying is 1. """
+    pass
