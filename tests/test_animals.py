@@ -131,17 +131,39 @@ class TestAnimal:
             "age": 5,
             "weight": 40
         }
-        a = Animal(test_params, test_properties, 6)
+        a = Animal(test_params, test_properties, num_animals)
         a.find_fitness()
         assert a.prob_give_birth == 1
 
-    def test_give_birth(self):
+    def test_mothers_weight_large_enough(self, mocker):
         """
-        Before birth we check that no birth takes place if there is only one
-        animal in the cell or the mother's weight is less than a given limit.
+        Tests birth_process method.
         After birth, we check that no birth took place if the predicted baby weight
-        times xi is larger than the mother's weight. If birth has taken place,
-        we check that we mother has lost weight xi * baby's birth weight.
+        times xi is larger than the mother's weight.
+        """
+        test_properties = {
+        "species": "animal",
+        "age": 5,
+        "weight": 40
+        }
+        mocker.patch('random.normalvariate', return_value=5.5)
+        a = Animal(test_params, test_properties, num_animals)
+        assert a.weight > a.give_birth() * a.xi
+
+
+
+
+        def test_mother_loses_weight(self):
+        """
+        Test birth_process method.
+        Asserts that mother loses weight equal to xi * birth weight
+        """
+        pass
+
+    def test_birth_weight_different_from_zero(self):
+        """
+        Tests birth_process method
+        Asserts that no baby is born with weight equal to zero.
         """
         pass
 
