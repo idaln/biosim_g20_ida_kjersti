@@ -30,7 +30,7 @@ test_properties = {
     "age": 5,
     "weight": 20
 }
-
+num_animals = 6
 
 class TestAnimal:
     """Tests for Animal class"""
@@ -39,7 +39,7 @@ class TestAnimal:
         Checks that class has been initialized and some parameters have
         been unpacked correctly.
         """
-        a = Animal(test_params, test_properties)
+        a = Animal(test_params, test_properties, num_animals)
         assert a.age == 5
         assert a.a_half == 60
         assert a.omega == 0.9
@@ -48,7 +48,7 @@ class TestAnimal:
         """
         Checks that animal is one year older than last year.
         """
-        a = Animal(test_params, test_properties)
+        a = Animal(test_params, test_properties, num_animals)
         initial_age = a.age
         a.ageing()
         assert a.age - initial_age == 1
@@ -57,7 +57,7 @@ class TestAnimal:
         """
         Checks that weight after weight loss is less than initial weight
         """
-        a = Animal(test_params, test_properties)
+        a = Animal(test_params, test_properties, num_animals)
         initial_weight = a.weight
         a.weight_loss()
         assert a.weight < initial_weight
@@ -67,7 +67,7 @@ class TestAnimal:
         """
         Checks that animal has gained weight after eating.
         """
-        a = Animal(test_params, test_properties)
+        a = Animal(test_params, test_properties, num_animals)
         test_fodder = 8
         initial_weight = a.weight
         a.eat(test_fodder)
@@ -79,7 +79,7 @@ class TestAnimal:
         """
         Checks that fitness is between 0 and 1.
         """
-        a = Animal(test_params, test_properties)
+        a = Animal(test_params, test_properties, num_animals)
         a.find_fitness()
         assert 0 <= a.fitness <= 1
 
@@ -92,7 +92,7 @@ class TestAnimal:
             "age": 5,
             "weight": 0
         }
-        a = Animal(test_params, test_properties)
+        a = Animal(test_params, test_properties, num_animals)
         a.find_fitness()
         assert a.fitness == 0
 
@@ -100,7 +100,7 @@ class TestAnimal:
         """
         Checks that fitness formula yields correct value.
         """
-        a = Animal(test_params, test_properties)
+        a = Animal(test_params, test_properties, num_animals)
         a.find_fitness()
         assert a.fitness == approx(0.9983411986)
 
@@ -118,7 +118,7 @@ class TestAnimal:
         Asserts that probability of giving birth is zero if the mothers
         weight is less than a given limit.
         """
-        a = Animal(test_params, test_properties, 6)
+        a = Animal(test_params, test_properties, num_animals)
         a.find_fitness()
         assert a.prob_give_birth == 0
 
