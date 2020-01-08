@@ -80,7 +80,7 @@ class Animal:
         """
         Adds 1 year to the age of the animal for each cycle.
         """
-        pass
+        self.age += 1
 
     def weight_loss(self):
         """
