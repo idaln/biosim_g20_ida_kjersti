@@ -87,7 +87,8 @@ class Animal:
         Substracts given amount of weight from the animals
         total weight after each cycle, given by eta*weight
         """
-        pass
+        new_weight = (1 - self.eta) * self.weight
+        self.weight = new_weight
 
     def eat(self):
         """
