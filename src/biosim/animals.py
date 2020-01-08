@@ -132,7 +132,11 @@ class Animal:
         :returns prob
                  Probability of giving birth
         """
-        pass
+        if self.weight < self.zeta * (self.w_birth + self.sigma_birth):
+            return 0
+        else:
+            return min(1, self.gamma * self.fitness * (self.num_animals - 1))
+
 
     def give_birth(self):
         """
