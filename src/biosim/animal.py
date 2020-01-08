@@ -81,4 +81,9 @@ class Animal:
         """ Moves animal"""
         pass
 
+    def give_birth(self):
+        """ Finds probability of animal giving birth, created new instance of
+        animal and reduces weight of mother."""
+        pass
+
 
