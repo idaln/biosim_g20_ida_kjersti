@@ -77,4 +77,8 @@ class Animal:
         Fitness is zero if weight is zero, otherwise given by formula (3)."""
         pass
 
+    def migration(self):
+        """ Moves animal"""
+        pass
+
 
