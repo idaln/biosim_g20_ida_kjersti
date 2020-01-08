@@ -140,12 +140,21 @@ class Animal:
     def give_birth(self):
         """
         Checks probability of giving birth and finds out if a baby is to be
-        born. If so, it finds birth weight of child, reduces weight of
-        mother according to given formula and returns the birth weight of baby.
-        If not, it returns None.
+        born.
         :returns baby_weight or None
         """
         pass
+
+    def birth_process(self):
+        """
+        If birth takes place, a birth weight is returned. If not, None is
+        returned. Weight of mother is reduced according to gived formula.
+
+        :return: birth_weight or None
+                 int, float
+        """
+        pass
+
 
     def death(self):
         """
