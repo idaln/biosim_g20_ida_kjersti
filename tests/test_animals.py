@@ -62,9 +62,17 @@ class TestAnimal:
         assert a.weight < initial_weight
 
 
-    def test_eat():
-        """ Checks that animal has gained weight after eating."""
-        pass
+    def test_eat(self):
+        """
+        Checks that animal has gained weight after eating.
+        """
+        a = Animal(test_params, test_properties)
+        test_fodder = 8
+        initial_weight = a.weight
+        a.eat(test_fodder)
+        assert a.weight > initial_weight
+
+
 
     def test_fitness():
         """ Checks that fitness is between 0 and 1."""
