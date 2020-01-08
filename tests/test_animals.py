@@ -140,7 +140,14 @@ class TestAnimal:
         Tests bool_give_birth method.
         Checks if True is returned if probability of giving birth is 1.
         """
-        pass
+        test_properties = {
+            "species": "animal",
+            "age": 5,
+            "weight": 40
+        }
+        a = Animal(test_params, test_properties, num_animals)
+        a.find_fitness()
+        assert a.bool_give_birth() is True
 
     def test_num_more_than_prob(self):
         """
@@ -171,7 +178,7 @@ class TestAnimal:
         }
         mocker.patch('random.normalvariate', return_value=5.5)
         a = Animal(test_params, test_properties, num_animals)
-        assert a.weight > a.give_birth() * a.xi
+        assert a.weight > birth_process() * a.xi
 
     def test_mother_loses_weight(self, mocker):
         """
