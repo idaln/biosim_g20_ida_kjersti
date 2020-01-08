@@ -137,11 +137,11 @@ class Animal:
         else:
             return min(1, self.gamma * self.fitness * (self.num_animals - 1))
 
-    def give_birth(self):
+    def bool_give_birth(self):
         """
         Checks probability of giving birth and finds out if a baby is to be
         born.
-        :returns baby_weight or None
+        :returns bool
         """
         pass
 
@@ -150,7 +150,7 @@ class Animal:
         If birth takes place, a birth weight is returned. If not, None is
         returned. Weight of mother is reduced according to gived formula.
 
-        :return: birth_weight or None
+        :returns birth_weight or None
                  int, float
         """
         pass
