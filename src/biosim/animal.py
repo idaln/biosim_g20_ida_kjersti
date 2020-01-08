@@ -67,4 +67,9 @@ class Animal:
         total weight after each cycle, given by eta*weight"""
         pass
 
+    def eat(self):
+        """ Adds amount of weight to animals total body weight given by
+        beta*F"""
+        pass
+
 
