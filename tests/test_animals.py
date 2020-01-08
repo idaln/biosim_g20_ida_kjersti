@@ -30,6 +30,7 @@ test_properties = {
     "weight": 20
 }
 
+
 class TestAnimal:
     """Tests for Animal class"""
     def test_constructor(self):
@@ -42,9 +43,13 @@ class TestAnimal:
         assert a.a_half == 60
         assert a.omega == 0.9
 
-    def test_ageing():
+    def test_ageing(self):
         """ Checks that animal is one year older than last year."""
-        pass
+        a = Animal(test_params, test_properties)
+        first_age = a.age
+        a.ageing()
+        second_age = a.age
+        assert second_age - first_age == 1
 
     def test_weight_loss():
         """ Checks that weight after weight loss is less than initial weight"""
