@@ -15,3 +15,7 @@ def test_weight_loss():
 def test_eat():
     """ Checks that animal has gained weight after eating."""
     pass
+
+def test_fitness():
+    """ Checks that fitness is between 0 and 1."""
+    pass
