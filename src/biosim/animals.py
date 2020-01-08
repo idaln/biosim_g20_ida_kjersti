@@ -90,12 +90,14 @@ class Animal:
         new_weight = (1 - self.eta) * self.weight
         self.weight = new_weight
 
-    def eat(self):
+    def eat(self, fodder):
         """
         Adds amount of weight to animals total body weight given by
         beta*F
+        :param fodder
+               Amount of fodder available to the animal
         """
-        pass
+        self.weight += self.beta * fodder
 
     def fitness(self):
         """
