@@ -23,3 +23,14 @@ def test_eat():
 def test_fitness():
     """ Checks that fitness is between 0 and 1."""
     pass
+
+def test_give_birth():
+    """ Before birth we check that no birth takes place if there is only one
+    animal in the cell or the mother's weight is less than a given limit.
+    After birth, we check that no birth took place if the predicted baby weight
+    times xi is larger than the mother's weight. If birth has taken place,
+    we check that we mother has lost weight xi * baby's birth weight. """
+    pass
+
+
+    
