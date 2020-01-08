@@ -135,6 +135,29 @@ class TestAnimal:
         a.find_fitness()
         assert a.prob_give_birth == 1
 
+    def test_prob_is_one(self):
+        """
+        Tests bool_give_birth method.
+        Checks if True is returned if probability of giving birth is 1.
+        """
+        pass
+
+    def test_num_more_than_prob(self):
+        """
+        Tests bool_give_birth method.
+        Checks if False is returned if random number larger than the
+        probability is drawn.
+        """
+        pass
+
+    def test_num_less_than_prob(self):
+        """
+        Tests bool_give_birth method.
+        Checks if True is returned if random number less than the
+        probability is drawn.
+        """
+        pass
+
     def test_mothers_weight_large_enough(self, mocker):
         """
         Tests birth_process method.
@@ -179,7 +202,6 @@ class TestAnimal:
         mocker.patch('random.normalvariate', return_value=0)
         a = Animal(test_params, test_properties, num_animals)
         assert a.birth_process() is None
-
 
     def test_death():
         """ Asserts that animal dies if fitness equals zero.
