@@ -150,16 +150,15 @@ class TestAnimal:
         a = Animal(test_params, test_properties, num_animals)
         assert a.weight > a.give_birth() * a.xi
 
-
-        def test_mother_loses_weight(self):
+    def test_mother_loses_weight(self, mocker):
         """
         Test birth_process method.
         Asserts that mother loses weight equal to xi * birth weight
         """
         test_properties = {
-        "species": "animal",
-        "age": 5,
-        "weight": 40
+            "species": "animal",
+            "age": 5,
+            "weight": 40
         }
         mocker.patch('random.normalvariate', return_value=5.5)
         a = Animal(test_params, test_properties, num_animals)
@@ -167,12 +166,19 @@ class TestAnimal:
         birth_weight = a.birth_process()
         assert a.weight == initial_weight - (a.xi * birth_weight)
 
-    def test_birth_weight_different_from_zero(self):
+    def test_birth_weight_different_from_zero(self, mocker):
         """
         Tests birth_process method.
-        Asserts that no baby is born with weight equal to zero.
+        Asserts that no baby is born if the baby weight is equal to zero.
         """
-        pass
+        test_properties = {
+            "species": "animal",
+            "age": 5,
+            "weight": 40
+        }
+        mocker.patch('random.normalvariate', return_value=0)
+        a = Animal(test_params, test_properties, num_animals)
+        assert a.birth_process() is None
 
 
     def test_death():
