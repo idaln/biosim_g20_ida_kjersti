@@ -96,7 +96,6 @@ class TestAnimal:
         a.find_fitness()
         assert a.fitness == 0
 
-
     def test_correct_fitness(self):
         """
         Checks that fitness formula yields correct value.
@@ -111,7 +110,8 @@ class TestAnimal:
         probability of giving birth is zero.
         """
         a = Animal(test_params, test_properties, 1)
-        assert a.prob_give_birth() == 0
+        a.find_fitness()
+        assert a.prob_give_birth == 0
 
     def test_prob_give_birth_weight_less_than_limit(self):
         """
@@ -119,17 +119,21 @@ class TestAnimal:
         weight is less than a given limit.
         """
         a = Animal(test_params, test_properties, 6)
-        assert a.prob_give_birth() == 0
-
+        a.find_fitness()
+        assert a.prob_give_birth == 0
 
     def test_correct_prob(self):
         """
         Asserts that the calculated probability is correct.
         """
+        test_properties = {
+            "species": "animal",
+            "age": 5,
+            "weight": 40
+        }
         a = Animal(test_params, test_properties, 6)
-        assert a.prob_give_birth() == approx(0.9983411986)
-
-
+        a.find_fitness()
+        assert a.prob_give_birth == 1
 
     def test_give_birth(self):
         """
