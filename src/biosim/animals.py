@@ -3,6 +3,9 @@
 __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idna@nmbu.no & kjkv@nmbu.no"
 
+import numpy as np
+
+
 params_herbivore = {
     "w_birth": 8.0,
     "sigma_birth": 1.5,
@@ -99,12 +102,19 @@ class Animal:
         """
         self.weight += self.beta * fodder
 
-    def fitness(self):
+    def find_fitness(self):
         """
         Updates fitness.
         Fitness is zero if weight is zero, otherwise given by formula (3).
         """
-        pass
+        q_plus = 1/(1 + np.exp(self.phi_age*(self.age - self.a_half)))
+        q_minus = 1/(1 + np.exp(-self.phi_weight*(self.weight - self.w_half)))
+
+        if self.weight <= 0:
+            self.fitness = 0
+        else:
+            self.fitness = q_plus * q_minus
+
 
     def migration(self):
         """
