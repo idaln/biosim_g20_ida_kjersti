@@ -11,3 +11,7 @@ def test_ageing():
 def test_weight_loss():
     """ Checks that weight after weight loss is less than initial weight"""
     pass
+
+def test_eat():
+    """ Checks that animal has gained weight after eating."""
+    pass
