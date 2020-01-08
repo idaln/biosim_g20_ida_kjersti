@@ -72,4 +72,9 @@ class Animal:
         beta*F"""
         pass
 
+    def fitness(self):
+        """ Updates fitness.
+        Fitness is zero if weight is zero, otherwise given by formula (3)."""
+        pass
+
 
