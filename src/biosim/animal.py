@@ -42,21 +42,38 @@ params_carnivore = {
 
 
 class Animal:
-    """ Parent class for herbivores and carnivores
+    """
+    Parent class for herbivores and carnivores
     """
 
     def __init__(self, params, properties):
-        """ Initializing class
-        Need to unpack params
         """
-        self.weight = properties['weight']
-        self.age = properties['age']
+        Initializing class by unpacking all parameters given as input.
+        """
+        self.w_birth = params["w_birth"]
+        self.sigma_birth = params["sigma_birth"]
+        self.beta = params["beta"]
+        self.eta = params["eta"]
+        self.a_half = params["a_half"]
+        self.phi_age = params["phi_age"]
+        self.w_half = params["w_half"]
+        self.phi_weight = params["phi_weight"]
+        self.mu = params["mu"]
+        self._lambda = params["lambda"]
+        self.gamma = params["gamma"]
+        self.zeta = params["zeta"]
+        self.xi = params["xi"]
+        self.omega = params["omega"]
+        self.F = params["F"]
+        self.DeltaPhiMax = params["DeltaPhiMax"]
 
-        if 'fitness' not in properties.keys():
+        self.weight = properties["weight"]
+        self.age = properties["age"]
+
+        if "fitness" not in properties.keys():
             self.fitness = None
-
         else:
-            self.fitness = properties['fitness']
+            self.fitness = properties["fitness"]
 
     def ageing(self):
         """ Adds 1 year to the age of the animal for each cycle."""
