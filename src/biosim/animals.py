@@ -159,8 +159,16 @@ class Animal:
         :returns birth_weight or None
                  int, float
         """
-        pass
-
+        bool_birth = self.bool_give_birth()
+        if bool_birth is True:
+            birth_weight = np.random.normal(self.w_birth, self.sigma_birth)
+            if birth_weight == 0:
+                return None
+            else:
+                self.weight -= birth_weight * self.xi
+                return birth_weight
+        else:
+            return None
 
     def death(self):
         """
