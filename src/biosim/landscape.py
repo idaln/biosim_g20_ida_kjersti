@@ -22,6 +22,7 @@ class Jungle:
         """
         Sets amount of fodder for herbivores to maximum after each year.
         """
+        self.fodder_amount = self.params['f_max']
 
     def available_fodder_herb(self):
         """
