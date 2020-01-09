@@ -171,7 +171,15 @@ class TestAnimal:
         Checks if True is returned if random number less than the
         probability is drawn.
         """
-        pass
+        test_properties = {
+        "species": "animal",
+        "age": 63,
+        "weight": 30
+        }
+        mocker.patch('random.random', return_value=0.8)
+        a = Animal(test_params, test_properties, num_animals)
+        a.find_fitness()
+        assert bool_give_birth() is True
 
     def test_mothers_weight_large_enough(self, mocker):
         """
