@@ -32,6 +32,7 @@ test_properties = {
 }
 num_animals = 6
 
+
 class TestAnimal:
     """Tests for Animal class"""
     def test_constructor(self):
@@ -62,7 +63,6 @@ class TestAnimal:
         a.weight_loss()
         assert a.weight < initial_weight
 
-
     def test_eat(self):
         """
         Checks that animal has gained weight after eating.
@@ -72,8 +72,6 @@ class TestAnimal:
         initial_weight = a.weight
         a.eat(test_fodder)
         assert a.weight > initial_weight
-
-
 
     def test_fitness_between_zero_and_one(self):
         """
@@ -149,48 +147,49 @@ class TestAnimal:
         a.find_fitness()
         assert a.bool_give_birth() is True
 
-    def test_num_more_than_prob(self):
+    def test_num_more_than_prob(self, mocker):
         """
         Tests bool_give_birth method.
         Checks if False is returned if random number larger than the
         probability is drawn.
         """
         test_properties = {
-        "species": "animal",
-        "age": 63,
-        "weight": 30
+            "species": "animal",
+            "age": 63,
+            "weight": 30
         }
-        mocker.patch('random.random', return_value=0.95)
+        mocker.patch('numpy.random.random', return_value=0.95)
         a = Animal(test_params, test_properties, num_animals)
         a.find_fitness()
-        assert bool_give_birth() is False
+        assert a.bool_give_birth() is False
 
-    def test_num_less_than_prob(self):
+    def test_num_less_than_prob(self, mocker):
         """
         Tests bool_give_birth method.
         Checks if True is returned if random number less than the
         probability is drawn.
         """
         test_properties = {
-        "species": "animal",
-        "age": 63,
-        "weight": 30
+            "species": "animal",
+            "age": 63,
+            "weight": 30
         }
-        mocker.patch('random.random', return_value=0.8)
+        mocker.patch('numpy.random.random', return_value=0.8)
         a = Animal(test_params, test_properties, num_animals)
         a.find_fitness()
-        assert bool_give_birth() is True
+        assert a.bool_give_birth() is True
 
     def test_mothers_weight_large_enough(self, mocker):
         """
         Tests birth_process method.
-        After birth, we check that no birth took place if the predicted baby weight
+        After birth, we check that no birth took place if the predicted baby
+        weight
         times xi is larger than the mother's weight.
         """
         test_properties = {
-        "species": "animal",
-        "age": 5,
-        "weight": 40
+            "species": "animal",
+            "age": 5,
+            "weight": 40
         }
         mocker.patch('random.normalvariate', return_value=5.5)
         a = Animal(test_params, test_properties, num_animals)
