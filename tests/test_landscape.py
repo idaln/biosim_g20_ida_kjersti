@@ -17,3 +17,11 @@ class TestJungle:
         """
         j = Jungle(fodder_amount=400)
         assert j.fodder_amount == 400
+
+    def test_regrowth(self):
+        """
+        Asserts that amount of fodder is equal f_max after each year.
+        """
+        j = Jungle(fodder_amount=400)
+        j.regrowth()
+        assert j.fodder_amount == j.params['f_max']
