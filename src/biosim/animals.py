@@ -175,7 +175,10 @@ class Animal:
         Finds probability of death, which depends on the fitness of the
         animal.
         """
-        pass
+        if self.fitness == 0:
+            return 1
+        else:
+            return self.omega * (1 - self.fitness)
 
     def bool_death(self):
         """
