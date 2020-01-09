@@ -3,19 +3,17 @@
 __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idaln@hotmail.com & kjkv@nmbu.no"
 
-class TestLandscape:
-    """
-    Test class for Landscape class.
-    """
-    def test_constructor(self):
+from biosim.landscape import Jungle
 
-    def test_fodder_loss(self):
-        """
-        Asserts that amount of fodder has decreased after grazing by
-        an animal.
-        """
 
 class TestJungle:
     """
     Tests for Jungle class.
     """
+    def test_constructor(self):
+        """
+        Asserts that class instance has been initialized with given amount of
+        fodder.
+        """
+        j = Jungle(fodder_amount=400)
+        assert j.fodder_amount == 400
