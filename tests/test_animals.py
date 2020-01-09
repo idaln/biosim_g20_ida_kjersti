@@ -238,7 +238,7 @@ class TestAnimal:
         }
         a = Animal(test_params, test_properties, num_animals)
         a.find_fitness()
-        assert a.bool_death() == 1
+        assert a.prob_death() == 1
 
     def test_correct_prob_death(self):
         """
@@ -246,7 +246,7 @@ class TestAnimal:
         """
         a = Animal(test_params, test_properties, num_animals)
         a.find_fitness()
-        assert a.bool_death() == approx(0.0014929212599999687)
+        assert a.prob_death() == approx(0.0014929212599999687)
 
     def test_true_death_prob_is_one(self):
         """
