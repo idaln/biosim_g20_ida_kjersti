@@ -170,10 +170,18 @@ class Animal:
         else:
             return None
 
-    def death(self):
+    def prob_death(self):
         """
-        Finds probability of dying, and returns True if animal dies and
-        False if not.
+        Finds probability of death, which depends on the fitness of the
+        animal.
+        """
+        pass
+
+    def bool_death(self):
+        """
+        Checks the probability of death. Returns True if the animal dies,
+        and False if not.
+        :return bool
         """
         pass
 
