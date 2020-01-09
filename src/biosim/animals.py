@@ -5,26 +5,6 @@ __email__ = "idna@nmbu.no & kjkv@nmbu.no"
 
 import numpy as np
 
-
-params_herbivore = {
-    "w_birth": 8.0,
-    "sigma_birth": 1.5,
-    "beta": 0.9,
-    "eta": 0.05,
-    "a_half": 40.0,
-    "phi_age": 0.2,
-    "w_half": 10.0,
-    "phi_weight": 0.1,
-    "mu": 0.25,
-    "lambda": 1.0,
-    "gamma": 0.2,
-    "zeta": 3.5,
-    "xi": 1.2,
-    "omega": 0.4,
-    "F": 10.0,
-    "DeltaPhiMax": None
-}
-
 params_carnivore = {
         "w_birth": 6.0,
         "sigma_birth": 1.0,
@@ -81,7 +61,6 @@ class Animal:
         else:
             self.fitness = properties["fitness"]
 
-
     def ageing(self):
         """
         Adds 1 year to the age of the animal for each cycle.
@@ -110,21 +89,23 @@ class Animal:
         Updates fitness.
         Fitness is zero if weight is zero, otherwise given by formula (3).
         """
-        q_plus = 1/(1 + np.exp(self.params["phi_age"]*(self.age - self.params["a_half"])))
-        q_minus = 1/(1 + np.exp(-self.params["phi_weight"]*(self.weight - self.params["w_half"])))
+        q_plus = 1/(1 + np.exp(
+            self.params["phi_age"]*(self.age - self.params["a_half"])
+        ))
+        q_minus = 1/(1 + np.exp(
+            -self.params["phi_weight"]*(self.weight - self.params["w_half"])
+        ))
 
         if self.weight <= 0:
             self.fitness = 0
         else:
             self.fitness = q_plus * q_minus
 
-
     def migration(self):
         """
         Moves animal
         """
         pass
-
 
     def prob_give_birth(self, num_animals):
         """
@@ -133,10 +114,14 @@ class Animal:
         :returns prob
                  Probability of giving birth
         """
-        if self.weight < self.params['zeta'] * (self.params['w_birth'] + self.params['sigma_birth']):
+        if self.weight < self.params['zeta'] * (
+                self.params['w_birth'] + self.params['sigma_birth']
+        ):
             return 0
         else:
-            return min(1, self.params['gamma'] * self.fitness * (num_animals - 1))
+            return min(
+                1, self.params['gamma'] * self.fitness * (num_animals - 1)
+            )
 
     def bool_give_birth(self, num_animals):
         """
@@ -162,7 +147,9 @@ class Animal:
         """
         bool_birth = self.bool_give_birth(num_animals)
         if bool_birth is True:
-            birth_weight = np.random.normal(self.params['w_birth'], self.params['sigma_birth'])
+            birth_weight = np.random.normal(
+                self.params['w_birth'], self.params['sigma_birth']
+            )
             if birth_weight == 0:
                 return None
             else:
