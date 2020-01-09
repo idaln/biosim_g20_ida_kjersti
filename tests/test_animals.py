@@ -35,21 +35,22 @@ num_animals = 6
 
 class TestAnimal:
     """Tests for Animal class"""
+
     def test_constructor(self):
         """
         Checks that class has been initialized and some parameters have
         been unpacked correctly.
         """
-        a = Animal(test_params, test_properties, num_animals)
+        a = Animal(test_properties)
         assert a.age == 5
-        assert a.a_half == 60
-        assert a.omega == 0.9
+        assert a.params['a_half'] == 60
+        assert a.params['omega'] == 0.9
 
     def test_ageing(self):
         """
         Checks that animal is one year older than last year.
         """
-        a = Animal(test_params, test_properties, num_animals)
+        a = Animal(test_properties)
         initial_age = a.age
         a.ageing()
         assert a.age - initial_age == 1
@@ -58,7 +59,7 @@ class TestAnimal:
         """
         Checks that weight after weight loss is less than initial weight
         """
-        a = Animal(test_params, test_properties, num_animals)
+        a = Animal(test_properties)
         initial_weight = a.weight
         a.weight_loss()
         assert a.weight < initial_weight
@@ -67,7 +68,7 @@ class TestAnimal:
         """
         Checks that animal has gained weight after eating.
         """
-        a = Animal(test_params, test_properties, num_animals)
+        a = Animal(test_properties)
         test_fodder = 8
         initial_weight = a.weight
         a.eat(test_fodder)
@@ -77,7 +78,7 @@ class TestAnimal:
         """
         Checks that fitness is between 0 and 1.
         """
-        a = Animal(test_params, test_properties, num_animals)
+        a = Animal(test_properties)
         a.find_fitness()
         assert 0 <= a.fitness <= 1
 
@@ -90,7 +91,7 @@ class TestAnimal:
             "age": 5,
             "weight": 0
         }
-        a = Animal(test_params, test_properties, num_animals)
+        a = Animal(test_properties)
         a.find_fitness()
         assert a.fitness == 0
 
@@ -98,7 +99,7 @@ class TestAnimal:
         """
         Checks that fitness formula yields correct value.
         """
-        a = Animal(test_params, test_properties, num_animals)
+        a = Animal(test_properties)
         a.find_fitness()
         assert a.fitness == approx(0.9983411986)
 
@@ -107,18 +108,18 @@ class TestAnimal:
         Asserts that if there is only one animal in the square, then the
         probability of giving birth is zero.
         """
-        a = Animal(test_params, test_properties, 1)
+        a = Animal(test_properties)
         a.find_fitness()
-        assert a.prob_give_birth == 0
+        assert a.prob_give_birth(num_animals=1) == 0
 
     def test_prob_give_birth_weight_less_than_limit(self):
         """
         Asserts that probability of giving birth is zero if the mothers
         weight is less than a given limit.
         """
-        a = Animal(test_params, test_properties, num_animals)
+        a = Animal(test_properties)
         a.find_fitness()
-        assert a.prob_give_birth == 0
+        assert a.prob_give_birth(num_animals=6) == 0
 
     def test_correct_birth_prob(self):
         """
@@ -129,9 +130,9 @@ class TestAnimal:
             "age": 5,
             "weight": 40
         }
-        a = Animal(test_params, test_properties, num_animals)
+        a = Animal(test_properties)
         a.find_fitness()
-        assert a.prob_give_birth == 1
+        assert a.prob_give_birth(num_animals=6) == 1
 
     def test_birth_prob_is_one(self):
         """
@@ -143,9 +144,9 @@ class TestAnimal:
             "age": 5,
             "weight": 40
         }
-        a = Animal(test_params, test_properties, num_animals)
+        a = Animal(test_properties)
         a.find_fitness()
-        assert a.bool_give_birth() is True
+        assert a.bool_give_birth(num_animals=6) is True
 
     def test_num_more_than_birth_prob(self, mocker):
         """
@@ -159,9 +160,9 @@ class TestAnimal:
             "weight": 30
         }
         mocker.patch('numpy.random.random', return_value=0.95)
-        a = Animal(test_params, test_properties, num_animals)
+        a = Animal(test_properties)
         a.find_fitness()
-        assert a.bool_give_birth() is False
+        assert a.bool_give_birth(num_animals=6) is False
 
     def test_num_less_than_birth_prob(self, mocker):
         """
@@ -175,9 +176,9 @@ class TestAnimal:
             "weight": 30
         }
         mocker.patch('numpy.random.random', return_value=0.8)
-        a = Animal(test_params, test_properties, num_animals)
+        a = Animal(test_properties)
         a.find_fitness()
-        assert a.bool_give_birth() is True
+        assert a.bool_give_birth(num_animals=6) is True
 
     def test_mothers_weight_large_enough(self, mocker):
         """
@@ -191,9 +192,9 @@ class TestAnimal:
             "weight": 40
         }
         mocker.patch('numpy.random.normal', return_value=5.5)
-        a = Animal(test_params, test_properties, num_animals)
+        a = Animal(test_properties)
         a.find_fitness()
-        assert a.weight > a.birth_process() * a.xi
+        assert a.weight > a.birth_process(num_animals=6) * a.params['xi']
 
     def test_mother_loses_weight(self, mocker):
         """
@@ -206,11 +207,11 @@ class TestAnimal:
             "weight": 40
         }
         mocker.patch('numpy.random.normal', return_value=5.5)
-        a = Animal(test_params, test_properties, num_animals)
+        a = Animal(test_properties)
         a.find_fitness()
         initial_weight = a.weight
-        birth_weight = a.birth_process()
-        assert a.weight == initial_weight - (a.xi * birth_weight)
+        birth_weight = a.birth_process(num_animals=6)
+        assert a.weight == initial_weight - (a.params['xi'] * birth_weight)
 
     def test_birth_weight_different_from_zero(self, mocker):
         """
@@ -223,9 +224,9 @@ class TestAnimal:
             "weight": 40
         }
         mocker.patch('numpy.random.normal', return_value=0)
-        a = Animal(test_params, test_properties, num_animals)
+        a = Animal(test_properties)
         a.find_fitness()
-        assert a.birth_process() is None
+        assert a.birth_process(num_animals=6) is None
 
     def test_prob_death_is_one(self):
         """
@@ -236,7 +237,7 @@ class TestAnimal:
             "age": 5,
             "weight": 0
         }
-        a = Animal(test_params, test_properties, num_animals)
+        a = Animal(test_properties)
         a.find_fitness()
         assert a.prob_death() == 1
 
@@ -244,7 +245,7 @@ class TestAnimal:
         """
         Asserts that the probability of dying is calculated correctly.
         """
-        a = Animal(test_params, test_properties, num_animals)
+        a = Animal(test_properties)
         a.find_fitness()
         assert a.prob_death() == approx(0.0014929212599999687)
 
@@ -257,7 +258,7 @@ class TestAnimal:
             "age": 5,
             "weight": 0
         }
-        a = Animal(test_params, test_properties, num_animals)
+        a = Animal(test_properties)
         a.find_fitness()
         assert a.bool_death() is True
 
@@ -270,7 +271,7 @@ class TestAnimal:
             "age": 5,
             "weight": 0
         }
-        a = Animal(test_params, test_properties, num_animals)
+        a = Animal(test_properties)
         a.fitness = 1
         assert a.bool_death() is False
 
@@ -280,16 +281,16 @@ class TestAnimal:
         the death probability.
         """
         mocker.patch('numpy.random.random', return_value=0.0005)
-        a = Animal(test_params, test_properties, num_animals)
+        a = Animal(test_properties)
         a.find_fitness()
         assert a.bool_death() is True
 
-    def test_num_more_than_death_prob(self):
+    def test_num_more_than_death_prob(self, mocker):
         """
         Asserts that False is returned if the random number is larger than
         the death probability.
         """
         mocker.patch('numpy.random.random', return_value=0.5)
-        a = Animal(test_params, test_properties, num_animals)
+        a = Animal(test_properties)
         a.find_fitness()
         assert a.bool_death() is False
