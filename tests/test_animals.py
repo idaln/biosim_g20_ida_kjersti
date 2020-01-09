@@ -183,16 +183,16 @@ class TestAnimal:
         """
         Tests birth_process method.
         After birth, we check that no birth took place if the predicted baby
-        weight
-        times xi is larger than the mother's weight.
+        weight times xi is larger than the mother's weight.
         """
         test_properties = {
             "species": "animal",
             "age": 5,
             "weight": 40
         }
-        mocker.patch('random.normalvariate', return_value=5.5)
+        mocker.patch('numpy.random.normal', return_value=5.5)
         a = Animal(test_params, test_properties, num_animals)
+        a.find_fitness()
         assert a.weight > a.birth_process() * a.xi
 
     def test_mother_loses_weight(self, mocker):
@@ -205,8 +205,9 @@ class TestAnimal:
             "age": 5,
             "weight": 40
         }
-        mocker.patch('random.normalvariate', return_value=5.5)
+        mocker.patch('numpy.random.normal', return_value=5.5)
         a = Animal(test_params, test_properties, num_animals)
+        a.find_fitness()
         initial_weight = a.weight
         birth_weight = a.birth_process()
         assert a.weight == initial_weight - (a.xi * birth_weight)
@@ -221,11 +222,14 @@ class TestAnimal:
             "age": 5,
             "weight": 40
         }
-        mocker.patch('random.normalvariate', return_value=0)
+        mocker.patch('numpy.random.normal', return_value=0)
         a = Animal(test_params, test_properties, num_animals)
+        a.find_fitness()
         assert a.birth_process() is None
 
     def test_death():
-        """ Asserts that animal dies if fitness equals zero.
-        Assert that animal dies probability of dying is 1. """
+        """
+        Asserts that animal dies if fitness equals zero.
+        Assert that animal dies probability of dying is 1.
+        """
         pass
