@@ -187,6 +187,13 @@ class Animal:
         and False if not.
         :return bool
         """
-        
+        prob = self.prob_death()
+        random_number = np.random.random()
+
+        if random_number <= prob:
+            return True
+        else:
+            return False
+
 
 
