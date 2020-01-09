@@ -193,7 +193,7 @@ class TestAnimal:
         }
         mocker.patch('random.normalvariate', return_value=5.5)
         a = Animal(test_params, test_properties, num_animals)
-        assert a.weight > birth_process() * a.xi
+        assert a.weight > a.birth_process() * a.xi
 
     def test_mother_loses_weight(self, mocker):
         """
