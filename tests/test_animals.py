@@ -231,12 +231,22 @@ class TestAnimal:
         """
         Asserts that the probability of dying is one if fitness equals zero.
         """
-        pass
+        test_properties = {
+            "species": "animal",
+            "age": 5,
+            "weight": 0
+        }
+        a = Animal(test_params, test_properties, num_animals)
+        a.find_fitness()
+        assert a.bool_death() == 1
 
     def test_correct_prob_death(self):
         """
         Asserts that the probability of dying is calculated correctly.
         """
+        a = Animal(test_params, test_properties, num_animals)
+        a.find_fitness()
+        assert a.bool_death() == approx(0.0014929212599999687)
 
     def test_true_death_prob_is_one(self):
         """
