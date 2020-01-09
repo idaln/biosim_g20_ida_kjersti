@@ -143,7 +143,13 @@ class Animal:
         born.
         :returns bool
         """
-        pass
+        prob = self.prob_give_birth
+        random_number = np.random.random()
+
+        if random_number <= prob:
+            return True
+        else:
+            return False
 
     def birth_process(self):
         """
