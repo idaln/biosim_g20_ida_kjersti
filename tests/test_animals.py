@@ -43,6 +43,8 @@ class TestAnimal:
         Checks that class has been initialized and some parameters have
         been unpacked correctly.
         """
+        # Animal.params = test_params
+        # Det her går ann, men da må alle tester endres
         a = Animal(test_properties)
         assert a.age == 5
         assert a.params['a_half'] == 60
