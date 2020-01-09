@@ -25,3 +25,22 @@ class TestJungle:
         j = Jungle(fodder_amount=400)
         j.regrowth()
         assert j.fodder_amount == j.params['f_max']
+
+    def test_enough_fodder_is_available(self):
+        """
+        Asserts that herbivore is provided with the amount it desires, when
+        enough fodder is available
+        """
+
+    def test_restricted_amount_of_fodder_is_available(self):
+        """
+        Asserts that all of the fodder is provided to the herbivore when it's
+        demand is larger than the amount of fodder available.
+        """
+
+    def test_no_fodder_available(self):
+        """
+        Asserts that no fodder is provided to the herbivore when there is no
+        fodder available
+        """
+
