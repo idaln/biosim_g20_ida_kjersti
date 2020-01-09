@@ -252,8 +252,44 @@ class TestAnimal:
         """
         Assert that True is returned if probability of dying is one.
         """
+        test_properties = {
+            "species": "animal",
+            "age": 5,
+            "weight": 0
+        }
+        a = Animal(test_params, test_properties, num_animals)
+        a.find_fitness()
+        assert a.bool_death() is True
 
     def test_false_death_prob_is_zero(self):
         """
         Assert that False is returned if probability of dying is zero.
         """
+        test_properties = {
+            "species": "animal",
+            "age": 5,
+            "weight": 0
+        }
+        a = Animal(test_params, test_properties, num_animals)
+        a.fitness = 1
+        assert a.bool_death() is False
+
+    def test_num_less_than_death_prob(self, mocker):
+        """
+        Asserts that True is returned if the random number is less than
+        the death probability.
+        """
+        mocker.patch('numpy.random.random', return_value=0.0005)
+        a = Animal(test_params, test_properties, num_animals)
+        a.find_fitness()
+        assert a.bool_death() is True
+
+    def test_num_more_than_death_prob(self):
+        """
+        Asserts that False is returned if the random number is larger than
+        the death probability.
+        """
+        mocker.patch('numpy.random.random', return_value=0.5)
+        a = Animal(test_params, test_properties, num_animals)
+        a.find_fitness()
+        assert a.bool_death() is False
