@@ -4,7 +4,7 @@
 __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idaln@hotmail.com & kjkv@nmbu.no"
 
-from biosim.animals import Animal
+from biosim.animals import Animal, Herbivore
 from pytest import approx
 
 test_params = {
@@ -34,7 +34,9 @@ num_animals = 6
 
 
 class TestAnimal:
-    """Tests for Animal class"""
+    """
+    Tests for Animal class.
+    """
 
     def test_constructor(self):
         """
@@ -294,3 +296,16 @@ class TestAnimal:
         a = Animal(test_properties)
         a.find_fitness()
         assert a.bool_death() is False
+
+
+class TestHerbivore:
+    """
+    Tests for Herbivore class.
+    """
+    def test_constructor(self):
+        """
+        Checks that class is initialized with given weight and age.
+        """
+        h = Herbivore(test_properties)
+        assert h.age == test_properties["age"]
+        assert h.weight == test_properties["weight"]
