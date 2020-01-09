@@ -120,7 +120,7 @@ class TestAnimal:
         a.find_fitness()
         assert a.prob_give_birth == 0
 
-    def test_correct_prob(self):
+    def test_correct_birth_prob(self):
         """
         Asserts that the calculated probability is correct.
         """
@@ -133,7 +133,7 @@ class TestAnimal:
         a.find_fitness()
         assert a.prob_give_birth == 1
 
-    def test_prob_is_one(self):
+    def test_birth_prob_is_one(self):
         """
         Tests bool_give_birth method.
         Checks if True is returned if probability of giving birth is 1.
@@ -147,7 +147,7 @@ class TestAnimal:
         a.find_fitness()
         assert a.bool_give_birth() is True
 
-    def test_num_more_than_prob(self, mocker):
+    def test_num_more_than_birth_prob(self, mocker):
         """
         Tests bool_give_birth method.
         Checks if False is returned if random number larger than the
@@ -163,7 +163,7 @@ class TestAnimal:
         a.find_fitness()
         assert a.bool_give_birth() is False
 
-    def test_num_less_than_prob(self, mocker):
+    def test_num_less_than_birth_prob(self, mocker):
         """
         Tests bool_give_birth method.
         Checks if True is returned if random number less than the
@@ -227,9 +227,23 @@ class TestAnimal:
         a.find_fitness()
         assert a.birth_process() is None
 
-    def test_death():
+    def test_prob_death_is_one(self):
         """
-        Asserts that animal dies if fitness equals zero.
-        Assert that animal dies probability of dying is 1.
+        Asserts that the probability of dying is one if fitness equals zero.
         """
         pass
+
+    def test_correct_prob_death(self):
+        """
+        Asserts that the probability of dying is calculated correctly.
+        """
+
+    def test_true_death_prob_is_one(self):
+        """
+        Assert that True is returned if probability of dying is one.
+        """
+
+    def test_false_death_prob_is_zero(self):
+        """
+        Assert that False is returned if probability of dying is zero.
+        """
