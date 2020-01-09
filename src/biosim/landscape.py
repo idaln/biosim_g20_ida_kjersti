@@ -20,6 +20,12 @@ class Jungle:
 
     def regrowth(self):
         """
-        Sets amount of fodder to maximum after each year.
-        :return:
+        Sets amount of fodder for herbivores to maximum after each year.
+        """
+
+    def available_fodder_herb(self):
+        """
+        Returns amount of fodder available to herbivores.
+        :returns: available_fodder
+                  float
         """
