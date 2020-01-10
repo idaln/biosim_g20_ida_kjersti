@@ -50,6 +50,50 @@ class TestLandscape:
         assert l.pop_herb[0].fitness > l.pop_herb[1].fitness
         assert l.pop_herb[1].fitness > l.pop_herb[2].fitness
 
+    def test_regrowth(self):
+        """
+        Asserts that amount of fodder is equal f_max after each year.
+        """
+        l = Landscape(test_population)
+        l.regrowth()
+        assert l.fodder_amount == l.params['f_max']
+
+    def test_enough_fodder_is_available(self):
+        """
+        Asserts that herbivore is provided with the amount it desires, when
+        enough fodder is available. Asserts that the amount of fodder
+        provided is substracted from the initial fodder amount.
+        """
+        l = Landscape(test_population)
+        l.regrowth()
+        old_fodder_amount = l.fodder_amount
+        available_fodder_to_herb = l.available_fodder_herb()
+        assert available_fodder_to_herb == Herbivore.params["F"]
+        assert l.fodder_amount == old_fodder_amount - available_fodder_to_herb
+
+    def test_restricted_amount_of_fodder_is_available(self):
+        """
+        Asserts that all of the fodder is provided to the herbivore when it's
+        demand is larger than the amount of fodder available. Asserts that
+        the amount of fodder left now is zero.
+        """
+        l = Landscape(test_population)
+        l.fodder_amount = Herbivore.params["F"] / 2
+        old_fodder_amount = l.fodder_amount
+        available_fodder_to_herb = l.available_fodder_herb()
+        assert available_fodder_to_herb == Herbivore.params["F"] / 2
+        assert l.fodder_amount == old_fodder_amount - available_fodder_to_herb
+
+    def test_no_fodder_available(self):
+        """
+        Asserts that no fodder is provided to the herbivore when there is no
+        fodder available.
+        """
+        l = Landscape(test_population)
+        l.fodder_amount = 0
+        assert l.available_fodder_herb() == 0
+        assert l.fodder_amount == 0
+
 
 class TestJungle:
     """
@@ -60,52 +104,6 @@ class TestJungle:
         Asserts that class instance has been initialized with no fodder
         available.
         """
-        j = Jungle()
+        j = Jungle(test_population)
         assert j.fodder_amount is None
 
-    def test_regrowth(self):
-        """
-        Asserts that amount of fodder is equal f_max after each year.
-        """
-        j = Jungle()
-        j.regrowth()
-        assert j.fodder_amount == j.params['f_max']
-
-    def test_enough_fodder_is_available(self):
-        """
-        Asserts that herbivore is provided with the amount it desires, when
-        enough fodder is available. Asserts that the amount of fodder
-        provided is substracted from the initial fodder amount.
-        """
-        j = Jungle()
-        h = Herbivore(test_properties_herb)
-        j.regrowth()
-        old_fodder_amount = j.fodder_amount
-        available_fodder_to_herb = j.available_fodder_herb(h)
-        assert available_fodder_to_herb == h.params["F"]
-        assert j.fodder_amount == old_fodder_amount - available_fodder_to_herb
-
-    def test_restricted_amount_of_fodder_is_available(self):
-        """
-        Asserts that all of the fodder is provided to the herbivore when it's
-        demand is larger than the amount of fodder available. Asserts that
-        the amount of fodder left now is zero.
-        """
-        j = Jungle()
-        h = Herbivore(test_properties_herb)
-        j.fodder_amount = h.params["F"] / 2
-        old_fodder_amount = j.fodder_amount
-        available_fodder_to_herb = j.available_fodder_herb(h)
-        assert available_fodder_to_herb == h.params["F"] / 2
-        assert j.fodder_amount == old_fodder_amount - available_fodder_to_herb
-
-    def test_no_fodder_available(self):
-        """
-        Asserts that no fodder is provided to the herbivore when there is no
-        fodder available.
-        """
-        j = Jungle()
-        h = Herbivore(test_properties_herb)
-        j.fodder_amount = 0
-        assert j.available_fodder_herb(h) == 0
-        assert j.fodder_amount == 0
