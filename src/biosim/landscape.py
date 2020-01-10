@@ -11,22 +11,25 @@ class Jungle:
     params = {
         "f_max": 800,
     }
+    pop_carn = []
+    pop_herb = []
 
-    def __init__(self, fodder_amount):
+    def __init__(self):
         """
-        Initializes class with given properties.
+        Initializes class.
         """
-        self.fodder_amount = fodder_amount
+        self.fodder_amount = None
 
     def regrowth(self):
         """
-        Sets amount of fodder for herbivores to maximum after each year.
+        Sets amount of fodder for herbivores to maximum at the beginning of
+        each year.
         """
         self.fodder_amount = self.params['f_max']
 
-    def available_fodder_herb(self):
+    def available_fodder_herb(self, herbivore):
         """
-        Returns amount of fodder available to herbivores.
+        Returns amount of fodder available to the herbivore.
         :returns: available_fodder
                   float
         """
