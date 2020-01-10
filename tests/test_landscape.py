@@ -3,7 +3,7 @@
 __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idaln@hotmail.com & kjkv@nmbu.no"
 
-from biosim.landscape import Jungle
+from biosim.landscape import Landscape, Jungle
 from biosim.animals import Animal, Herbivore
 
 test_properties_herb = {
@@ -12,10 +12,22 @@ test_properties_herb = {
     "weight": 20
 }
 
+test_population = [
+                    {"species": "Herbivore", "age": 1, "weight": 10.0},
+                    {"species": "Herbivore", "age": 3, "weight": 50.0}
+]
 class TestLandscape:
     """
     Tests for Landscape class
     """
+    def test_constructor(self):
+        """
+        Asserts that the Landscape class enables creation of class
+        instances and it's population attribute has correct length. 
+        """
+        l = Landscape(test_population)
+        assert isinstance(l, Landscape)
+        assert len(l.pop_herb) == len(test_population)
 
 class TestJungle:
     """
