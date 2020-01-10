@@ -5,6 +5,7 @@ __email__ = "idaln@hotmail.com & kjkv@nmbu.no"
 
 from biosim.landscape import Landscape, Jungle
 from biosim.animals import Animal, Herbivore
+from pytest import approx
 
 test_properties_herb = {
     "species": "animal",
@@ -14,8 +15,11 @@ test_properties_herb = {
 
 test_population = [
                     {"species": "Herbivore", "age": 1, "weight": 10.0},
-                    {"species": "Herbivore", "age": 3, "weight": 50.0}
+                    {"species": "Herbivore", "age": 3, "weight": 50.0},
+                    {"species": "Herbivore", "age": 5, "weight": 20.0}
 ]
+
+
 class TestLandscape:
     """
     Tests for Landscape class
@@ -29,6 +33,22 @@ class TestLandscape:
         assert isinstance(l, Landscape)
         assert len(l.pop_herb) == len(test_population)
 
+    def test_sort_single_animal_by_fitness(self):
+        """
+        Tests that the sorting function works for a single-element list.
+        """
+        l = Landscape([{"species": "Herbivore", "age": 1, "weight": 10.0}])
+        l.sort_population_by_fitness()
+        assert l.pop_herb[0].fitness == approx(0.49979521641750696)
+
+    def test_sort_several_animals_by_fitness(self):
+        """
+        Tests that the sorting method works on a list of several herbivores.
+        """
+        l = Landscape(test_population)
+        l.sort_population_by_fitness()
+        assert l.pop_herb[0].fitness > l.pop_herb[1].fitness
+        assert l.pop_herb[1].fitness > l.pop_herb[2].fitness
 
 
 class TestJungle:
