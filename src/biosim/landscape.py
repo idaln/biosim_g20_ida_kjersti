@@ -14,8 +14,6 @@ class Landscape:
         "f_max": 800,
         "alpha": None
     }
-    pop_carn = []
-    pop_herb = []
 
     def __init__(self, population):
         """
@@ -23,8 +21,16 @@ class Landscape:
         :param population: list of dictionaries
         """
         self.fodder_amount = None
-        self.num_carn = len(self.pop_carn)
-        self.num_herb = len(self.pop_herb)
+
+        #pop_carn = []
+        pop_herb = []
+        for individual in population:
+            if individual["species"] is "Herbivore":
+                pop_herb.append(Herbivore(individual))
+            #else:
+                # pop_carn.append(Carnivore(individual))
+
+
 
     def available_fodder_herb(self, herbivore):
         """
