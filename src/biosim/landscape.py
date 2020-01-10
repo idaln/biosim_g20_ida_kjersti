@@ -47,12 +47,19 @@ class Landscape:
                 i += 1
             n -= 1
 
-    def available_fodder_herb(self, herbivore):
+    def regrowth(self):
+        """
+        Sets amount of fodder for herbivores to maximum at the beginning of
+        each year.
+        """
+        self.fodder_amount = self.params['f_max']
+
+    def available_fodder_herb(self):
         """
         Returns amount of fodder available to the herbivore.
         :return available_fodder: float
         """
-        desired_fodder = herbivore.params["F"]
+        desired_fodder = Herbivore.params["F"]
         old_fodder = self.fodder_amount
         if self.fodder_amount >= desired_fodder:
             self.fodder_amount -= desired_fodder
@@ -67,7 +74,6 @@ class Landscape:
         """
         Iterates over populations and feeds all animals, utilizing the eating
         method inherent to the animal instance.
-
         """
 
     def attemps_procreating_all_animals(self):
@@ -109,24 +115,12 @@ class Jungle(Landscape):
     params = {
         "f_max": 800,
     }
-    pop_carn = []
-    pop_herb = []
 
     def __init__(self, population):
         """
         Initializes class.
         """
         super().__init__(population)
-        self.fodder_amount = None
-        self.num_carn = len(self.pop_carn)
-        self.num_herb = len(self.pop_herb)
-
-    def regrowth(self):
-        """
-        Sets amount of fodder for herbivores to maximum at the beginning of
-        each year.
-        """
-        self.fodder_amount = self.params['f_max']
 
 
 test_pop = [
