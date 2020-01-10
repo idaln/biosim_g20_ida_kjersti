@@ -123,6 +123,9 @@ class Landscape:
         Iterates over population lists and runs inherent death method on all
         animals.
         """
+        for animal in self.pop_herb:
+            if animal.will_death_take_place() is True:
+                self.pop_herb.remove(animal)
 
 
 class Jungle(Landscape):
