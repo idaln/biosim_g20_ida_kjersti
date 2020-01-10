@@ -104,6 +104,8 @@ class Landscape:
         Iterates over population lists and ages all animals one year
         utilizing their inherent aging method.
         """
+        for animal in self.pop_herb:
+            animal.make_animal_one_year_older()
 
     def make_all_animals_lose_weight(self):
         """
