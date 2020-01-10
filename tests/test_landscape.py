@@ -18,7 +18,6 @@ test_population = [
                     {"species": "Herbivore", "age": 1, "weight": 10.0},
                     {"species": "Herbivore", "age": 3, "weight": 50.0},
                     {"species": "Herbivore", "age": 5, "weight": 20.0},
-
 ]
 
 
@@ -158,6 +157,22 @@ class TestLandscape:
         assert l.pop_herb[0].weight < test_population[0]["weight"]
         assert l.pop_herb[1].weight < test_population[1]["weight"]
         assert l.pop_herb[2].weight < test_population[2]["weight"]
+
+    def test_has_dead_animal_been_removed(self):
+        """
+        Tests that a dead animal has been removed from population list because
+        it has fitness equal to zero due to no weight.
+        """
+        test_population = [
+            {"species": "Herbivore", "age": 1, "weight": 10.0},
+            {"species": "Herbivore", "age": 3, "weight": 50.0},
+            {"species": "Herbivore", "age": 5, "weight": 0},
+        ]
+        l = Landscape(test_population)
+        for animal in l.pop_herb:
+            animal.find_fitness()
+        l.remove_all_dead_animals()
+        assert len(l.pop_herb) == 2
 
 
 class TestJungle:
