@@ -85,6 +85,12 @@ class Landscape:
         Iterates over population lists and makes animal procreate utilizing
         their inherent birth process method.
         """
+        num_animals = len(self.pop_herb)
+        for animal in self.pop_herb[:num_animals]:
+            baby_weight = animal.birth_process(num_animals)
+            if type(baby_weight) is (float or int):
+                self.pop_herb.append({"species": "Herbivore", "age": 0,
+                                      "weight": baby_weight})
 
     def move_all_animals(self):
         """
