@@ -80,7 +80,7 @@ class Landscape:
         for herb in self.pop_herb:
             herb.add_eaten_fodder_to_weight(self.available_fodder_herb())
 
-    def attemps_procreating_all_animals(self):
+    def add_newborn_animals(self):
         """
         Iterates over population lists and makes animal procreate utilizing
         their inherent birth process method.
@@ -89,8 +89,11 @@ class Landscape:
         for animal in self.pop_herb[:num_animals]:
             baby_weight = animal.birth_process(num_animals)
             if type(baby_weight) is (float or int):
-                self.pop_herb.append({"species": "Herbivore", "age": 0,
-                                      "weight": baby_weight})
+                self.pop_herb.append(
+                    Herbivore({"species": "Herbivore",
+                               "age": 0,
+                               "weight": baby_weight})
+                )
 
     def move_all_animals(self):
         """
@@ -115,7 +118,7 @@ class Landscape:
         for animal in self.pop_herb:
             animal.weight_loss()
 
-    def attempt_dying_all_animals(self):
+    def remove_all_dead_animals(self):
         """
         Iterates over population lists and runs inherent death method on all
         animals.
@@ -152,5 +155,5 @@ if __name__ == "__main__":
     l = Landscape(test_population)
     for animal in l.pop_herb:
         animal.find_fitness()
-    l.attemps_procreating_all_animals()
+    l.add_newborn_animals()
     print()
