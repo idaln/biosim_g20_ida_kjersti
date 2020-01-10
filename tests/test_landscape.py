@@ -6,6 +6,7 @@ __email__ = "idaln@hotmail.com & kjkv@nmbu.no"
 from biosim.landscape import Landscape, Jungle
 from biosim.animals import Animal, Herbivore
 from pytest import approx
+import numpy as np
 
 test_properties_herb = {
     "species": "animal",
