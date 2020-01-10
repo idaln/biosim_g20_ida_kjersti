@@ -61,7 +61,7 @@ class Animal:
         else:
             self.fitness = properties["fitness"]
 
-    def age_animal_up_one_year(self):
+    def make_animal_one_year_older(self):
         """
         Adds 1 year to the age of the animal for each cycle.
         """
