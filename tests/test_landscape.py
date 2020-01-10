@@ -136,7 +136,7 @@ class TestLandscape:
         l = Landscape(test_population)
         for animal in l.pop_herb:
             animal.find_fitness()
-        l.attemps_procreating_all_animals()
+        l.add_newborn_animals()
         assert len(l.pop_herb) == 2 * len(test_population)
 
     def test_have_all_animals_aged(self):
