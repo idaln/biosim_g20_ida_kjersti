@@ -61,7 +61,7 @@ class Animal:
         else:
             self.fitness = properties["fitness"]
 
-    def ageing(self):
+    def age_animal_up_one_year(self):
         """
         Adds 1 year to the age of the animal for each cycle.
         """
@@ -75,7 +75,7 @@ class Animal:
         new_weight = (1 - self.params['eta']) * self.weight
         self.weight = new_weight
 
-    def eat(self, fodder):
+    def add_eaten_fodder_to_weight(self, fodder):
         """
         Adds amount of weight to animals total body weight given by
         beta*F
@@ -123,7 +123,7 @@ class Animal:
                 1, self.params['gamma'] * self.fitness * (num_animals - 1)
             )
 
-    def bool_give_birth(self, num_animals):
+    def will_birth_take_place(self, num_animals):
         """
         Checks probability of giving birth and finds out if a baby is to be
         born.
@@ -145,7 +145,7 @@ class Animal:
         :returns birth_weight or None
                  int, float
         """
-        bool_birth = self.bool_give_birth(num_animals)
+        bool_birth = self.will_birth_take_place(num_animals)
         if bool_birth is True:
             birth_weight = np.random.normal(
                 self.params['w_birth'], self.params['sigma_birth']
@@ -168,7 +168,7 @@ class Animal:
         else:
             return self.params['omega'] * (1 - self.fitness)
 
-    def bool_death(self):
+    def will_death_take_place(self):
         """
         Checks the probability of death. Returns True if the animal dies,
         and False if not.
