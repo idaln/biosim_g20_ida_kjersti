@@ -71,4 +71,3 @@ class TestJungle:
         j.fodder_amount = 0
         assert j.available_fodder_herb(h) == 0
         assert j.fodder_amount == 0
-
