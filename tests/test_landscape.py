@@ -118,6 +118,27 @@ class TestLandscape:
         assert l.pop_herb[1].weight == test_population[2]["weight"]
         assert l.pop_herb[2].weight == test_population[0]["weight"]
 
+    def test_newborn_animals_have_been_created(self):
+        """
+        Asserts that in a situastion when all animals will give birth,
+        the population list has been updated with the right number of animals.
+        """
+        np.random.seed(1)
+        test_population = [
+            {"species": "Herbivore", "age": 2, "weight": 70.0},
+            {"species": "Herbivore", "age": 3, "weight": 90.0},
+            {"species": "Herbivore", "age": 3, "weight": 70.0},
+            {"species": "Herbivore", "age": 3, "weight": 80.0},
+            {"species": "Herbivore", "age": 3, "weight": 60.0},
+            {"species": "Herbivore", "age": 5, "weight": 90.0}
+        ]
+        l = Landscape(test_population)
+        for animal in l.pop_herb:
+            animal.find_fitness()
+        l.attemps_procreating_all_animals()
+        assert len(l.pop_herb) == 2 * len(test_population)
+
+
 
 
 class TestJungle:
