@@ -33,8 +33,19 @@ class Landscape:
     def sort_population_by_fitness(self):
         """
         Sorts carnivore and herbivore populations by fitness, from highest to
-        lowest.
+        lowest. Uses the Bubble Sort algorithm.
         """
+        for individual in self.pop_herb:
+            individual.find_fitness()
+        n = len(self.pop_herb)
+        while n > 0:
+            i = 1
+            while i < n:
+                if self.pop_herb[i].fitness > self.pop_herb[i - 1].fitness:
+                    self.pop_herb[i], self.pop_herb[i - 1] = \
+                        self.pop_herb[i - 1], self.pop_herb[i]
+                i += 1
+            n -= 1
 
     def available_fodder_herb(self, herbivore):
         """
@@ -116,3 +127,15 @@ class Jungle(Landscape):
         each year.
         """
         self.fodder_amount = self.params['f_max']
+
+
+test_pop = [
+    {"species": "Herbivore", "age": 1, "weight": 10.0},
+    {"species": "Herbivore", "age": 3, "weight": 50.0},
+    {"species": "Herbivore", "age": 5, "weight": 20.0},
+]
+
+for info in test_pop:
+    h = Herbivore(info)
+    h.find_fitness()
+    print(h.fitness)
