@@ -139,7 +139,15 @@ class TestLandscape:
         l.attemps_procreating_all_animals()
         assert len(l.pop_herb) == 2 * len(test_population)
 
-
+    def test_have_all_animals_aged(self):
+        """
+        Test that all animals in the population has aged by one year.
+        """
+        l = Landscape(test_population)
+        l.make_all_animals_older()
+        assert l.pop_herb[0].age == test_population[0]["age"] + 1
+        assert l.pop_herb[1].age == test_population[1]["age"] + 1
+        assert l.pop_herb[2].age == test_population[2]["age"] + 1
 
 
 class TestJungle:
