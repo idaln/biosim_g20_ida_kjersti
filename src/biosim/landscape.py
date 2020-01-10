@@ -70,11 +70,15 @@ class Landscape:
         else:
             return 0
 
-    def feed_all_animals(self):
+    def feed_all_herbivores(self):
         """
         Iterates over populations and feeds all animals, utilizing the eating
         method inherent to the animal instance.
         """
+        self.regrowth()
+        self.sort_population_by_fitness()
+        for herb in self.pop_herb:
+            herb.add_eaten_fodder_to_weight(self.available_fodder_herb())
 
     def attemps_procreating_all_animals(self):
         """
