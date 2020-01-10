@@ -12,24 +12,24 @@ class TestJungle:
     """
     def test_constructor(self):
         """
-        Asserts that class instance has been initialized with given amount of
-        fodder.
+        Asserts that class instance has been initialized with no fodder
+        available.
         """
-        j = Jungle(fodder_amount=400)
-        assert j.fodder_amount == 400
+        j = Jungle()
+        assert j.fodder_amount is None
 
     def test_regrowth(self):
         """
         Asserts that amount of fodder is equal f_max after each year.
         """
-        j = Jungle(fodder_amount=400)
+        j = Jungle()
         j.regrowth()
         assert j.fodder_amount == j.params['f_max']
 
     def test_enough_fodder_is_available(self):
         """
         Asserts that herbivore is provided with the amount it desires, when
-        enough fodder is available
+        enough fodder is available.
         """
 
     def test_restricted_amount_of_fodder_is_available(self):
@@ -41,6 +41,6 @@ class TestJungle:
     def test_no_fodder_available(self):
         """
         Asserts that no fodder is provided to the herbivore when there is no
-        fodder available
+        fodder available.
         """
 
