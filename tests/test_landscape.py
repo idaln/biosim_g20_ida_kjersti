@@ -12,6 +12,10 @@ test_properties_herb = {
     "weight": 20
 }
 
+class TestLandscape:
+    """
+    Tests for Landscape class
+    """
 
 class TestJungle:
     """
