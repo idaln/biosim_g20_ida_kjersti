@@ -56,7 +56,7 @@ class TestAnimal:
         """
         a = Animal(test_properties)
         initial_age = a.age
-        a.ageing()
+        a.age_animal_up_one_year()
         assert a.age - initial_age == 1
 
     def test_weight_loss(self):
@@ -75,7 +75,7 @@ class TestAnimal:
         a = Animal(test_properties)
         test_fodder = 8
         initial_weight = a.weight
-        a.eat(test_fodder)
+        a.add_eaten_fodder_to_weight(test_fodder)
         assert a.weight > initial_weight
 
     def test_fitness_between_zero_and_one(self):
@@ -150,7 +150,7 @@ class TestAnimal:
         }
         a = Animal(test_properties)
         a.find_fitness()
-        assert a.bool_give_birth(num_animals=6) is True
+        assert a.will_birth_take_place(num_animals=6) is True
 
     def test_num_more_than_birth_prob(self, mocker):
         """
@@ -166,7 +166,7 @@ class TestAnimal:
         mocker.patch('numpy.random.random', return_value=0.95)
         a = Animal(test_properties)
         a.find_fitness()
-        assert a.bool_give_birth(num_animals=6) is False
+        assert a.will_birth_take_place(num_animals=6) is False
 
     def test_num_less_than_birth_prob(self, mocker):
         """
@@ -182,7 +182,7 @@ class TestAnimal:
         mocker.patch('numpy.random.random', return_value=0.8)
         a = Animal(test_properties)
         a.find_fitness()
-        assert a.bool_give_birth(num_animals=6) is True
+        assert a.will_birth_take_place(num_animals=6) is True
 
     def test_mothers_weight_large_enough(self, mocker):
         """
@@ -264,7 +264,7 @@ class TestAnimal:
         }
         a = Animal(test_properties)
         a.find_fitness()
-        assert a.bool_death() is True
+        assert a.will_death_take_place() is True
 
     def test_false_death_prob_is_zero(self):
         """
@@ -277,7 +277,7 @@ class TestAnimal:
         }
         a = Animal(test_properties)
         a.fitness = 1
-        assert a.bool_death() is False
+        assert a.will_death_take_place() is False
 
     def test_num_less_than_death_prob(self, mocker):
         """
@@ -287,7 +287,7 @@ class TestAnimal:
         mocker.patch('numpy.random.random', return_value=0.0005)
         a = Animal(test_properties)
         a.find_fitness()
-        assert a.bool_death() is True
+        assert a.will_death_take_place() is True
 
     def test_num_more_than_death_prob(self, mocker):
         """
@@ -297,7 +297,7 @@ class TestAnimal:
         mocker.patch('numpy.random.random', return_value=0.5)
         a = Animal(test_properties)
         a.find_fitness()
-        assert a.bool_death() is False
+        assert a.will_death_take_place() is False
 
 
 class TestHerbivore:
