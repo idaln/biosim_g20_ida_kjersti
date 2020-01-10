@@ -149,6 +149,16 @@ class TestLandscape:
         assert l.pop_herb[1].age == test_population[1]["age"] + 1
         assert l.pop_herb[2].age == test_population[2]["age"] + 1
 
+    def test_have_all_animals_lost_weight(self):
+        """
+        Test that all animals in the population has lost some weight.
+        """
+        l = Landscape(test_population)
+        l.make_all_animals_lose_weight()
+        assert l.pop_herb[0].weight < test_population[0]["weight"]
+        assert l.pop_herb[1].weight < test_population[1]["weight"]
+        assert l.pop_herb[2].weight < test_population[2]["weight"]
+
 
 class TestJungle:
     """
