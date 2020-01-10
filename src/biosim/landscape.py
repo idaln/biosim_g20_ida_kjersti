@@ -23,10 +23,10 @@ class Landscape:
         self.fodder_amount = None
 
         #pop_carn = []
-        pop_herb = []
+        self.pop_herb = []
         for individual in population:
             if individual["species"] is "Herbivore":
-                pop_herb.append(Herbivore(individual))
+                self.pop_herb.append(Herbivore(individual))
             #else:
                 # pop_carn.append(Carnivore(individual))
 
