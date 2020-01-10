@@ -125,7 +125,7 @@ class Animal:
 
     def will_birth_take_place(self, num_animals):
         """
-        Checks probability of giving birth and finds out if a baby is to be
+        Checks probability of giving birth and returns True if a baby is to be
         born.
         :returns bool
         """
@@ -134,29 +134,23 @@ class Animal:
 
         if random_number <= prob:
             return True
-        else:
-            return False
 
     def birth_process(self, num_animals):
         """
-        If birth takes place, a birth weight is returned. If not, None is
-        returned. Weight of mother is reduced according to gived formula.
+        If birth takes place, a birth weight is returned and weight of mother
+        is reduced according to given formula.
 
         :returns birth_weight or None
                  int, float
         """
         bool_birth = self.will_birth_take_place(num_animals)
-        if bool_birth is True:
-            birth_weight = np.random.normal(
-                self.params['w_birth'], self.params['sigma_birth']
-            )
-            if birth_weight == 0:
-                return None
-            else:
-                self.weight -= birth_weight * self.params['xi']
-                return birth_weight
-        else:
-            return None
+        birth_weight = np.random.normal(
+            self.params['w_birth'], self.params['sigma_birth']
+        )
+        if bool_birth is True and birth_weight > 0 and \
+                self.weight > birth_weight * self.params['xi']:
+            self.weight -= birth_weight * self.params['xi']
+            return birth_weight
 
     def prob_death(self):
         """
@@ -170,8 +164,7 @@ class Animal:
 
     def will_death_take_place(self):
         """
-        Checks the probability of death. Returns True if the animal dies,
-        and False if not.
+        Checks the probability of death. Returns True if the animal dies.
         :return bool
         """
         prob = self.prob_death()
@@ -179,8 +172,6 @@ class Animal:
 
         if random_number <= prob:
             return True
-        else:
-            return False
 
 
 class Herbivore(Animal):
