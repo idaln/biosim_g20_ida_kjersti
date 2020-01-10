@@ -30,7 +30,11 @@ class Landscape:
             #else:
                 # pop_carn.append(Carnivore(individual))
 
-
+    def sort_population_by_fitness(self):
+        """
+        Sorts carnivore and herbivore populations by fitness, from highest to
+        lowest.
+        """
 
     def available_fodder_herb(self, herbivore):
         """
@@ -47,6 +51,44 @@ class Landscape:
             return old_fodder
         else:
             return 0
+
+    def feed_all_animals(self):
+        """
+        Iterates over populations and feeds all animals, utilizing the eating
+        method inherent to the animal instance.
+
+        """
+
+    def attemps_procreating_all_animals(self):
+        """
+        Iterates over population lists and makes animal procreate utilizing
+        their inherent birth process method.
+        """
+
+    def move_all_animals(self):
+        """
+        Iterates over population lists and moves animals utilizing heir
+        inherent migration method.
+        """
+        pass
+
+    def make_all_animals_older(self):
+        """
+        Iterates over population lists and ages all animals one year
+        utilizing their inherent aging method.
+        """
+
+    def make_all_animals_lose_weight(self):
+        """
+        Iterates over population lists and makes all animals lose weight
+        utilizing their inherent weight loss method.
+        """
+
+    def attempt_dying_all_animals(self):
+        """
+        Iterates over population lists and runs inherent death method on all
+        animals.
+        """
 
 
 class Jungle(Landscape):
