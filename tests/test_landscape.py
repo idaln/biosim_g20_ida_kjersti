@@ -23,11 +23,13 @@ class TestLandscape:
     def test_constructor(self):
         """
         Asserts that the Landscape class enables creation of class
-        instances and it's population attribute has correct length. 
+        instances and it's population attribute has correct length.
         """
         l = Landscape(test_population)
         assert isinstance(l, Landscape)
         assert len(l.pop_herb) == len(test_population)
+
+
 
 class TestJungle:
     """
