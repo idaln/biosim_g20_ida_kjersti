@@ -140,7 +140,7 @@ class TestAnimal:
 
     def test_birth_prob_is_one(self):
         """
-        Tests bool_give_birth method.
+        Tests will_birth_take_place method.
         Checks if True is returned if probability of giving birth is 1.
         """
         test_properties = {
@@ -154,7 +154,7 @@ class TestAnimal:
 
     def test_num_more_than_birth_prob(self, mocker):
         """
-        Tests bool_give_birth method.
+        Tests will_birth_take_place method.
         Checks if False is returned if random number larger than the
         probability is drawn.
         """
@@ -166,11 +166,11 @@ class TestAnimal:
         mocker.patch('numpy.random.random', return_value=0.95)
         a = Animal(test_properties)
         a.find_fitness()
-        assert a.will_birth_take_place(num_animals=6) is False
+        assert a.will_birth_take_place(num_animals=6) is not True
 
     def test_num_less_than_birth_prob(self, mocker):
         """
-        Tests bool_give_birth method.
+        Tests will_birth_take_place method.
         Checks if True is returned if random number less than the
         probability is drawn.
         """
@@ -268,7 +268,7 @@ class TestAnimal:
 
     def test_false_death_prob_is_zero(self):
         """
-        Assert that False is returned if probability of dying is zero.
+        Assert that True is not returned if probability of dying is zero.
         """
         test_properties = {
             "species": "animal",
@@ -277,7 +277,7 @@ class TestAnimal:
         }
         a = Animal(test_properties)
         a.fitness = 1
-        assert a.will_death_take_place() is False
+        assert a.will_death_take_place() is not True
 
     def test_num_less_than_death_prob(self, mocker):
         """
@@ -291,13 +291,13 @@ class TestAnimal:
 
     def test_num_more_than_death_prob(self, mocker):
         """
-        Asserts that False is returned if the random number is larger than
+        Asserts that True is not returned if the random number is larger than
         the death probability.
         """
         mocker.patch('numpy.random.random', return_value=0.5)
         a = Animal(test_properties)
         a.find_fitness()
-        assert a.will_death_take_place() is False
+        assert a.will_death_take_place() is not True
 
 
 class TestHerbivore:
