@@ -133,13 +133,20 @@ class Jungle(Landscape):
         super().__init__(population)
 
 
-test_pop = [
-    {"species": "Herbivore", "age": 1, "weight": 10.0},
-    {"species": "Herbivore", "age": 3, "weight": 50.0},
-    {"species": "Herbivore", "age": 5, "weight": 20.0},
-]
+if __name__ == "__main__":
+    import numpy as np
+    np.random.seed(1)
+    test_population = [
+        {"species": "Herbivore", "age": 2, "weight": 70.0},
+        {"species": "Herbivore", "age": 3, "weight": 90.0},
+        {"species": "Herbivore", "age": 3, "weight": 70.0},
+        {"species": "Herbivore", "age": 3, "weight": 80.0},
+        {"species": "Herbivore", "age": 3, "weight": 60.0},
+        {"species": "Herbivore", "age": 5, "weight": 90.0}
+    ]
 
-for info in test_pop:
-    h = Herbivore(info)
-    h.find_fitness()
-    print(h.fitness)
+    l = Landscape(test_population)
+    for animal in l.pop_herb:
+        animal.find_fitness()
+    l.attemps_procreating_all_animals()
+    print()
