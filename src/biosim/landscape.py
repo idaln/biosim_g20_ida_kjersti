@@ -112,6 +112,8 @@ class Landscape:
         Iterates over population lists and makes all animals lose weight
         utilizing their inherent weight loss method.
         """
+        for animal in self.pop_herb:
+            animal.weight_loss()
 
     def attempt_dying_all_animals(self):
         """
