@@ -116,20 +116,3 @@ class Jungle(Landscape):
         each year.
         """
         self.fodder_amount = self.params['f_max']
-
-    def available_fodder_herb(self, herbivore):
-        """
-        Returns amount of fodder available to the herbivore.
-        :returns: available_fodder
-                  float
-        """
-        desired_fodder = herbivore.params["F"]
-        old_fodder = self.fodder_amount
-        if self.fodder_amount >= desired_fodder:
-            self.fodder_amount -= desired_fodder
-            return desired_fodder
-        elif 0 < self.fodder_amount < desired_fodder:
-            self.fodder_amount = 0
-            return old_fodder
-        else:
-            return 0
