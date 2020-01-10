@@ -55,10 +55,10 @@ class TestJungle:
         """
         j = Jungle()
         h = Herbivore(test_properties_herb)
-        j.fodder_amount = 5
+        j.fodder_amount = h.params["F"] / 2
         old_fodder_amount = j.fodder_amount
         available_fodder_to_herb = j.available_fodder_herb(h)
-        assert available_fodder_to_herb == 5
+        assert available_fodder_to_herb == h.params["F"] / 2
         assert j.fodder_amount == old_fodder_amount - available_fodder_to_herb
 
     def test_no_fodder_available(self):
