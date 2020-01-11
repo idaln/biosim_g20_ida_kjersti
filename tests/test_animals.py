@@ -6,6 +6,7 @@ __email__ = "idaln@hotmail.com & kjkv@nmbu.no"
 
 from biosim.animals import Animal, Herbivore
 from pytest import approx
+import numpy
 
 test_params = {
         "w_birth": 6.0,
@@ -270,13 +271,13 @@ class TestAnimal:
         """
         Assert that True is not returned if probability of dying is zero.
         """
+        numpy.random.seed(1)
         test_properties = {
             "species": "animal",
             "age": 5,
-            "weight": 0
+            "weight": 40
         }
         a = Animal(test_properties)
-        a.fitness = 1
         assert a.will_death_take_place() is not True
 
     def test_num_less_than_death_prob(self, mocker):
