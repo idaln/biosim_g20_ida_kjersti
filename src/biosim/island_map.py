@@ -26,7 +26,7 @@ class IslandMap:
         self.geogr= textwrap.dedent(geogr)
         self.ini_pop = ini_pop
 
-    def create_geography(self):
+    def create_geography_dict(self):
         """
         Converts string map to a dictionary with coordinates as keys and
         the landscape types as values.
@@ -34,25 +34,27 @@ class IslandMap:
         x_coord = 1
         for line in self.geogr.splitlines():
             y_coord = 1
-            for letter in line:
-                self.geography[(x_coord, y_coord)] = letter
+            for landscape_type in line:
+                self.geography[(x_coord, y_coord)] = landscape_type
                 y_coord += 1
             x_coord += 1
 
-    def create_population(self):
+    def create_population_dict(self):
         """
         Converts list of populations to a dictionary with coordinates as keys
         and lists of animals at this location as values.
         """
-        for coord_dict in self.ini_pop:
-            self.population[coord_dict["loc"]] = coord_dict["pop"]
+        for pop_info in self.ini_pop:
+            self.population[pop_info["loc"]] = pop_info["pop"]
 
-    def create_landscape_cells_with_populations(self):
+    def create_map_dict(self):
         """
         Creates dictionary of the entire map, with coordinates as keys and
         instances of landscape classes as values. The instances have the
         population of the coordinate as input.
         """
+        self.create_geography_dict()
+        self.create_population_dict()
         for loc, landscape_type in self.geography.items():
             if landscape_type is "J":
                 if loc in self.population.keys():
@@ -124,9 +126,9 @@ if __name__ == "__main__":
     ]
 
     i = IslandMap(test_geogr, test_ini_pop)
-    i.create_geography()
-    print(i.geography)
+    #i.create_geography()
+    #print(i.geography)
     #i.create_population()
     #print(i.population)
-    #i.create_landscape_cells_with_populations()
-    #print(i.map)
+    i.create_map_dict()
+    print(i.map)
