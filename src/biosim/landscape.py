@@ -78,7 +78,10 @@ class Landscape:
         self.regrowth()
         self.sort_population_by_fitness()
         for herb in self.pop_herb:
-            herb.add_eaten_fodder_to_weight(self.available_fodder_herb())
+            food = self.available_fodder_herb()
+            print(food)
+            herb.add_eaten_fodder_to_weight(food)
+            print(herb.weight)
 
     def add_newborn_animals(self):
         """
@@ -145,23 +148,22 @@ class Jungle(Landscape):
 
 if __name__ == "__main__":
     import numpy as np
-    np.random.seed(1)
+
 
     test_population = [
         {"species": "Herbivore", "age": 1, "weight": 10.0},
         {"species": "Herbivore", "age": 3, "weight": 50.0},
-        {"species": "Herbivore", "age": 5, "weight": 0},
+        {"species": "Herbivore", "age": 5, "weight": 20.0},
     ]
 
     l = Landscape(test_population)
 
-    print(f"Initial length of pop_herb is: {len(l.pop_herb)}")
-    for animal in l.pop_herb:
-        animal.find_fitness()
+    l.feed_all_herbivores()
 
 
-    l.remove_all_dead_animals()
-    print(f'Now the length is {len(l.pop_herb)}')
+
+
+
 
 
 
