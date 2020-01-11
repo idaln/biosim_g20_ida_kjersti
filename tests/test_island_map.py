@@ -44,9 +44,38 @@ class TestIslandMap:
         converted correctly.
         """
         i_m = IslandMap(test_geogr, test_ini_pop)
-        i_m.create_geography()
+        i_m.create_geography_dict()
         assert type(i_m.geography) is dict
         assert i_m.geography == {(1, 1): 'J', (1, 2): 'J', (2, 1): 'J', (2, 2): 'J'}
 
-    
+    def test_population_is_converted_correctly_to_dict(self):
+        """
+        Asserts that the create_population method created a dictionary that is
+        converted correctly.
+        """
+        i_m = IslandMap(test_geogr, test_ini_pop)
+        i_m.create_population_dict()
+        assert type(i_m.population) is dict
+        assert i_m.population == {(1, 2): [{'species': 'Herbivore', 'age': 5,
+                                            'weight': 20},
+                                           {'species': 'Herbivore', 'age': 5,
+                                            'weight': 20},
+                                           {'species': 'Herbivore', 'age': 5,
+                                            'weight': 20}],
+                                  (2, 2): [{'species': 'Herbivore', 'age': 5,
+                                            'weight': 20},
+                                           {'species': 'Herbivore', 'age': 5,
+                                            'weight': 20},
+                                           {'species': 'Herbivore', 'age': 5,
+                                            'weight': 20}]}
+
+    def test_map_is_dict(self):
+        """
+        Asserts that the create_landscape_cells_with_population created a
+        dictionary
+        """
+        i_m = IslandMap(test_geogr, test_ini_pop)
+        i_m.create_map_dict()
+        assert type(i_m.map) is dict
+
 
