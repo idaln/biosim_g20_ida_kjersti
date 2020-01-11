@@ -3,7 +3,6 @@
 __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idna@nmbu.no & kjkv@nmbu.no"
 
-from biosim.animals import Herbivore
 from biosim.landscape import Jungle
 import textwrap
 
@@ -23,7 +22,7 @@ class IslandMap:
         :param geogr: string
         :param ini_pop: list of dictionaries
         """
-        self.geogr= textwrap.dedent(geogr)
+        self.geogr = textwrap.dedent(geogr)
         self.ini_pop = ini_pop
 
     def create_geography_dict(self):
@@ -62,73 +61,97 @@ class IslandMap:
                 else:
                     self.map[loc] = Jungle([])
 
+    def feeding_season(self):
+        """
+        Iterates through all landscape cells on the map,
+        and feeds all herbivores in each cell.
+        """
+        for landscape in self.map.values():
+            landscape.feed_all_herbivores()
+
+    def procreation_season(self):
+        """
+        Iterates through all landscape cells on the map,
+        and tries to procreate with all animals in each cell.
+        """
+        for landscape in self.map.values():
+            landscape.add_newborn_animals()
+
+    def migration_season(self):
+        """
+        Iterates through all landscape cells on the map,
+        and tries to move all animals in each cell.
+        """
+        pass
+
+    def aging_season(self):
+        """
+        Iterates through all landscape cells on the map,
+        and makes all animals in each cell older.
+        """
+        for landscape in self.map.values():
+            landscape.make_all_animals_older()
+
+    def weight_loss_season(self):
+        """
+        Iterates through all landscape cells on the map,
+        and makes all animals in each cell lose weight.
+        """
+        for landscape in self.map.values():
+            landscape.make_all_animals_lose_weight()
+
+    def dying_season(self):
+        """
+        Iterates through all landscape cells on the map,
+        and removes all dead animals in each cell.
+        """
+        for landscape in self.map.values():
+            landscape.remove_all_dead_animals()
+
+    def run_all_seasons(self):
+        """
+        Runs all seasons for all landscape cells on the map.
+        """
+        self.feeding_season()
+        self.procreation_season()
+        self.migration_season()
+        self.aging_season()
+        self.weight_loss_season()
+        self.dying_season()
+
 
 if __name__ == "__main__":
-    geogr = """\
-               OOOOOOOOSMMMMJJJJJJJO
-               OOOOOOOOOOOOOOOOOOOOO
-               OSSSSSJJJJMMJJJJJJJOO
-               OSSSSSSSSSMMJJJJJJOOO
-               OSSSSSJJJJJJJJJJJJOOO
-               OSSSSSJJJDDJJJSJJJOOO
-               OSSJJJJJDDDJJJSSSSOOO
-               OOSSSSJJJDDJJJSOOOOOO
-               OSSSJJJJJDDJJJJJJJOOO
-               OSSSSJJJJDDJJJJOOOOOO
-               OOSSSSJJJJJJJJOOOOOOO
-               OOOSSSSJJJJJJJOOOOOOO
-               OOOOOOOOOOOOOOOOOOOOO"""
-
-    t_geogr = """\
-                    JJJJ
-                    JJJJ
-                    JJJJ
-                    JJJJ"""
-
-    ini_herbs = [
-        {
-            "loc": (1,2),
-            "pop": [
-                {"species": "Herbivore", "age": 5, "weight": 20}
-                for _ in range(3)
-            ]
-        },
-        {
-            "loc": (3,3),
-            "pop": [
-                {"species": "Herbivore", "age": 5, "weight": 20}
-                for _ in range(10)
-            ]
-        }
-
-    ]
-
     test_geogr = """\
                     JJ
                     JJ
                     """
+
     test_ini_pop = [
         {
             "loc": (1, 2),
             "pop": [
                 {"species": "Herbivore", "age": 5, "weight": 20}
-                for _ in range(3)
+                for _ in range(8)
             ]
         },
         {
             "loc": (2, 2),
             "pop": [
                 {"species": "Herbivore", "age": 5, "weight": 20}
-                for _ in range(3)
+                for _ in range(8)
             ]
         }
 
     ]
 
-    i = IslandMap(test_geogr, test_ini_pop)
-    #i.create_geography()
-    #print(i.geography)
-    #i.create_population()
-    #print(i.population)
-    i.create_map_dict()
-    print(i.map)
+    i_m = IslandMap(test_geogr, test_ini_pop)
+    i_m.create_map_dict()
+
+    for year in range(10):
+        i_m.run_all_seasons()
+
+    for loc, cell in i_m.map.items():
+        print(f"Size of population in cell {loc}: {len(cell.pop_herb)}")
+        for herb in cell.pop_herb:
+            herb.find_fitness()
+            print(f"Fitness: {herb.fitness}, Age: {herb.age}")
