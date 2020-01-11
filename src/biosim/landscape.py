@@ -154,8 +154,15 @@ if __name__ == "__main__":
     ]
 
     l = Landscape(test_population)
+    for year in range(200):
 
-    l.feed_all_herbivores()
+        l.feed_all_herbivores()
+        l.add_newborn_animals()
+        l.make_all_animals_older()
+        l.make_all_animals_lose_weight()
+        l.remove_all_dead_animals()
+        print(len(l.pop_herb))
+    print(l.pop_herb)
 
 
 
