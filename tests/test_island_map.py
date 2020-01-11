@@ -26,11 +26,13 @@ test_ini_pop = [
             for _ in range(3)
         ]
     }
-
 ]
 
-class TestIslandMap:
 
+class TestIslandMap:
+    """
+    Tests for IslandMap class.
+    """
     def test_contructor(self):
         """
         Asserts that an instance of the IslandMap class can be constructed.
@@ -78,4 +80,16 @@ class TestIslandMap:
         i_m.create_map_dict()
         assert type(i_m.map) is dict
 
+    # def test_feeding_season(self):
+    #    """
+    #    Asserts that one animal in each cell of the test island
+    #    have been fed.
+    #    """
+        # i_m = IslandMap(test_geogr, test_ini_pop)
+        # i_m.create_map_dict()
+        # i_m.feeding_season()
+        # assert i_m.map[(1, 2)][0]["weight"] > \
+        #    test_ini_pop[0]["pop"][0]["weight"]
+        # assert i_m.map[(2, 2)][0]["weight"] > \
+        #    test_ini_pop[1]["pop"][0]["weight"]
 
