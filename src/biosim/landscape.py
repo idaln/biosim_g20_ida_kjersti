@@ -78,10 +78,7 @@ class Landscape:
         self.regrowth()
         self.sort_population_by_fitness()
         for herb in self.pop_herb:
-            food = self.available_fodder_herb()
-            print(food)
-            herb.add_eaten_fodder_to_weight(food)
-            print(herb.weight)
+            herb.add_eaten_fodder_to_weight(self.available_fodder_herb())
 
     def add_newborn_animals(self):
         """
