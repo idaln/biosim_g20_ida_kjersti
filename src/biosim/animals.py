@@ -157,6 +157,7 @@ class Animal:
         Finds probability of death, which depends on the fitness of the
         animal.
         """
+        self.find_fitness()
         if self.fitness == 0:
             return 1
         else:
