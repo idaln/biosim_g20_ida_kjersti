@@ -37,3 +37,16 @@ class TestIslandMap:
         """
         i_m = IslandMap(test_geogr, test_ini_pop)
         assert isinstance(i_m, IslandMap)
+
+    def test_geography_is_converted_correctly_to_dict(self):
+        """
+        Asserts that the create_geography method creates a dictionary that is
+        converted correctly.
+        """
+        i_m = IslandMap(test_geogr, test_ini_pop)
+        i_m.create_geography()
+        assert type(i_m.geography) is dict
+        assert i_m.geography == {(1, 1): 'J', (1, 2): 'J', (2, 1): 'J', (2, 2): 'J'}
+
+    
+
