@@ -77,7 +77,7 @@ if __name__ == "__main__":
                OOOSSSSJJJJJJJOOOOOOO
                OOOOOOOOOOOOOOOOOOOOO"""
 
-    test_geogr = """\
+    t_geogr = """\
                     JJJJ
                     JJJJ
                     JJJJ
@@ -101,10 +101,32 @@ if __name__ == "__main__":
 
     ]
 
-    i = IslandMap(test_geogr, ini_herbs)
+    test_geogr = """\
+                    JJ
+                    JJ
+                    """
+    test_ini_pop = [
+        {
+            "loc": (1, 2),
+            "pop": [
+                {"species": "Herbivore", "age": 5, "weight": 20}
+                for _ in range(3)
+            ]
+        },
+        {
+            "loc": (2, 2),
+            "pop": [
+                {"species": "Herbivore", "age": 5, "weight": 20}
+                for _ in range(3)
+            ]
+        }
+
+    ]
+
+    i = IslandMap(test_geogr, test_ini_pop)
     i.create_geography()
     print(i.geography)
-    i.create_population()
-    print(i.population)
-    i.create_landscape_cells_with_populations()
-    print(i.map)
+    #i.create_population()
+    #print(i.population)
+    #i.create_landscape_cells_with_populations()
+    #print(i.map)
