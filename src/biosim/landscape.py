@@ -144,30 +144,19 @@ class Jungle(Landscape):
 
 
 if __name__ == "__main__":
-    import numpy as np
-
-
+    import numpy
     test_population = [
         {"species": "Herbivore", "age": 1, "weight": 10.0},
         {"species": "Herbivore", "age": 3, "weight": 50.0},
         {"species": "Herbivore", "age": 5, "weight": 20.0},
     ]
-
-    l = Landscape(test_population)
+    numpy.random.seed(1)
+    j = Jungle(test_population)
     for year in range(200):
-
-        l.feed_all_herbivores()
-        l.add_newborn_animals()
-        l.make_all_animals_older()
-        l.make_all_animals_lose_weight()
-        l.remove_all_dead_animals()
-        print(len(l.pop_herb))
-    print(l.pop_herb)
-
-
-
-
-
-
-
-
+        j.feed_all_herbivores()
+        j.add_newborn_animals()
+        j.make_all_animals_older()
+        j.make_all_animals_lose_weight()
+        j.remove_all_dead_animals()
+        print(len(j.pop_herb))
+    print(j.pop_herb)
