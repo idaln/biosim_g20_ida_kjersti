@@ -146,17 +146,22 @@ class Jungle(Landscape):
 if __name__ == "__main__":
     import numpy as np
     np.random.seed(1)
+
     test_population = [
-        {"species": "Herbivore", "age": 2, "weight": 70.0},
-        {"species": "Herbivore", "age": 3, "weight": 90.0},
-        {"species": "Herbivore", "age": 3, "weight": 70.0},
-        {"species": "Herbivore", "age": 3, "weight": 80.0},
-        {"species": "Herbivore", "age": 3, "weight": 60.0},
-        {"species": "Herbivore", "age": 5, "weight": 90.0}
+        {"species": "Herbivore", "age": 1, "weight": 10.0},
+        {"species": "Herbivore", "age": 3, "weight": 50.0},
+        {"species": "Herbivore", "age": 5, "weight": 0},
     ]
 
     l = Landscape(test_population)
+
+    print(f"Initial length of pop_herb is: {len(l.pop_herb)}")
     for animal in l.pop_herb:
         animal.find_fitness()
-    l.add_newborn_animals()
-    print()
+
+
+    l.remove_all_dead_animals()
+    print(f'Now the length is {len(l.pop_herb)}')
+
+
+
