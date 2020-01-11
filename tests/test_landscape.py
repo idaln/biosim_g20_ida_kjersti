@@ -163,6 +163,7 @@ class TestLandscape:
         Tests that a dead animal has been removed from population list because
         it has fitness equal to zero due to no weight.
         """
+        np.random.seed(1)
         test_population = [
             {"species": "Herbivore", "age": 1, "weight": 10.0},
             {"species": "Herbivore", "age": 3, "weight": 50.0},
