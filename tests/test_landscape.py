@@ -95,16 +95,16 @@ class TestLandscape:
         assert l.available_fodder_herb() == 0
         assert l.fodder_amount == 0
 
-#   def test_have_all_animals_been_fed(self):
-#       """
-#       Tests that all animals have gained weight in a situation where there
-#       is plenty of food available.
-#       """
-#       l = Landscape(test_population)
-#       l.feed_all_herbivores()
-#       assert l.pop_herb[0].weight > test_population[1]["weight"]
-#       assert l.pop_herb[1].weight > test_population[2]["weight"]
-#       assert l.pop_herb[2].weight > test_population[0]["weight"]
+    def test_have_all_animals_been_fed(self):
+        """
+        Tests that all animals have gained weight in a situation where there
+        is plenty of food available.
+        """
+        l = Landscape(test_population)
+        l.feed_all_herbivores()
+        assert l.pop_herb[0].weight > test_population[1]["weight"]
+        assert l.pop_herb[1].weight > test_population[2]["weight"]
+        assert l.pop_herb[2].weight > test_population[0]["weight"]
 
     def test_fittest_animal_eats_first(self):
         """
