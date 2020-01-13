@@ -40,7 +40,8 @@ class TestLandscape:
         """
         Tests that the sorting function works for a single-element list.
         """
-        landscape = Landscape([{"species": "Herbivore", "age": 1, "weight": 10.0}])
+        landscape = Landscape([{"species": "Herbivore", "age": 1,
+                                "weight": 10.0}])
         landscape.sort_population_by_fitness()
         assert landscape.pop_herb[0].fitness == approx(0.49979521641750696)
 
@@ -72,7 +73,8 @@ class TestLandscape:
         old_fodder_amount = landscape.fodder_amount
         available_fodder_to_herb = landscape.available_fodder_herb()
         assert available_fodder_to_herb == Herbivore.params["F"]
-        assert landscape.fodder_amount == old_fodder_amount - available_fodder_to_herb
+        assert landscape.fodder_amount == old_fodder_amount - \
+               available_fodder_to_herb
 
     def test_restricted_amount_of_fodder_is_available(self):
         """
@@ -85,7 +87,8 @@ class TestLandscape:
         old_fodder_amount = landscape.fodder_amount
         available_fodder_to_herb = landscape.available_fodder_herb()
         assert available_fodder_to_herb == Herbivore.params["F"] / 2
-        assert landscape.fodder_amount == old_fodder_amount - available_fodder_to_herb
+        assert landscape.fodder_amount == old_fodder_amount - \
+               available_fodder_to_herb
 
     def test_no_fodder_available(self):
         """
