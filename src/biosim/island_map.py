@@ -77,10 +77,31 @@ class IslandMap:
         for landscape in self.map.values():
             landscape.add_newborn_animals()
 
+    def dict_of_neighbours(self, cell_coordinates):
+        """
+        Finds the neighbours of a given cell, only those an animal can move to
+        are returned.
+        :param cell_coordinates: tuple
+        :returns: dict of coordinate-class instance pairs
+        """
+
+    def move_single_animal(self, current_coordinates):
+        """
+        Moves an animal to the chosen neighbouring cell. New and old cell get
+        updated population lists.
+        :param current_coordinates: tuple
+        """
+
+    def move_all_animals_in_cell(self, current_coordinates):
+        """
+        Iterates through the population of a cell, and moves all animals.
+        :param current_coordinates: tuple
+        """
+
     def migration_season(self):
         """
         Iterates through all landscape cells on the map,
-        and tries to move all animals in each cell.
+        and moves all animals in each cell.
         """
         pass
 
