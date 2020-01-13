@@ -121,11 +121,10 @@ class Landscape:
     def remove_all_dead_animals(self):
         """
         Iterates over population lists and runs inherent death method on all
-        animals.
+        animals. Updates the population to only contain living animals.
         """
-        for animal in self.pop_herb:
-            if animal.will_death_take_place() is True:
-                self.pop_herb.remove(animal)
+        self.pop_herb = [animal for animal in self.pop_herb if animal.will_animal_live() is True]
+
 
 
 class Jungle(Landscape):
