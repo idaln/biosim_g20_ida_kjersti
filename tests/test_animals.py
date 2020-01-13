@@ -125,23 +125,42 @@ class TestAnimal:
         rel_abund_fodder = animal.find_rel_abund_of_fodder(jungle)
         assert rel_abund_fodder == 4.0
 
+    def test_propensity_dict_correct_types(self):
+        """
+        Asserts that the propensity_of_each_neighbouring_cell method
+        returns a dictionary with tuples as keys and floats as values.
+        """
+        animal = Animal(test_properties)
+        dict_of_neighbours = {(1, 2): Jungle(test_population),
+                              (2, 1): Jungle(test_population),
+                              (2, 3): Jungle(test_population),
+                              (3, 2): Jungle(test_population)
+                              }
+        prop_dict = animal.propensity_of_each_neighbouring_cell\
+            (dict_of_neighbours)
+        assert type(prop_dict) is dict
+        for loc, prop in prop_dict.items():
+            assert type(loc) is tuple
+            assert type(prop) is float
+
     def test_dict_with_correct_key_and_value_types(self):
         """
         Asserts that the prob_move_to_each_neighbour method returns a
         dictionary with tuples as keys and floats as values.
         """
         animal = Animal(test_properties)
-        jungle = Jungle(test_population)
         dict_of_neighbours = {(1, 2): Jungle(test_population),
                               (2, 1): Jungle(test_population),
                               (2, 3): Jungle(test_population),
                               (3, 2): Jungle(test_population)
                               }
-        prob_dict = prob_move_to_each_neighbour(dict_of_neighbours)
+        prob_dict = animal.prob_move_to_each_neighbour(dict_of_neighbours)
         assert type(prob_dict) is dict
         for loc, prob in prob_dict.items():
             assert type(loc) is tuple
             assert type(prob) is float
+
+
 
 
     def test_tuple_returned(self):
