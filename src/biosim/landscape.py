@@ -150,7 +150,7 @@ if __name__ == "__main__":
         {"species": "Herbivore", "age": 3, "weight": 50.0},
         {"species": "Herbivore", "age": 5, "weight": 20.0},
     ]
-    numpy.random.seed(1)
+    numpy.random.seed()
     j = Jungle(test_population)
     for year in range(0):
         j.feed_all_herbivores()
@@ -161,19 +161,23 @@ if __name__ == "__main__":
         print(len(j.pop_herb))
     print(j.pop_herb)
 
-    test_properties = {
-        "species": "animal",
-        "age": 5,
-        "weight": 20
-    }
 
     test_population = [
         {"species": "Herbivore", "age": 1, "weight": 10.0},
         {"species": "Herbivore", "age": 1, "weight": 10.0},
         {"species": "Herbivore", "age": 1, "weight": 10.0}
     ]
-    jungle = Jungle(test_population)
-    jungle.regrowth()
-    herb = Herbivore(test_properties)
-    rel_abund_fodder = herb.find_rel_abund_of_fodder(jungle)
-    print(rel_abund_fodder)
+    test_properties = {
+        "species": "animal",
+        "age": 5,
+        "weight": 20
+    }
+    dict_of_neighbours = {(1, 2): Jungle(test_population),
+                          (2, 1): Jungle(test_population),
+                          (2, 3): Jungle(test_population),
+                          (3, 2): Jungle(test_population)
+                          }
+    for jungle in dict_of_neighbours.values():
+        jungle.regrowth()
+    animal = Animal(test_properties)
+    print(animal.where_will_animal_move(dict_of_neighbours))
