@@ -17,7 +17,7 @@ test_properties_herb = {
 test_population = [
     {"species": "Herbivore", "age": 1, "weight": 10.0},
     {"species": "Herbivore", "age": 3, "weight": 50.0},
-    {"species": "Herbivore", "age": 5, "weight": 20.0},
+    {"species": "Herbivore", "age": 5, "weight": 20.0}
 ]
 landscape = Landscape(test_population)
 

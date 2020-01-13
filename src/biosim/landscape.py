@@ -152,7 +152,7 @@ if __name__ == "__main__":
     ]
     numpy.random.seed(1)
     j = Jungle(test_population)
-    for year in range(200):
+    for year in range(0):
         j.feed_all_herbivores()
         j.add_newborn_animals()
         j.make_all_animals_older()
@@ -160,3 +160,20 @@ if __name__ == "__main__":
         j.remove_all_dead_animals()
         print(len(j.pop_herb))
     print(j.pop_herb)
+
+    test_properties = {
+        "species": "animal",
+        "age": 5,
+        "weight": 20
+    }
+
+    test_population = [
+        {"species": "Herbivore", "age": 1, "weight": 10.0},
+        {"species": "Herbivore", "age": 1, "weight": 10.0},
+        {"species": "Herbivore", "age": 1, "weight": 10.0}
+    ]
+    jungle = Jungle(test_population)
+    jungle.regrowth()
+    herb = Herbivore(test_properties)
+    rel_abund_fodder = herb.find_rel_abund_of_fodder(jungle)
+    print(rel_abund_fodder)
