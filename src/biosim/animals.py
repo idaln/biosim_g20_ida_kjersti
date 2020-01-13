@@ -131,7 +131,6 @@ class Animal:
 
         return loc_to_propensity_dict
 
-
     def prob_move_to_each_neighbour(self, dict_of_neighbours):
         """
         Iterates through the dict of neighbours to the current cell. Finds
@@ -142,7 +141,7 @@ class Animal:
         """
         moving_prob_for_each_loc = {}
         sum_prop = 0
-        loc_to_prop_dict = self.propensity_of_each_neighbouring_cell():
+        loc_to_prop_dict = self.propensity_of_each_neighbouring_cell()
         for propensity in loc_to_prop_dict.values():
             sum_prop += propensity
 
@@ -150,9 +149,6 @@ class Animal:
             moving_prob_for_each_loc[loc] = propensity / sum_prop
 
         return moving_prob_for_each_loc
-
-
-
 
     def where_will_animal_move(self, dict_of_neighbours):
         """
