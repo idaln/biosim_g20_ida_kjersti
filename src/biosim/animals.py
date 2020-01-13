@@ -27,7 +27,7 @@ params_carnivore = {
 
 class Animal:
     """
-    Parent class for herbivores and carnivores
+    Parent class for herbivores and carnivores.
     """
     params = {
         "w_birth": 6.0,
@@ -101,9 +101,33 @@ class Animal:
         else:
             self.fitness = q_plus * q_minus
 
-    def migration(self):
+    def find_rel_abund_of_fodder(self, landscape_instance):
         """
-        Moves animal
+        Takes an instance of a landscape class, and returns the relative
+        abundance of fodder in that instance.
+        :return: float
+        """
+        herb_fodder = landscape_instance.fodder_amount
+        num_herbs = len(landscape_instance.pop_herb)
+        abund_fodder_herb = herb_fodder / ((num_herbs + 1) * self.params["F"])
+        return abund_fodder_herb
+
+    def prob_move_to_each_neighbour(self, dict_of_neighbours):
+        """
+        Iterates through the dict of neighbours to the current cell. Finds
+        the probability of moving to each of the neighbouring cells. Returns
+        a dict mapping cell locations to the probability of moving there.
+        :param dict_of_neighbours: dict
+        :return: dict
+        """
+        pass
+
+    def where_will_animal_move(self, dict_of_neighbours):
+        """
+        Uses cumulative probability to decide which of the neighbouring cells
+        the animal will move to. Returns the coordinates of that cell.
+        :param dict_of_neighbours: dict
+        :return: tuple
         """
         pass
 
@@ -111,8 +135,8 @@ class Animal:
         """
         Checks that weight of animal is more than given limit. If so,
         probability of giving birth is calculated from formula (8).
-        :returns prob
-                 Probability of giving birth
+        :returns: prob
+                  Probability of giving birth
         """
         if self.weight < self.params['zeta'] * (
                 self.params['w_birth'] + self.params['sigma_birth']
