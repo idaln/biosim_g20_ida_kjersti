@@ -123,7 +123,8 @@ class Landscape:
         Iterates over population lists and runs inherent death method on all
         animals. Updates the population to only contain living animals.
         """
-        self.pop_herb = [animal for animal in self.pop_herb if animal.will_animal_live() is True]
+        self.pop_herb = [animal for animal in self.pop_herb
+                         if animal.will_animal_live() is True]
 
 
 
