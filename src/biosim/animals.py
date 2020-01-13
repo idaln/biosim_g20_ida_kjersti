@@ -126,7 +126,8 @@ class Animal:
         loc_to_propensity_dict = {}
         for loc, landscape_instance in dict_of_neighbours:
             loc_to_propensity_dict[loc] = np.exp(
-                self.params["lambda"] * self.find_rel_abund_of_fodder()
+                self.params["lambda"] * self.find_rel_abund_of_fodder(
+                    dict_of_neighbours)
             )
 
         return loc_to_propensity_dict
@@ -141,7 +142,8 @@ class Animal:
         """
         moving_prob_for_each_loc = {}
         sum_prop = 0
-        loc_to_prop_dict = self.propensity_of_each_neighbouring_cell()
+        loc_to_prop_dict = self.propensity_of_each_neighbouring_cell(
+            dict_of_neighbours)
         for propensity in loc_to_prop_dict.values():
             sum_prop += propensity
 
@@ -157,7 +159,13 @@ class Animal:
         :param dict_of_neighbours: dict
         :return: tuple
         """
-        pass
+        locs = []
+        probs = np.array([])
+        for loc, prob in self.prob_move_to_each_neighbour(
+                dict_of_neighbours).items():
+            locs.append(loc)
+            probs.np.append(prob)
+
 
     def prob_give_birth(self, num_animals):
         """
