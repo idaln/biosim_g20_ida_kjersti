@@ -265,7 +265,7 @@ class TestAnimal:
         }
         a = Animal(test_properties)
         a.find_fitness()
-        assert a.will_death_take_place() is True
+        assert a.will_animal_live() is True
 
     def test_false_death_prob_is_zero(self):
         """
@@ -278,7 +278,7 @@ class TestAnimal:
             "weight": 40
         }
         a = Animal(test_properties)
-        assert a.will_death_take_place() is not True
+        assert a.will_animal_live() is not True
 
     def test_num_less_than_death_prob(self, mocker):
         """
@@ -288,7 +288,7 @@ class TestAnimal:
         mocker.patch('numpy.random.random', return_value=0.0005)
         a = Animal(test_properties)
         a.find_fitness()
-        assert a.will_death_take_place() is True
+        assert a.will_animal_live() is True
 
     def test_num_more_than_death_prob(self, mocker):
         """
@@ -298,7 +298,7 @@ class TestAnimal:
         mocker.patch('numpy.random.random', return_value=0.5)
         a = Animal(test_properties)
         a.find_fitness()
-        assert a.will_death_take_place() is not True
+        assert a.will_animal_live() is not True
 
 
 class TestHerbivore:
