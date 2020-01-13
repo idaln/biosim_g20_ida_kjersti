@@ -161,12 +161,18 @@ class TestAnimal:
             assert type(prob) is float
 
 
-
-
     def test_tuple_returned(self):
         """
-        Asserts that the where_will_animal_move returns a tuple
+        Asserts that the where_will_animal_move method returns a tuple
         """
+        dict_of_neighbours = {(1, 2): Jungle(test_population),
+                              (2, 1): Jungle(test_population),
+                              (2, 3): Jungle(test_population),
+                              (3, 2): Jungle(test_population)
+                              }
+        animal = Animal(test_properties)
+        assert animal.where_will_animal_move(dict_of_neighbours) is tuple
+
 
     def test_animal_moved_correctly(self):
         """
