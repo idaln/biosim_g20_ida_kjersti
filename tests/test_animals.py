@@ -269,7 +269,7 @@ class TestAnimal:
 
     def test_false_death_prob_is_zero(self):
         """
-        Assert that True is not returned if probability of dying is zero.
+        Assert that True is returned if probability of dying is zero.
         """
         numpy.random.seed(1)
         test_properties = {
@@ -278,27 +278,27 @@ class TestAnimal:
             "weight": 40
         }
         a = Animal(test_properties)
-        assert a.will_animal_live() is not True
+        assert a.will_animal_live() is True
 
     def test_num_less_than_death_prob(self, mocker):
         """
-        Asserts that True is returned if the random number is less than
+        Asserts that True is not returned if the random number is less than
         the death probability.
         """
         mocker.patch('numpy.random.random', return_value=0.0005)
         a = Animal(test_properties)
         a.find_fitness()
-        assert a.will_animal_live() is True
+        assert a.will_animal_live() is not True
 
     def test_num_more_than_death_prob(self, mocker):
         """
-        Asserts that True is not returned if the random number is larger than
+        Asserts that True is returned if the random number is larger than
         the death probability.
         """
         mocker.patch('numpy.random.random', return_value=0.5)
         a = Animal(test_properties)
         a.find_fitness()
-        assert a.will_animal_live() is not True
+        assert a.will_animal_live() is True
 
 
 class TestHerbivore:
