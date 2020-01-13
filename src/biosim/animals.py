@@ -124,10 +124,10 @@ class Animal:
         """
 
         loc_to_propensity_dict = {}
-        for loc, landscape_instance in dict_of_neighbours:
+        for loc, landscape_instance in dict_of_neighbours.items():
             loc_to_propensity_dict[loc] = np.exp(
                 self.params["lambda"] * self.find_rel_abund_of_fodder(
-                    dict_of_neighbours)
+                    landscape_instance)
             )
 
         return loc_to_propensity_dict
@@ -162,10 +162,22 @@ class Animal:
         locs = []
         probs = np.array([])
         for loc, prob in self.prob_move_to_each_neighbour(
-                dict_of_neighbours).items():
+                dict_of_neighbours
+        ).items():
             locs.append(loc)
-            probs.np.append(prob)
+            probs = np.append(probs, np.array([prob]))
 
+        cum_probs = np.cumsum(probs)
+        random_number = np.random.random()
+
+        if random_number < cum_probs[0]:
+            return locs[0]
+        elif cum_probs[0] < random_number < cum_probs[1]:
+            return locs[1]
+        elif cum_probs[1] < random_number < cum_probs[2]:
+            return locs[2]
+        else:
+            return locs[3]
 
     def prob_give_birth(self, num_animals):
         """
@@ -264,3 +276,7 @@ class Herbivore(Animal):
         :param properties: dict storing age, weight and fitness of herbivore
         """
         super().__init__(properties)
+
+
+if __name__ == "__main__":
+    print("hello, world")
