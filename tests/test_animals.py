@@ -5,6 +5,7 @@ __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idaln@hotmail.com & kjkv@nmbu.no"
 
 from biosim.animals import Animal, Herbivore
+from biosim.landscape import Jungle
 from pytest import approx
 import numpy
 
@@ -107,6 +108,22 @@ class TestAnimal:
         a = Animal(test_properties)
         a.find_fitness()
         assert a.fitness == approx(0.9983411986)
+
+    def test_correct_rel_abund_fodder(self):
+        """
+        Checks that method for calculating relative abundance of fodder
+        returns the correct value.
+        """
+        test_population = [
+            {"species": "Herbivore", "age": 1, "weight": 10.0},
+            {"species": "Herbivore", "age": 1, "weight": 10.0},
+            {"species": "Herbivore", "age": 1, "weight": 10.0}
+        ]
+        jungle = Jungle(test_population)
+        jungle.regrowth()
+        animal = Animal(test_properties)
+        rel_abund_fodder = animal.find_rel_abund_of_fodder(jungle)
+        assert rel_abund_fodder == 4.0
 
     def test_prob_give_birth_one_animal_in_square(self):
         """
