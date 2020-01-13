@@ -254,9 +254,9 @@ class TestAnimal:
         a.find_fitness()
         assert a.prob_death() == approx(0.0014929212599999687)
 
-    def test_true_death_prob_is_one(self):
+    def test_false_death_prob_is_one(self):
         """
-        Assert that True is returned if probability of dying is one.
+        Assert that False is returned if probability of dying is one.
         """
         test_properties = {
             "species": "animal",
@@ -265,7 +265,7 @@ class TestAnimal:
         }
         a = Animal(test_properties)
         a.find_fitness()
-        assert a.will_animal_live() is True
+        assert a.will_animal_live() is not True
 
     def test_false_death_prob_is_zero(self):
         """
