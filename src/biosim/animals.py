@@ -113,11 +113,23 @@ class Animal:
         return abund_fodder_herb
 
     def propensity_of_each_neighbouring_cell(self, dict_of_neighbours):
+        """
+
+        :param dict_of_neighbours: dict
+                                Dictionary having locations of the
+                                neighbouring cells as keys and instance of
+                                landscape class as values. Dictionary is
+                                created in IslandMap class.
+        :return: loc_to_propensity_dict: dict
+        """
+
         loc_to_propensity_dict = {}
         for loc, landscape_instance in dict_of_neighbours:
             loc_to_propensity_dict[loc] = np.exp(
                 self.params["lambda"] * self.find_rel_abund_of_fodder()
             )
+
+        return loc_to_propensity_dict
 
 
     def prob_move_to_each_neighbour(self, dict_of_neighbours):
