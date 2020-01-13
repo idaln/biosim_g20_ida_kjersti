@@ -163,15 +163,15 @@ class Animal:
         else:
             return self.params['omega'] * (1 - self.fitness)
 
-    def will_death_take_place(self):
+    def will_animal_live(self):
         """
-        Checks the probability of death. Returns True if the animal dies.
+        Checks the probability of death. Returns True if the animal lives.
         :return bool
         """
         prob = self.prob_death()
         random_number = np.random.random()
 
-        if random_number <= prob:
+        if random_number > prob:
             return True
 
 
