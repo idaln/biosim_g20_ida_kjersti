@@ -174,11 +174,11 @@ class TestAnimal:
         assert animal.where_will_animal_move(dict_of_neighbours) is tuple
 
 
-    def test_animal_moved_correctly(self):
-        """
-        Implements mocking to assert that animal returned correct location to
-        move to.
-        """
+#    def test_animal_moved_correctly(self):
+#        """
+#        Implements mocking to assert that animal returned correct location to
+#        move to.
+#        """
 
     def test_prob_give_birth_one_animal_in_square(self):
         """
