@@ -9,6 +9,11 @@ from biosim.landscape import Jungle
 from pytest import approx
 import numpy
 
+test_population = [
+    {"species": "Herbivore", "age": 1, "weight": 10.0},
+    {"species": "Herbivore", "age": 1, "weight": 10.0},
+    {"species": "Herbivore", "age": 1, "weight": 10.0}
+]
 test_params = {
         "w_birth": 6.0,
         "sigma_birth": 1.0,
@@ -114,16 +119,41 @@ class TestAnimal:
         Checks that method for calculating relative abundance of fodder
         returns the correct value.
         """
-        test_population = [
-            {"species": "Herbivore", "age": 1, "weight": 10.0},
-            {"species": "Herbivore", "age": 1, "weight": 10.0},
-            {"species": "Herbivore", "age": 1, "weight": 10.0}
-        ]
         jungle = Jungle(test_population)
         jungle.regrowth()
         animal = Animal(test_properties)
         rel_abund_fodder = animal.find_rel_abund_of_fodder(jungle)
         assert rel_abund_fodder == 4.0
+
+    def test_dict_with_correct_key_and_value_types(self):
+        """
+        Asserts that the prob_move_to_each_neighbour method returns a
+        dictionary with tuples as keys and floats as values.
+        """
+        animal = Animal(test_properties)
+        jungle = Jungle(test_population)
+        dict_of_neighbours = {(1, 2): Jungle(test_population),
+                              (2, 1): Jungle(test_population),
+                              (2, 3): Jungle(test_population),
+                              (3, 2): Jungle(test_population)
+                              }
+        prob_dict = prob_move_to_each_neighbour(dict_of_neighbours)
+        assert type(prob_dict) is dict
+        for loc, prob in prob_dict.items():
+            assert type(loc) is tuple
+            assert type(prob) is float
+
+
+    def test_tuple_returned(self):
+        """
+        Asserts that the where_will_animal_move returns a tuple
+        """
+
+    def test_animal_moved_correctly(self):
+        """
+        Implements mocking to assert that animal returned correct location to
+        move to.
+        """
 
     def test_prob_give_birth_one_animal_in_square(self):
         """
