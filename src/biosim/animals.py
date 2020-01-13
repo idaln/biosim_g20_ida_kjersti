@@ -112,6 +112,14 @@ class Animal:
         abund_fodder_herb = herb_fodder / ((num_herbs + 1) * self.params["F"])
         return abund_fodder_herb
 
+    def propensity_of_each_neighbouring_cell(self, dict_of_neighbours):
+        loc_to_propensity_dict = {}
+        for loc, landscape_instance in dict_of_neighbours:
+            loc_to_propensity_dict[loc] = np.exp(
+                self.params["lambda"] * self.find_rel_abund_of_fodder()
+            )
+
+
     def prob_move_to_each_neighbour(self, dict_of_neighbours):
         """
         Iterates through the dict of neighbours to the current cell. Finds
@@ -120,7 +128,19 @@ class Animal:
         :param dict_of_neighbours: dict
         :return: dict
         """
-        pass
+        moving_prob_for_each_loc = {}
+        sum_prop = 0
+        loc_to_prop_dict = self.propensity_of_each_neighbouring_cell():
+        for propensity in loc_to_prop_dict.values():
+            sum_prop += propensity
+
+        for loc, propensity in loc_to_prop_dict.items():
+            moving_prob_for_each_loc[loc] = propensity / sum_prop
+
+        return moving_prob_for_each_loc
+
+
+
 
     def where_will_animal_move(self, dict_of_neighbours):
         """
