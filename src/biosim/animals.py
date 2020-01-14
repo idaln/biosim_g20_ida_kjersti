@@ -101,30 +101,30 @@ class Animal:
         else:
             self.fitness = q_plus * q_minus
 
-    def find_rel_abund_of_fodder(self, landscape_instance):
+    def find_rel_abund_of_fodder(self, landscape_cell):
         """
         Takes an instance of a landscape class, and returns the relative
         abundance of fodder in that instance.
+        :param landscape_cell: dict
+                Instance of landscape class
         :return: float
         """
-        herb_fodder = landscape_instance.fodder_amount
-        num_herbs = len(landscape_instance.pop_herb)
+        herb_fodder = landscape_cell.fodder_amount
+        num_herbs = len(landscape_cell.pop_herb)
         abund_fodder_herb = herb_fodder / ((num_herbs + 1) * self.params["F"])
         return abund_fodder_herb
 
-    def propensity_of_each_neighbouring_cell(self, dict_of_neighbours):
+    def propensity_move_to_each_neighbour(self, neighbours_of_current_cell):
         """
 
-        :param dict_of_neighbours: dict
-                                Dictionary having locations of the
-                                neighbouring cells as keys and instance of
-                                landscape class as values. Dictionary is
-                                created in IslandMap class.
+        :param neighbours_of_current_cell: dict
+                Contains neighbours of current cell.
+                Location as keys, instance of landscape class as value
         :return: loc_to_propensity_dict: dict
         """
 
         loc_to_propensity_dict = {}
-        for loc, landscape_instance in dict_of_neighbours.items():
+        for loc, landscape_instance in neighbours_of_current_cell.items():
             loc_to_propensity_dict[loc] = np.exp(
                 self.params["lambda"] * self.find_rel_abund_of_fodder(
                     landscape_instance)
@@ -132,18 +132,22 @@ class Animal:
 
         return loc_to_propensity_dict
 
-    def prob_move_to_each_neighbour(self, dict_of_neighbours):
+    def prob_move_to_each_neighbour(self, neighbours_of_current_cell):
         """
         Iterates through the dict of neighbours to the current cell. Finds
         the probability of moving to each of the neighbouring cells. Returns
         a dict mapping cell locations to the probability of moving there.
-        :param dict_of_neighbours: dict
-        :return: dict
+        :param neighbours_of_current_cell: dict
+                Neighbours of current cell. Locations as keys,
+                instance of landscape class as value.
+        :returns: dict
+                Locations of each surrounding cell as keys, probabilities for
+                the animal to move to each of them as values.
         """
         moving_prob_for_each_loc = {}
         sum_prop = 0
-        loc_to_prop_dict = self.propensity_of_each_neighbouring_cell(
-            dict_of_neighbours)
+        loc_to_prop_dict = self.propensity_move_to_each_neighbour(
+            neighbours_of_current_cell)
         for propensity in loc_to_prop_dict.values():
             sum_prop += propensity
 
@@ -152,31 +156,40 @@ class Animal:
 
         return moving_prob_for_each_loc
 
-    def convert_dict_to_list_and_array(self, dict_of_locs_and_probs):
+    def convert_dict_to_list_and_array(self, moving_prob_for_each_loc):
         """
         Converts dictionary with locations as keys and probabilities as
         values to a list of locations and a numpy array of probabilities.
-        :return: list, array
+        :param moving_prob_for_each_loc: dict
+                Contains the locations of each surrounding cell as keys, and
+                the probabilities for the animal to move to each of them as
+                values.
+        :returns: list, array
+                List of locations of neighbouring cells, numpy array of the
+                probabilities of moving to each.
         """
         locs = []
         probs = np.array([])
-        for loc, prob in dict_of_locs_and_probs.items():
+        for loc, prob in moving_prob_for_each_loc.items():
             locs.append(loc)
             probs = np.append(probs, np.array([prob]))
         return locs, probs
 
-    def where_will_animal_move(self, dict_of_neighbours):
+    def where_will_animal_move(self, neighbours_of_current_cell):
         """
         Uses cumulative probability to decide which of the neighbouring cells
         the animal will move to. Returns the coordinates of that cell.
-        :param dict_of_neighbours: dict
-        :return: tuple
+        :param neighbours_of_current_cell: dict
+                Neighbours of current cell. Locations as keys,
+                instance of landscape class as value.
+        :returns: tuple
+                The location the animal will move to.
         """
-        dict_of_locs_and_probs = self.prob_move_to_each_neighbour(
-                dict_of_neighbours
+        moving_prob_for_each_loc = self.prob_move_to_each_neighbour(
+                neighbours_of_current_cell
         )
         locs, probs = self.convert_dict_to_list_and_array(
-            dict_of_locs_and_probs
+            moving_prob_for_each_loc
         )
 
         cum_probs = np.cumsum(probs)
@@ -196,7 +209,7 @@ class Animal:
         Checks that weight of animal is more than given limit. If so,
         probability of giving birth is calculated from formula (8).
         :returns: prob
-                  Probability of giving birth
+                  The probability for the animal to give birth.
         """
         if self.weight < self.params['zeta'] * (
                 self.params['w_birth'] + self.params['sigma_birth']
@@ -223,9 +236,10 @@ class Animal:
         """
         If birth takes place, a birth weight is returned and weight of mother
         is reduced according to given formula.
+        :returns birth_weight or None: float or None
+                Returns weight of the baby that is born, or None if no baby
+                is born.
 
-        :returns birth_weight or None
-                 int, float
         """
         bool_birth = self.will_birth_take_place(num_animals)
         birth_weight = np.random.normal(
