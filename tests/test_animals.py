@@ -136,7 +136,7 @@ class TestAnimal:
                               (2, 3): Jungle(test_population),
                               (3, 2): Jungle(test_population)
                               }
-        prop_dict = animal.propensity_of_each_neighbouring_cell\
+        prop_dict = animal.propensity_move_to_each_neighbour\
             (dict_of_neighbours)
         assert type(prop_dict) is dict
         for loc, prop in prop_dict.items():
