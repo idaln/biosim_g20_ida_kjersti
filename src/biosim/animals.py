@@ -169,7 +169,8 @@ class Animal:
         moving_prob_for_each_loc = {}
         sum_prop = 0
         loc_to_prop_dict = self.propensity_move_to_each_neighbour(
-            neighbours_of_current_cell)
+            neighbours_of_current_cell
+        )
         for propensity in loc_to_prop_dict.values():
             sum_prop += propensity
 
