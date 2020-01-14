@@ -46,6 +46,10 @@ class TestIslandMap:
         Asserts that the create_geography method creates a dictionary that is
         converted correctly.
         """
+        test_geogr = """\
+                        JJ
+                        JJ
+                        """
         i_m = IslandMap(test_geogr, test_ini_pop)
         i_m.create_geography_dict()
         assert type(i_m.geography) is dict
