@@ -20,7 +20,7 @@ class Landscape:
         Initializes class with given population.
         :param population: list of dictionaries
         """
-        self.fodder_amount = None
+        self.fodder_amount = 0
 
         #pop_carn = []
         self.pop_herb = []
