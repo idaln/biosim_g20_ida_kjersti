@@ -152,6 +152,19 @@ class Animal:
 
         return moving_prob_for_each_loc
 
+    def convert_dict_to_list_and_array(self, dict_of_locs_and_probs):
+        """
+        Converts dictionary with locations as keys and probabilities as
+        values to a list of locations and a numpy array of probabilities.
+        :return: list, array
+        """
+        locs = []
+        probs = np.array([])
+        for loc, prob in dict_of_locs_and_probs.items():
+            locs.append(loc)
+            probs = np.append(probs, np.array([prob]))
+        return locs, probs
+
     def where_will_animal_move(self, dict_of_neighbours):
         """
         Uses cumulative probability to decide which of the neighbouring cells
@@ -159,13 +172,12 @@ class Animal:
         :param dict_of_neighbours: dict
         :return: tuple
         """
-        locs = []
-        probs = np.array([])
-        for loc, prob in self.prob_move_to_each_neighbour(
+        dict_of_locs_and_probs = self.prob_move_to_each_neighbour(
                 dict_of_neighbours
-        ).items():
-            locs.append(loc)
-            probs = np.append(probs, np.array([prob]))
+        )
+        locs, probs = self.convert_dict_to_list_and_array(
+            dict_of_locs_and_probs
+        )
 
         cum_probs = np.cumsum(probs)
         random_number = np.random.random()
