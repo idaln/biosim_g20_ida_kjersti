@@ -133,6 +133,7 @@ class IslandMap:
         :param current_coordinates: tuple
         :param current_landscape: class instance
         """
+        
         for animal in current_landscape.pop_herb:
             self.move_single_animal(current_coordinates, animal)
 
@@ -211,14 +212,13 @@ if __name__ == "__main__":
     }
     i_m = IslandMap(test_geogr, test_ini_pop)
     i_m.create_map_dict()
-    print(i_m.map)
 
     for _ in range(10):
         sum_animals = 0
-        i_m.run_all_seasons()
         for loc, cell in i_m.map.items():
             print(f"Population of cell {loc} is {len(cell.pop_herb)}")
             sum_animals += len(cell.pop_herb)
+        i_m.run_all_seasons()
         print(f"Total population of island is {sum_animals}")
 
     # i_m.feeding_season()
