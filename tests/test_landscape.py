@@ -6,7 +6,7 @@ __email__ = "idaln@hotmail.com & kjkv@nmbu.no"
 from biosim.landscape import Landscape, Jungle, Savannah
 from biosim.animals import Animal, Herbivore
 from pytest import approx
-import numpy as np
+import numpy
 
 test_properties_herb = {
     "species": "animal",
@@ -100,22 +100,22 @@ class TestLandscape:
         assert landscape.available_fodder_herb() == 0
         assert landscape.fodder_amount == 0
 
-        def test_have_all_animals_been_fed(self):
-            """
-            Tests that all animals have gained weight in a situation where there
-            is plenty of food available.
-            """
-            test_population = [
-                {"species": "Herbivore", "age": 3, "weight": 20.0},
-                {"species": "Herbivore", "age": 3, "weight": 20.0},
-                {"species": "Herbivore", "age": 3, "weight": 20.0},
-            ]
+    def test_have_all_animals_been_fed(self):
+        """
+        Tests that all animals have gained weight in a situation where there
+        is plenty of food available.
+        """
+        test_population = [
+            {"species": "Herbivore", "age": 3, "weight": 20.0},
+            {"species": "Herbivore", "age": 3, "weight": 20.0},
+            {"species": "Herbivore", "age": 3, "weight": 20.0},
+        ]
 
-            landscape = Landscape(test_population)
-            landscape.feed_all_herbivores()
-            assert landscape.pop_herb[0].weight > test_population[0]["weight"]
-            assert landscape.pop_herb[1].weight > test_population[1]["weight"]
-            assert landscape.pop_herb[2].weight > test_population[2]["weight"]
+        landscape = Landscape(test_population)
+        landscape.feed_all_herbivores()
+        assert landscape.pop_herb[0].weight > test_population[0]["weight"]
+        assert landscape.pop_herb[1].weight > test_population[1]["weight"]
+        assert landscape.pop_herb[2].weight > test_population[2]["weight"]
 
     def test_fittest_animal_eats_first(self):
         """
@@ -134,7 +134,7 @@ class TestLandscape:
         Asserts that in a situastion when all animals will give birth,
         the population list has been updated with the right number of animals.
         """
-        np.random.seed(1)
+        numpy.random.seed(1)
         test_population = [
             {"species": "Herbivore", "age": 2, "weight": 70.0},
             {"species": "Herbivore", "age": 3, "weight": 90.0},
@@ -174,7 +174,7 @@ class TestLandscape:
         Tests that a dead animal has been removed from population list because
         it has fitness equal to zero due to no weight.
         """
-        np.random.seed(1)
+        numpy.random.seed(1)
         test_population = [
             {"species": "Herbivore", "age": 1, "weight": 10.0},
             {"species": "Herbivore", "age": 3, "weight": 50.0},
