@@ -3,7 +3,7 @@
 __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idaln@hotmail.com & kjkv@nmbu.no"
 
-from biosim.landscape import Landscape, Jungle
+from biosim.landscape import Landscape, Jungle, Savannah
 from biosim.animals import Animal, Herbivore
 from pytest import approx
 import numpy as np
@@ -191,7 +191,6 @@ class TestJungle:
     """
     Tests for Jungle class.
     """
-
     def test_constructor(self):
         """
         Asserts that class instance has been initialized with no fodder
@@ -200,4 +199,17 @@ class TestJungle:
         jungle = Jungle(test_population)
         assert jungle.fodder_amount == 0
 
+
+class TestSavannah:
+    """
+    Tests for Savannah class.
+    """
+    def test_regrowth_savannah(self):
+        """
+        Asserts that the amount of fodder has been updated correctly after
+        one year.
+        """
+        savannah = Savannah(test_population)
+        savannah.regrowth()
+        assert savannah.fodder_amount == 90
 
