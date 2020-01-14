@@ -108,7 +108,6 @@ class Animal:
         :return: float
                 Probability of moving
         """
-        self.find_fitness()
         return self.fitness * self.params["mu"]
 
     def will_animal_move(self):
