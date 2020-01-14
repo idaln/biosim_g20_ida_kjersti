@@ -85,7 +85,7 @@ class IslandMap:
         :param current_coordinates: tuple
                 Location of current cell
         :returns: dict
-                Has locations as keys and lanscape class instance as values.
+                Has locations as keys and landscape class instance as values.
         """
         neighbours_of_current_cell = {}
         n, m = current_coordinates[0], current_coordinates[1]
