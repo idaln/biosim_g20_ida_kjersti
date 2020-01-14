@@ -104,32 +104,28 @@ class IslandMap:
         :param current_coordinates: tuple
         :param single_animal: class instance of animal class
         """
-        neighbours_of_current_cell = self.neighbours_of_current_cell(
+        neighbours_of_current_cel = self.neighbours_of_current_cell(
             current_coordinates
         )
         new_coordinates = single_animal.return_new_coordinates(
-            neighbours_of_current_cell
+            neighbours_of_current_cel
         )
         if new_coordinates is not None:
             self.map[new_coordinates].pop_herb.append(single_animal)
             self.map[current_coordinates].pop_herb.remove(single_animal)
 
-    def move_all_animals_in_cell(self, current_coordinates, current_landscape):
+    def move_all_animals_in_cell(self, current_coordinates):
         """
         Iterates through the population of a cell, and moves all animals.
         :param current_coordinates: tuple
         """
-        for animal in current_landscape.pop_herb:
-            self.move_single_animal(current_coordinates, animal)
-
 
     def migration_season(self):
         """
         Iterates through all landscape cells on the map,
         and moves all animals in each cell.
         """
-        for location, landscape in self.map.items():
-            self.move_all_animals_in_cell(location, landscape)
+        pass
 
     def aging_season(self):
         """
@@ -169,23 +165,22 @@ class IslandMap:
 
 if __name__ == "__main__":
     test_geogr = """\
-                    JJJ
-                    JJJ
-                    JJJ
+                    J
+                    J
                     """
     test_ini_pop = [
         {
             "loc": (1, 1),
             "pop": [
                 {"species": "Herbivore", "age": 5, "weight": 20}
-                for _ in range(8)
+                for _ in range(1)
             ]
         },
         {
             "loc": (2, 1),
             "pop": [
                 {"species": "Herbivore", "age": 5, "weight": 20}
-                for _ in range(8)
+                for _ in range(1)
             ]
         }
 
@@ -197,11 +192,8 @@ if __name__ == "__main__":
     }
     i_m = IslandMap(test_geogr, test_ini_pop)
     i_m.create_map_dict()
-    for _ in range(10):
-        i_m.run_all_seasons()
-        for loc, cell in i_m.map.items():
-            print(f' Population in cell {loc} is {len(cell.pop_herb)}')
-
-
-
+    i_m.feeding_season()
+    print(f"(1, 1):{i_m.map[(1, 1)].pop_herb}, (2, 1): {i_m.map[(2, 1)].pop_herb}")
+    i_m.move_single_animal((2, 1), i_m.map[(2, 1)].pop_herb[0])
+    print(f"(1, 1):{i_m.map[(1, 1)].pop_herb}, (2, 1): {i_m.map[(2, 1)].pop_herb}")
 
