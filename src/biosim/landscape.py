@@ -127,7 +127,6 @@ class Landscape:
                          if animal.will_animal_live() is True]
 
 
-
 class Jungle(Landscape):
     """
     Class for Jungle landscape type.
@@ -139,6 +138,84 @@ class Jungle(Landscape):
     def __init__(self, population):
         """
         Initializes class.
+        """
+        super().__init__(population)
+
+
+class Savannah(Landscape):
+    """
+    Class for Savannah landscape type.
+    """
+    params = {
+        "f_max": 300,
+        "alpha": 0.3
+    }
+
+    def __init__(self, population):
+        """
+        Initializes class.
+        :param population: list of dicts
+                 List of properties of the initial population of animals
+        """
+        super().__init__(population)
+
+    def regrowth(self):
+        """
+        Sets amount of fodder for herbivores to the value given by formula (1).
+        """
+        self.fodder_amount = ((1 - self.params["alpha"]) * self.fodder_amount)\
+            + (self.params["alpha"] * self.params["f_max"])
+
+
+class Desert(Landscape):
+    """
+    Class for Desert landscape type.
+    """
+    params = {
+        "f_max": 0
+    }
+
+    def __init__(self, population):
+        """
+        Initializes class.
+        :param population: list of dicts
+                 List of properties of the initial population of animals
+        """
+        super().__init__(population)
+
+
+class Mountain(Landscape):
+    """
+    Class for Mountain landscape type.
+    """
+    params = {
+        "f_max": 0
+    }
+
+    def __init__(self, population):
+        """
+        Initializes class.
+        :param population: list of dicts
+                 List of properties of the initial population of animals.
+                 Should be empty.
+        """
+        super().__init__(population)
+
+
+class Ocean(Landscape):
+    """
+    Class for Ocean landscape type.
+    """
+    params = {
+        "f_max": 0
+    }
+
+    def __init__(self, population):
+        """
+        Initializes class.
+        :param population: list of dicts
+                 List of properties of the initial population of animals.
+                 Should be empty.
         """
         super().__init__(population)
 
