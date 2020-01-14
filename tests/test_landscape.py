@@ -198,4 +198,6 @@ class TestJungle:
         available.
         """
         jungle = Jungle(test_population)
-        assert jungle.fodder_amount is None
+        assert jungle.fodder_amount == 0
+
+
