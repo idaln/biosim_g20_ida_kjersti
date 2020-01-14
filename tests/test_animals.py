@@ -238,7 +238,7 @@ class TestAnimal:
         animal = Animal(test_properties)
         assert animal.find_new_coordinates(dict_of_neighbours) == (2, 1)
 
-    def test_coordinates_returned_when_true(self):
+    def test_coordinates_returned_when_true(self, mocker):
         """
         Asserts that a tuple of coordinates is returned if the animal will
         move.
@@ -253,10 +253,11 @@ class TestAnimal:
                               }
         for jungle in dict_of_neighbours.values():
             jungle.regrowth()
-        animal = Animal(test_population[0])
-        animal.will_animal_move() = True
-        assert type(animal.return_new_coordinates(dict_of_neighbours)) == tuple
-        
+        animal = Animal(test_properties)
+        animal.fitness = 1
+        mocker.patch('numpy.random.random', return_value=0.1)
+        new_coordinates = animal.return_new_coordinates(dict_of_neighbours)
+        assert type(new_coordinates) == tuple
 
     def test_prob_give_birth_one_animal_in_square(self):
         """
