@@ -81,7 +81,7 @@ class IslandMap:
         """
         Finds the neighbours of a given cell, only those an animal can move to
         are returned.
-        :param cell_coordinates: tuple
+        :param current_coordinates: tuple
         :returns: dict of coordinate-class instance pairs
         """
         neighbours_of_current_cell = {}
@@ -89,7 +89,9 @@ class IslandMap:
         neighbours = [(n-1, m), (n, m-1), (n, m+1), (n+1, m)]
         for neighbour in neighbours:
             if neighbour in self.map.keys():
-                neighbours_of_current_cell[neighbour] = self.map[neighbour]
+                landscape_type = type(self.map[neighbour]).__name__
+                if landscape_type is not ("Ocean" or "Mountain"):
+                    neighbours_of_current_cell[neighbour] = self.map[neighbour]
         return neighbours_of_current_cell
 
     def move_single_animal(self, current_coordinates):
@@ -98,7 +100,6 @@ class IslandMap:
         updated population lists.
         :param current_coordinates: tuple
         """
-
 
     def move_all_animals_in_cell(self, current_coordinates):
         """
@@ -174,10 +175,11 @@ if __name__ == "__main__":
 
     ]
 
-    i_m = IslandMap(test_geogr, test_ini_pop)
-    i_m.create_map_dict()
 
-    print(i_m.neighbours_of_current_cell((1, 1)).keys())
+    i_m = IslandMap(test_geogr, test_ini_pop)
+    i_m.create_geography_dict()
+    i_m.create_map_dict()
+    print(i_m.geography)
 
 #    for year in range(10):
 #        i_m.run_all_seasons()
