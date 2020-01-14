@@ -95,6 +95,13 @@ class Landscape:
                                "weight": baby_weight})
                 )
 
+    def move_all_animals(self):
+        """
+        Iterates over population lists and moves animals utilizing heir
+        inherent migration method.
+        """
+        pass
+
     def make_all_animals_older(self):
         """
         Iterates over population lists and ages all animals one year
