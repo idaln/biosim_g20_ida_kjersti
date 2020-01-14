@@ -228,33 +228,38 @@ if __name__ == "__main__":
         {"species": "Herbivore", "age": 5, "weight": 20.0},
     ]
     numpy.random.seed(1)
-    j = Jungle(test_population)
-    for year in range(0):
-        j.feed_all_herbivores()
-        j.add_newborn_animals()
-        j.make_all_animals_older()
-        j.make_all_animals_lose_weight()
-        j.remove_all_dead_animals()
-        print(len(j.pop_herb))
-    print(j.pop_herb)
+    s = Savannah(test_population)
+    print(s.fodder_amount)
+    print(s.params["alpha"])
+    print(s.params["f_max"])
+    print(s.params["f_max"]*s.params["alpha"] + s.fodder_amount)
+
+    for year in range(10):
+        s.feed_all_herbivores()
+        s.add_newborn_animals()
+        s.make_all_animals_older()
+        s.make_all_animals_lose_weight()
+        s.remove_all_dead_animals()
+        print(len(s.pop_herb))
+    print(s.pop_herb)
 
 
-    test_population = [
-        {"species": "Herbivore", "age": 1, "weight": 10.0}
-    ]
-    test_properties = {
-        "species": "Herbivore",
-        "age": 1,
-        "weight": 10
-    }
-    dict_of_neighbours = {(1, 2): Jungle(test_population),
-                          (2, 1): Jungle(test_population),
-                          (2, 3): Jungle(test_population),
-                          (3, 2): Jungle(test_population)
-                          }
-    for jungle in dict_of_neighbours.values():
-        jungle.regrowth()
-    animal = Animal(test_properties)
-    print(animal.prob_move_to_each_neighbour(dict_of_neighbours))
-    for v in animal.prob_move_to_each_neighbour(dict_of_neighbours).values():
-        print (type(v))
+    # test_population = [
+    #     {"species": "Herbivore", "age": 1, "weight": 10.0}
+    # ]
+    # test_properties = {
+    #     "species": "Herbivore",
+    #     "age": 1,
+    #     "weight": 10
+    # }
+    # dict_of_neighbours = {(1, 2): Jungle(test_population),
+    #                       (2, 1): Jungle(test_population),
+    #                       (2, 3): Jungle(test_population),
+    #                       (3, 2): Jungle(test_population)
+    #                       }
+    # for jungle in dict_of_neighbours.values():
+    #     jungle.regrowth()
+    # animal = Animal(test_properties)
+    # print(animal.prob_move_to_each_neighbour(dict_of_neighbours))
+    # for v in animal.prob_move_to_each_neighbour(dict_of_neighbours).values():
+    #     print (type(v))
