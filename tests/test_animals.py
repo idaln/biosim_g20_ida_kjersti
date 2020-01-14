@@ -140,6 +140,8 @@ class TestAnimal:
             jungle.regrowth()
         prop_dict = animal.propensity_of_each_neighbouring_cell(
             dict_of_neighbours)
+        prop_dict = animal.propensity_move_to_each_neighbour\
+            (dict_of_neighbours)
         assert type(prop_dict) is dict
         for loc, prop in prop_dict.items():
             assert type(loc) is tuple
