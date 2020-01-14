@@ -114,6 +114,24 @@ class TestAnimal:
         a.find_fitness()
         assert a.fitness == approx(0.9983411986)
 
+    def test_correct_prob_of_moving(self):
+        """
+        Asserts that method calculates the probability of moving correctly.
+        """
+        animal = Animal(test_properties)
+        animal.find_fitness()
+        assert animal.prob_of_animal_moving() == approx(0.3993364794)
+
+    def test_correct_bool_of_moving(self, mocker):
+        """
+        Asserts that method returns True when a certain random number
+        is drawn.
+        """
+        mocker.patch('numpy.random.random', return_value=0.1)
+        animal = Animal(test_properties)
+        animal.fitness = 1
+        assert animal.will_animal_move() is True
+
     def test_correct_rel_abund_fodder(self):
         """
         Checks that method for calculating relative abundance of fodder
