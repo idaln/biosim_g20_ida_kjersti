@@ -4,8 +4,7 @@ __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idna@nmbu.no & kjkv@nmbu.no"
 
 from biosim.island_map import IslandMap
-from biosim.landscape import Jungle
-from biosim.animals import Herbivore
+from biosim.landscape import Jungle, Savannah
 
 test_geogr = """\
                 JJ
