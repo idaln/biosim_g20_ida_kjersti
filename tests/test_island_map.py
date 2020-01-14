@@ -4,7 +4,6 @@ __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idna@nmbu.no & kjkv@nmbu.no"
 
 from biosim.island_map import IslandMap
-from biosim.landscape import Jungle, Savannah
 
 test_geogr = """\
                 JJ
@@ -37,8 +36,8 @@ class TestIslandMap:
         """
         Asserts that an instance of the IslandMap class can be constructed.
         """
-        i_m = IslandMap(test_geogr, test_ini_pop)
-        assert isinstance(i_m, IslandMap)
+        island_map  = IslandMap(test_geogr, test_ini_pop)
+        assert isinstance(island_map, IslandMap)
 
     def test_geography_is_converted_correctly_to_dict(self):
         """
@@ -49,10 +48,10 @@ class TestIslandMap:
                         JO
                         DM
                         """
-        i_m = IslandMap(test_geogr, test_ini_pop)
-        i_m.create_geography_dict()
-        assert type(i_m.geography) is dict
-        assert i_m.geography == {(1, 1): 'J', (1, 2): 'O', (2, 1): 'D',
+        island_map = IslandMap(test_geogr, test_ini_pop)
+        island_map.create_geography_dict()
+        assert type(island_map.geography) is dict
+        assert island_map.geography == {(1, 1): 'J', (1, 2): 'O', (2, 1): 'D',
                                  (2, 2): 'M'}
 
     def test_population_is_converted_correctly_to_dict(self):
@@ -60,30 +59,30 @@ class TestIslandMap:
         Asserts that the create_population method created a dictionary that is
         converted correctly.
         """
-        i_m = IslandMap(test_geogr, test_ini_pop)
-        i_m.create_population_dict()
-        assert type(i_m.population) is dict
-        assert i_m.population == {(1, 2): [{'species': 'Herbivore', 'age': 5,
-                                            'weight': 20},
-                                           {'species': 'Herbivore', 'age': 5,
-                                            'weight': 20},
-                                           {'species': 'Herbivore', 'age': 5,
-                                            'weight': 20}],
-                                  (2, 2): [{'species': 'Herbivore', 'age': 5,
-                                            'weight': 20},
-                                           {'species': 'Herbivore', 'age': 5,
-                                            'weight': 20},
-                                           {'species': 'Herbivore', 'age': 5,
-                                            'weight': 20}]}
+        island_map = IslandMap(test_geogr, test_ini_pop)
+        island_map.create_population_dict()
+        assert type(island_map.population) is dict
+        assert island_map.population == {
+            (1, 2): [
+                {'species': 'Herbivore', 'age': 5, 'weight': 20},
+                {'species': 'Herbivore', 'age': 5, 'weight': 20},
+                {'species': 'Herbivore', 'age': 5, 'weight': 20}
+            ],
+            (2, 2): [
+                {'species': 'Herbivore', 'age': 5, 'weight': 20},
+                {'species': 'Herbivore', 'age': 5, 'weight': 20},
+                {'species': 'Herbivore', 'age': 5, 'weight': 20}
+            ]
+        }
 
     def test_map_is_dict(self):
         """
         Asserts that the create_landscape_cells_with_population created a
         dictionary
         """
-        i_m = IslandMap(test_geogr, test_ini_pop)
-        i_m.create_map_dict()
-        assert type(i_m.map) is dict
+        island_map = IslandMap(test_geogr, test_ini_pop)
+        island_map.create_map_dict()
+        assert type(island_map.map) is dict
 
     # def test_feeding_season(self):
     #    """
@@ -108,10 +107,10 @@ class TestIslandMap:
                         JJJ
                         JJJ
                         """
-        i_m = IslandMap(test_geogr, test_ini_pop)
-        i_m.create_map_dict()
+        island_map = IslandMap(test_geogr, test_ini_pop)
+        island_map.create_map_dict()
 
-        dict_with_neighbours = i_m.neighbours_of_current_cell((2, 2))
+        dict_with_neighbours = island_map.neighbours_of_current_cell((2, 2))
         neighbours = [(1, 2), (2, 1), (2, 3), (3, 2)]
         for neighbour in dict_with_neighbours.keys():
             assert neighbour in neighbours
@@ -122,13 +121,10 @@ class TestIslandMap:
         correct neighbours for a cell with only two neighbours.
         :return:
         """
-        i_m = IslandMap(test_geogr, test_ini_pop)
-        i_m.create_map_dict()
+        island_map = IslandMap(test_geogr, test_ini_pop)
+        island_map.create_map_dict()
 
-        dict_with_neighbours = i_m.neighbours_of_current_cell((1, 1))
+        dict_with_neighbours = island_map.neighbours_of_current_cell((1, 1))
         neighbours = [(1, 2), (2, 1)]
         for neighbour in dict_with_neighbours.keys():
             assert neighbour in neighbours
-
-
-
