@@ -117,28 +117,32 @@ class IslandMap:
         :param current_coordinates: tuple
         :param single_animal: class instance of animal class
         """
-        neighbours_of_current_cel = self.neighbours_of_current_cell(
+        neighbours_of_current_cell = self.neighbours_of_current_cell(
             current_coordinates
         )
         new_coordinates = single_animal.return_new_coordinates(
-            neighbours_of_current_cel
+            neighbours_of_current_cell
         )
         if new_coordinates is not None:
             self.map[new_coordinates].pop_herb.append(single_animal)
             self.map[current_coordinates].pop_herb.remove(single_animal)
 
-    def move_all_animals_in_cell(self, current_coordinates):
+    def move_all_animals_in_cell(self, current_coordinates, current_landscape):
         """
         Iterates through the population of a cell, and moves all animals.
         :param current_coordinates: tuple
+        :param current_landscape: class instance
         """
+        for animal in current_landscape.pop_herb:
+            self.move_single_animal(current_coordinates, animal)
 
     def migration_season(self):
         """
         Iterates through all landscape cells on the map,
         and moves all animals in each cell.
         """
-        pass
+        for location, landscape in self.map.items():
+            self.move_all_animals_in_cell(location, landscape)
 
     def aging_season(self):
         """
@@ -178,10 +182,10 @@ class IslandMap:
 
 if __name__ == "__main__":
     test_geogr = """\
-                    OOOO
-                    OMJO
-                    OSJO
-                    OOOO
+                    OOOOO
+                    OMJSO
+                    OSJSO
+                    OOOOO
                     """
     test_ini_pop = [
         {
