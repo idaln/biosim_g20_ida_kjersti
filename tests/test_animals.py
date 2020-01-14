@@ -136,12 +136,14 @@ class TestAnimal:
                               (2, 3): Jungle(test_population),
                               (3, 2): Jungle(test_population)
                               }
+        for jungle in dict_of_neighbours.values():
+            jungle.regrowth()
         prop_dict = animal.propensity_of_each_neighbouring_cell\
             (dict_of_neighbours)
         assert type(prop_dict) is dict
         for loc, prop in prop_dict.items():
             assert type(loc) is tuple
-            assert type(prop) is float
+            assert type(prop) is numpy.float64
 
     def test_dict_with_correct_key_and_value_types(self):
         """
@@ -154,11 +156,13 @@ class TestAnimal:
                               (2, 3): Jungle(test_population),
                               (3, 2): Jungle(test_population)
                               }
+        for jungle in dict_of_neighbours.values():
+            jungle.regrowth()
         prob_dict = animal.prob_move_to_each_neighbour(dict_of_neighbours)
         assert type(prob_dict) is dict
         for loc, prob in prob_dict.items():
             assert type(loc) is tuple
-            assert type(prob) is float
+            assert type(prob) is numpy.float64
 
     def test_tuple_returned(self):
         """
