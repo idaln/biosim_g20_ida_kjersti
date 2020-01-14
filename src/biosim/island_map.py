@@ -77,13 +77,20 @@ class IslandMap:
         for landscape in self.map.values():
             landscape.add_newborn_animals()
 
-    def dict_of_neighbours(self, cell_coordinates):
+    def neighbours_of_current_cell(self, current_coordinates):
         """
         Finds the neighbours of a given cell, only those an animal can move to
         are returned.
         :param cell_coordinates: tuple
         :returns: dict of coordinate-class instance pairs
         """
+        neighbours_of_current_cell = {}
+        n, m = current_coordinates[0], current_coordinates[1]
+        neighbours = [(n-1, m), (n, m-1), (n, m+1), (n+1, m)]
+        for neighbour in neighbours:
+            if neighbour in self.map.keys():
+                neighbours_of_current_cell[neighbour] = self.map[neighbour]
+        return neighbours_of_current_cell
 
     def move_single_animal(self, current_coordinates):
         """
@@ -91,6 +98,7 @@ class IslandMap:
         updated population lists.
         :param current_coordinates: tuple
         """
+
 
     def move_all_animals_in_cell(self, current_coordinates):
         """
@@ -143,8 +151,9 @@ class IslandMap:
 
 if __name__ == "__main__":
     test_geogr = """\
-                    JJ
-                    JJ
+                    JJJ
+                    JJJ
+                    JJJ
                     """
 
     test_ini_pop = [
@@ -168,11 +177,9 @@ if __name__ == "__main__":
     i_m = IslandMap(test_geogr, test_ini_pop)
     i_m.create_map_dict()
 
-    for year in range(10):
-        i_m.run_all_seasons()
+    print(i_m.neighbours_of_current_cell((1, 1)).keys())
 
-    for loc, cell in i_m.map.items():
-        print(f"Size of population in cell {loc}: {len(cell.pop_herb)}")
-        for herb in cell.pop_herb:
-            herb.find_fitness()
-            print(f"Fitness: {herb.fitness}, Age: {herb.age}")
+#    for year in range(10):
+#        i_m.run_all_seasons()
+
+
