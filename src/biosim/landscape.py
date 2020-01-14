@@ -95,13 +95,6 @@ class Landscape:
                                "weight": baby_weight})
                 )
 
-    def move_all_animals(self):
-        """
-        Iterates over population lists and moves animals utilizing heir
-        inherent migration method.
-        """
-        pass
-
     def make_all_animals_older(self):
         """
         Iterates over population lists and ages all animals one year
@@ -232,13 +225,14 @@ if __name__ == "__main__":
     s.regrowth()
     print(s.fodder_amount)
 
-    for year in range(10):
+    for year in range(100):
         s.feed_all_herbivores()
         s.add_newborn_animals()
         s.make_all_animals_older()
         s.make_all_animals_lose_weight()
         s.remove_all_dead_animals()
         print(len(s.pop_herb))
+        print(s.fodder_amount)
     print(s.pop_herb)
 
 
