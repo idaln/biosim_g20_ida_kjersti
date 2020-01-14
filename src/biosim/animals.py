@@ -101,6 +101,28 @@ class Animal:
         else:
             self.fitness = q_plus * q_minus
 
+    def prob_of_animal_moving(self):
+        """
+        Computes the probability of moving at all, which depends on the
+        animal's fitness.
+        :return: float
+                Probability of moving
+        """
+        return self.fitness * self.params["mu"]
+
+    def will_animal_move(self):
+        """
+        Uses the probability of the animal moving to decide wether it should
+        move or not.
+        :return: bool
+                True if animal will move, False if not.
+        """
+        prob = self.prob_of_animal_moving()
+        random_number = np.random.random()
+
+        if random_number <= prob:
+            return True
+
     def find_rel_abund_of_fodder(self, landscape_cell):
         """
         Takes an instance of a landscape class, and returns the relative
@@ -175,7 +197,7 @@ class Animal:
             probs = np.append(probs, np.array([prob]))
         return locs, probs
 
-    def where_will_animal_move(self, neighbours_of_current_cell):
+    def find_new_coordinates(self, neighbours_of_current_cell):
         """
         Uses cumulative probability to decide which of the neighbouring cells
         the animal will move to. Returns the coordinates of that cell.
@@ -203,6 +225,15 @@ class Animal:
             return locs[2]
         else:
             return locs[3]
+
+    def return_new_coordinates(self, neighbours_of_current_cell):
+        """
+        Checks whether the animal will move or not, and if so, returns the
+        new coordinates.
+        :return: tuple or None
+        """
+        if self.will_animal_move() is True:
+            return self.find_new_coordinates(neighbours_of_current_cell)
 
     def prob_give_birth(self, num_animals):
         """
