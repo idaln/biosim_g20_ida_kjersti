@@ -150,7 +150,7 @@ if __name__ == "__main__":
         {"species": "Herbivore", "age": 3, "weight": 50.0},
         {"species": "Herbivore", "age": 5, "weight": 20.0},
     ]
-    numpy.random.seed()
+    numpy.random.seed(1)
     j = Jungle(test_population)
     for year in range(0):
         j.feed_all_herbivores()
