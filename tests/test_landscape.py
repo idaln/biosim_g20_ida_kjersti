@@ -100,22 +100,22 @@ class TestLandscape:
         assert landscape.available_fodder_herb() == 0
         assert landscape.fodder_amount == 0
 
-    #    def test_have_all_animals_been_fed(self):
-    #        """
-    #        Tests that all animals have gained weight in a situation where there
-    #        is plenty of food available.
-    #        """
-    #        test_population = [
-    #            {"species": "Herbivore", "age": 3, "weight": 20.0},
-    #            {"species": "Herbivore", "age": 3, "weight": 20.0},
-    #            {"species": "Herbivore", "age": 3, "weight": 20.0},
-    #        ]
-    #
-    #        landscape = Landscape(test_population)
-    #        landscape.feed_all_herbivores()
-    #        assert landscape.pop_herb[0].weight > test_population[0]["weight"]
-    #        assert landscape.pop_herb[1].weight > test_population[1]["weight"]
-    #        assert landscape.pop_herb[2].weight > test_population[2]["weight"]
+        def test_have_all_animals_been_fed(self):
+            """
+            Tests that all animals have gained weight in a situation where there
+            is plenty of food available.
+            """
+            test_population = [
+                {"species": "Herbivore", "age": 3, "weight": 20.0},
+                {"species": "Herbivore", "age": 3, "weight": 20.0},
+                {"species": "Herbivore", "age": 3, "weight": 20.0},
+            ]
+
+            landscape = Landscape(test_population)
+            landscape.feed_all_herbivores()
+            assert landscape.pop_herb[0].weight > test_population[0]["weight"]
+            assert landscape.pop_herb[1].weight > test_population[1]["weight"]
+            assert landscape.pop_herb[2].weight > test_population[2]["weight"]
 
     def test_fittest_animal_eats_first(self):
         """
