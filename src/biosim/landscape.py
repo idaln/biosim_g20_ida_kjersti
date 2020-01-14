@@ -178,4 +178,6 @@ if __name__ == "__main__":
     for jungle in dict_of_neighbours.values():
         jungle.regrowth()
     animal = Animal(test_properties)
-    print(animal.where_will_animal_move(dict_of_neighbours))
+    print(animal.prob_move_to_each_neighbour(dict_of_neighbours))
+    for v in animal.prob_move_to_each_neighbour(dict_of_neighbours).values():
+        print (type(v))
