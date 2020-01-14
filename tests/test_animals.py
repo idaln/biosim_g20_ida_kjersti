@@ -181,6 +181,24 @@ class TestAnimal:
         for loc, prob in prob_dict.items():
             assert type(loc) is tuple
             assert type(prob) is numpy.float64
+            
+    def test_dict_converted_correctly_to_list_array(self):
+        """
+        Asserts that the output from convert_dict_to_list_and_array
+        method are of the correct types.
+        """
+        animal = Animal(test_properties)
+        dict_of_neighbours = {(1, 2): Jungle(test_population),
+                              (2, 1): Jungle(test_population),
+                              (2, 3): Jungle(test_population),
+                              (3, 2): Jungle(test_population)
+                              }
+        for jungle in dict_of_neighbours.values():
+            jungle.regrowth()
+        prob_dict = animal.prob_move_to_each_neighbour(dict_of_neighbours)
+        locs, probs = animal.convert_dict_to_list_and_array(prob_dict)
+        assert type(locs) is list
+        assert type(probs) is numpy.ndarray
 
     def test_tuple_returned(self):
         """
