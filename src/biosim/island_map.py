@@ -3,8 +3,7 @@
 __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idna@nmbu.no & kjkv@nmbu.no"
 
-from biosim.landscape import Jungle
-from biosim.landscape import Animal
+from biosim.landscape import Jungle, Savannah, Desert, Mountain, Ocean
 import textwrap
 
 
@@ -61,6 +60,20 @@ class IslandMap:
                     self.map[loc] = Jungle(self.population[loc])
                 else:
                     self.map[loc] = Jungle([])
+            elif landscape_type is "S":
+                if loc in self.population.keys():
+                    self.map[loc] = Savannah(self.population[loc])
+                else:
+                    self.map[loc] = Savannah([])
+            elif landscape_type is "D":
+                if loc in self.population.keys():
+                    self.map[loc] = Desert(self.population[loc])
+                else:
+                    self.map[loc] = Desert([])
+            elif landscape_type is "O":
+                self.map[loc] = Ocean([])
+            else:
+                self.map[loc] = Mountain([])
 
     def feeding_season(self):
         """
@@ -165,22 +178,24 @@ class IslandMap:
 
 if __name__ == "__main__":
     test_geogr = """\
-                    J
-                    J
+                    OOOO
+                    OMJO
+                    OSJO
+                    OOOO
                     """
     test_ini_pop = [
         {
-            "loc": (1, 1),
+            "loc": (2, 3),
             "pop": [
                 {"species": "Herbivore", "age": 5, "weight": 20}
-                for _ in range(1)
+                for _ in range(6)
             ]
         },
         {
-            "loc": (2, 1),
+            "loc": (3, 2),
             "pop": [
                 {"species": "Herbivore", "age": 5, "weight": 20}
-                for _ in range(1)
+                for _ in range(6)
             ]
         }
 
@@ -192,8 +207,18 @@ if __name__ == "__main__":
     }
     i_m = IslandMap(test_geogr, test_ini_pop)
     i_m.create_map_dict()
-    i_m.feeding_season()
-    print(f"(1, 1):{i_m.map[(1, 1)].pop_herb}, (2, 1): {i_m.map[(2, 1)].pop_herb}")
-    i_m.move_single_animal((2, 1), i_m.map[(2, 1)].pop_herb[0])
-    print(f"(1, 1):{i_m.map[(1, 1)].pop_herb}, (2, 1): {i_m.map[(2, 1)].pop_herb}")
+    print(i_m.map)
+
+    for _ in range(10):
+        sum_animals = 0
+        i_m.run_all_seasons()
+        for loc, cell in i_m.map.items():
+            print(f"Population of cell {loc} is {len(cell.pop_herb)}")
+            sum_animals += len(cell.pop_herb)
+        print(f"Total population of island is {sum_animals}")
+
+    # i_m.feeding_season()
+    # print(f"(1, 1):{i_m.map[(1, 1)].pop_herb}, (2, 1): {i_m.map[(2, 1)].pop_herb}")
+    # i_m.move_single_animal((2, 1), i_m.map[(2, 1)].pop_herb[0])
+    # print(f"(1, 1):{i_m.map[(1, 1)].pop_herb}, (2, 1): {i_m.map[(2, 1)].pop_herb}")
 
