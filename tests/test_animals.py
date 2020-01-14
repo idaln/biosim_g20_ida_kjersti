@@ -176,9 +176,9 @@ class TestAnimal:
         for jungle in dict_of_neighbours.values():
             jungle.regrowth()
         animal = Animal(test_properties)
-        assert type(animal.where_will_animal_move(dict_of_neighbours)) is tuple
+        assert type(animal.find_new_coordinates(dict_of_neighbours)) is tuple
 
-    def test_animal_moved_correctly(self):
+    def test_find_correct_coordinates(self):
         """
         Implements seeding to assert that animal returned correct location to
         move to.
@@ -200,7 +200,27 @@ class TestAnimal:
         for jungle in dict_of_neighbours.values():
             jungle.regrowth()
         animal = Animal(test_properties)
-        assert animal.where_will_animal_move(dict_of_neighbours) == (2, 1)
+        assert animal.find_new_coordinates(dict_of_neighbours) == (2, 1)
+
+    def test_coordinates_returned_when_true(self):
+        """
+        Asserts that a tuple of coordinates is returned if the animal will
+        move.
+        """
+        test_population = [
+            {"species": "Herbivore", "age": 1, "weight": 10.0}
+        ]
+        dict_of_neighbours = {(1, 2): Jungle(test_population),
+                              (2, 1): Jungle(test_population),
+                              (2, 3): Jungle(test_population),
+                              (3, 2): Jungle(test_population)
+                              }
+        for jungle in dict_of_neighbours.values():
+            jungle.regrowth()
+        animal = Animal(test_population[0])
+        animal.will_animal_move() = True
+        assert type(animal.return_new_coordinates(dict_of_neighbours)) == tuple
+        
 
     def test_prob_give_birth_one_animal_in_square(self):
         """
