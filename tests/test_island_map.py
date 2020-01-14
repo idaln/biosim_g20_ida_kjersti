@@ -11,6 +11,7 @@ test_geogr = """\
                 JJ
                 JJ
                 """
+
 test_ini_pop = [
     {
         "loc": (1, 2),
@@ -92,4 +93,38 @@ class TestIslandMap:
         #    test_ini_pop[0]["pop"][0]["weight"]
         # assert i_m.map[(2, 2)][0]["weight"] > \
         #    test_ini_pop[1]["pop"][0]["weight"]
+
+    def test_four_correct_neighbours(self):
+        """
+        Asserts that the neighbours_of_current_cell method return the
+        correct neighbours of a cell with four neighbours.
+        """
+        test_geogr = """
+                        JJJ    
+                        JJJ
+                        JJJ
+                        """
+        i_m = IslandMap(test_geogr, test_ini_pop)
+        i_m.create_map_dict()
+
+        dict_with_neighbours = i_m.neighbours_of_current_cell((2, 2))
+        neighbours = [(1, 2), (2, 1), (2, 3), (3, 2)]
+        for neighbour in dict_with_neighbours.keys():
+            assert neighbour in neighbours
+
+    def test_two_correct_neighbours(self):
+        """
+        Asserts that the neighbours_of_current_cell method return the
+        correct neighbours for a cell with only two neighbours.
+        :return:
+        """
+        i_m = IslandMap(test_geogr, test_ini_pop)
+        i_m.create_map_dict()
+
+        dict_with_neighbours = i_m.neighbours_of_current_cell((1, 1))
+        neighbours = [(1, 2), (2, 1)]
+        for neighbour in dict_with_neighbours.keys():
+            assert neighbour in neighbours
+
+
 
