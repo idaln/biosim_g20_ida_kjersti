@@ -46,14 +46,14 @@ class TestIslandMap:
         converted correctly.
         """
         test_geogr = """\
-                        JJ
-                        JJ
+                        JO
+                        DM
                         """
         i_m = IslandMap(test_geogr, test_ini_pop)
         i_m.create_geography_dict()
         assert type(i_m.geography) is dict
-        assert i_m.geography == {(1, 1): 'J', (1, 2): 'J', (2, 1): 'J',
-                                 (2, 2): 'J'}
+        assert i_m.geography == {(1, 1): 'J', (1, 2): 'O', (2, 1): 'D',
+                                 (2, 2): 'M'}
 
     def test_population_is_converted_correctly_to_dict(self):
         """
