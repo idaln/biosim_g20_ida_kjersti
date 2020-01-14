@@ -163,14 +163,12 @@ if __name__ == "__main__":
 
 
     test_population = [
-        {"species": "Herbivore", "age": 1, "weight": 10.0},
-        {"species": "Herbivore", "age": 1, "weight": 10.0},
         {"species": "Herbivore", "age": 1, "weight": 10.0}
     ]
     test_properties = {
-        "species": "animal",
-        "age": 5,
-        "weight": 20
+        "species": "Herbivore",
+        "age": 1,
+        "weight": 10
     }
     dict_of_neighbours = {(1, 2): Jungle(test_population),
                           (2, 1): Jungle(test_population),
