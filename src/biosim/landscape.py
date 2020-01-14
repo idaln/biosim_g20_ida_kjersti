@@ -229,10 +229,8 @@ if __name__ == "__main__":
     ]
     numpy.random.seed(1)
     s = Savannah(test_population)
+    s.regrowth()
     print(s.fodder_amount)
-    print(s.params["alpha"])
-    print(s.params["f_max"])
-    print(s.params["f_max"]*s.params["alpha"] + s.fodder_amount)
 
     for year in range(10):
         s.feed_all_herbivores()
