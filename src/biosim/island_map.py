@@ -125,7 +125,8 @@ class IslandMap:
         )
         if new_coordinates is not None:
             self.map[new_coordinates].pop_herb.append(single_animal)
-            self.map[current_coordinates].pop_herb.remove(single_animal)
+        #   self.map[current_coordinates].pop_herb.remove(single_animal)
+            return True
 
     def move_all_animals_in_cell(self, current_coordinates, current_landscape):
         """
@@ -133,9 +134,12 @@ class IslandMap:
         :param current_coordinates: tuple
         :param current_landscape: class instance
         """
-        
-        for animal in current_landscape.pop_herb:
-            self.move_single_animal(current_coordinates, animal)
+        current_landscape.pop_herb = [
+            animal for animal in current_landscape.pop_herb
+            if self.move_single_animal(current_coordinates, animal) is False
+        ]
+        # for animal in current_landscape.pop_herb:
+        #    self.move_single_animal(current_coordinates, animal)
 
     def migration_season(self):
         """
@@ -212,7 +216,7 @@ if __name__ == "__main__":
     }
     i_m = IslandMap(test_geogr, test_ini_pop)
     i_m.create_map_dict()
-
+    print(i_m.map)
     for _ in range(10):
         sum_animals = 0
         for loc, cell in i_m.map.items():
