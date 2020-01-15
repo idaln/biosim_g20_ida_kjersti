@@ -3,7 +3,7 @@
 __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idaln@hotmail.com & kjkv@nmbu.no"
 
-from biosim.animals import Animal, Herbivore
+from biosim.animals import Herbivore, Carnivore
 
 
 class Landscape:
@@ -22,17 +22,17 @@ class Landscape:
         """
         self.fodder_amount = 0
 
-        #pop_carn = []
+        self.pop_carn = []
         self.pop_herb = []
         for individual in population:
             if individual["species"] is "Herbivore":
                 self.pop_herb.append(Herbivore(individual))
-            #else:
-                # pop_carn.append(Carnivore(individual))
+            else:
+                self.pop_carn.append(Carnivore(individual))
 
-    def sort_population_by_fitness(self):
+    def sort_herb_population_by_fitness(self):
         """
-        Sorts carnivore and herbivore populations by fitness, from highest to
+        Sorts herbivore populations by fitness, from highest to
         lowest. Uses the Bubble Sort algorithm.
         """
         for individual in self.pop_herb:
@@ -47,6 +47,23 @@ class Landscape:
                 i += 1
             n -= 1
 
+    def sort_carn_population_by_fitness(self):
+        """
+        Sorts carnivore population by fitness, from highest to
+        lowest. Uses the Bubble Sort algorithm.
+        """
+        for individual in self.pop_carn:
+            individual.find_fitness()
+        n = len(self.pop_carn)
+        while n > 0:
+            i = 1
+            while i < n:
+                if self.pop_carn[i].fitness > self.pop_carn[i - 1].fitness:
+                    self.pop_carn[i], self.pop_carn[i - 1] = \
+                        self.pop_carn[i - 1], self.pop_carn[i]
+                i += 1
+            n -= 1
+
     def regrowth(self):
         """
         Sets amount of fodder for herbivores to maximum at the beginning of
@@ -54,7 +71,7 @@ class Landscape:
         """
         self.fodder_amount = self.params['f_max']
 
-    def available_fodder_herb(self):
+    def available_fodder_herbivore(self):
         """
         Returns amount of fodder available to the herbivore.
         :return available_fodder: float
@@ -70,15 +87,35 @@ class Landscape:
         else:
             return 0
 
+    def available_fodder_carnivore(self):
+        """
+        Returns amount of fodder available to carnivore. That is, the total
+        weight of the herbivores in the cell.
+        """
+        available_fodder = 0
+        for herb in self.pop_herb:
+            available_fodder += herb.weight
+        return available_fodder
+
     def feed_all_herbivores(self):
         """
-        Iterates over populations and feeds all animals, utilizing the eating
-        method inherent to the animal instance.
+        Iterates over the population of herbivores and feeds all animals,
+        utilizing the eating method inherent to the animal instance.
         """
         self.regrowth()
-        self.sort_population_by_fitness()
+        self.sort_herb_population_by_fitness()
         for herb in self.pop_herb:
-            herb.add_eaten_fodder_to_weight(self.available_fodder_herb())
+            herb.add_eaten_fodder_to_weight(self.available_fodder_herbivore())
+
+    def feed_all_carnivores(self):
+        """
+        Iterates over the population of carnivores in the cell, and feeds all
+        carnivores using their inherent eating method.
+        """
+        self.sort_carn_population_by_fitness()
+        for carn in self.pop_carn:
+            self.sort_herb_population_by_fitness()
+            carn.eat(self.pop_herb)
 
     def add_newborn_animals(self):
         """
