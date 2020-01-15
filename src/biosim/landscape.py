@@ -124,7 +124,10 @@ class Landscape:
         self.sort_carn_population_by_fitness()
         for carn in self.pop_carn:
             self.sort_herb_population_by_fitness()
-            carn.eat(self.pop_herb)
+            eaten_herbivores = carn.eat(self.pop_herb)
+            self.remove_all_eaten_herbivores(eaten_herbivores)
+
+
 
     def add_newborn_animals(self):
         """
@@ -262,16 +265,24 @@ class Ocean(Landscape):
 if __name__ == "__main__":
     import numpy
     test_population = [
-        {"species": "Herbivore", "age": 1, "weight": 10.0},
-        {"species": "Herbivore", "age": 3, "weight": 50.0},
-        {"species": "Herbivore", "age": 5, "weight": 20.0},
+        {"species": "Herbivore", "age": 1, "weight": 5.0},
+        {"species": "Carnivore", "age": 5, "weight": 6.0},
+        {"species": "Herbivore", "age": 1, "weight": 5.0},
+        {"species": "Carnivore", "age": 2, "weight": 10.0},
+        {"species": "Carnivore", "age": 10, "weight": 90.0},
+        {"species": "Herbivore", "age": 1, "weight": 5.0},
     ]
-    numpy.random.seed(1)
-    s = Savannah(test_population)
-    s.regrowth()
-    print(s.fodder_amount)
+    savannah = Savannah(test_population)
+    print(savannah.pop_herb, savannah.pop_carn)
+    savannah.feed_all_carnivores()
+    print(savannah.pop_herb, savannah.pop_carn)
+    for herb in savannah.pop_herb:
+        print (herb.fitness)
+    for carn in savannah.pop_carn:
+        print (carn.fitness)
 
-    for year in range(100):
+
+    for year in range(0):
         s.feed_all_herbivores()
         s.add_newborn_animals()
         s.make_all_animals_older()
@@ -279,7 +290,7 @@ if __name__ == "__main__":
         s.remove_all_dead_animals()
         print(len(s.pop_herb))
         print(s.fodder_amount)
-    print(s.pop_herb)
+    #print(s.pop_herb)
 
 
     # test_population = [
