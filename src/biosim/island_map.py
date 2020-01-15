@@ -125,8 +125,11 @@ class IslandMap:
             neighbours_of_current_cell
         )
         if new_coordinates is not None:
-            self.map[new_coordinates].pop_herb.append(single_animal)
-            return True
+            if type(single_animal).__name__ is "Herbivore":
+                self.map[new_coordinates].pop_herb.append(single_animal)
+                return True
+            else:
+                self.map[new_coordinates].pop_carn.append(single_animal)
 
     def move_all_animals_in_cell(self, current_coordinates, current_landscape):
         """
@@ -136,6 +139,10 @@ class IslandMap:
         """
         current_landscape.pop_herb = [
             animal for animal in current_landscape.pop_herb
+            if not self.move_single_animal(current_coordinates, animal)
+        ]
+        current_landscape.pop_carn = [
+            animal for animal in current_landscape.pop_carn
             if not self.move_single_animal(current_coordinates, animal)
         ]
 
@@ -185,16 +192,16 @@ class IslandMap:
 
 if __name__ == "__main__":
     test_geogr = """\
-                    OOOOO
-                    OMJSO
-                    OSJSO
-                    OOOOO
+                    SMJSS
+                    SSJSS
+                    JJJJJ
                     """
+
     test_ini_pop = [
         {
             "loc": (2, 3),
             "pop": [
-                {"species": "Herbivore", "age": 5, "weight": 20}
+                {"species": "Carnivore", "age": 5, "weight": 20}
                 for _ in range(6)
             ]
         },
@@ -202,23 +209,20 @@ if __name__ == "__main__":
             "loc": (3, 2),
             "pop": [
                 {"species": "Herbivore", "age": 5, "weight": 20}
-                for _ in range(6)
+                for _ in range(12)
             ]
         }
 
     ]
-    test_properties = {
-        "species": "animal",
-        "age": 5,
-        "weight": 20
-    }
     i_m = IslandMap(test_geogr, test_ini_pop)
     i_m.create_map_dict()
-    print(i_m.map)
-    for _ in range(10):
+    for _ in range(3):
         sum_animals = 0
+        print(i_m.map)
         for loc, cell in i_m.map.items():
-            print(f"Population of cell {loc} is {len(cell.pop_herb)}")
+            print(f"Population of cell {loc} is "
+                  f"{len(cell.pop_carn)+len(cell.pop_herb)}")
+            sum_animals += len(cell.pop_carn)
             sum_animals += len(cell.pop_herb)
         i_m.run_all_seasons()
         print(f"Total population of island is {sum_animals}")
