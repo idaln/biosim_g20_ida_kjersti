@@ -469,13 +469,28 @@ class TestCarnivore:
     """
     Tests for Carnivore class
     """
+    def setUp(self):
+        """
+
+        :return:
+        """
+        Carnivore.params["DeltaPhiMax"] = 10.0
+        carnivore = Carnivore(test_properties)
+        herbivore = Herbivore(test_properties)
+
+    def tearDown(self):
+        """
+
+        :return:
+        """
+
     def test_constructor(self):
         """
         Checks that class is initialized with given weight and age.
         """
-        c = Carnivore(test_properties)
-        assert c.age == test_properties["age"]
-        assert c.weight == test_properties["weight"]
+        carnivore = Carnivore(test_properties)
+        assert carnivore.age == test_properties["age"]
+        assert carnivore.weight == test_properties["weight"]
 
     def test_correct_prob(self):
         """
