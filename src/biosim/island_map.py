@@ -82,6 +82,7 @@ class IslandMap:
         """
         for landscape in self.map.values():
             landscape.feed_all_herbivores()
+            landscape.feed_all_carnivores()
 
     def procreation_season(self):
         """
@@ -221,9 +222,3 @@ if __name__ == "__main__":
             sum_animals += len(cell.pop_herb)
         i_m.run_all_seasons()
         print(f"Total population of island is {sum_animals}")
-
-    # i_m.feeding_season()
-    # print(f"(1, 1):{i_m.map[(1, 1)].pop_herb}, (2, 1): {i_m.map[(2, 1)].pop_herb}")
-    # i_m.move_single_animal((2, 1), i_m.map[(2, 1)].pop_herb[0])
-    # print(f"(1, 1):{i_m.map[(1, 1)].pop_herb}, (2, 1): {i_m.map[(2, 1)].pop_herb}")
-
