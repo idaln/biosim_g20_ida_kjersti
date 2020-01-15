@@ -125,7 +125,6 @@ class IslandMap:
         )
         if new_coordinates is not None:
             self.map[new_coordinates].pop_herb.append(single_animal)
-        #   self.map[current_coordinates].pop_herb.remove(single_animal)
             return True
 
     def move_all_animals_in_cell(self, current_coordinates, current_landscape):
@@ -136,10 +135,8 @@ class IslandMap:
         """
         current_landscape.pop_herb = [
             animal for animal in current_landscape.pop_herb
-            if self.move_single_animal(current_coordinates, animal) is False
+            if not self.move_single_animal(current_coordinates, animal)
         ]
-        # for animal in current_landscape.pop_herb:
-        #    self.move_single_animal(current_coordinates, animal)
 
     def migration_season(self):
         """
