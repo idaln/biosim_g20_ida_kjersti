@@ -136,7 +136,8 @@ class TestLandscape:
         """
         total_pop = example_pop_herb + example_pop_carn
         landscape = Landscape(total_pop)
-        swdvhhhhhhhhhnjbvd
+        assert landscape.available_fodder_carnivore() == 80
+        # 80 is total weight of herbivores in example_pop_herb
 
     def test_have_all_animals_been_fed(self):
         """
