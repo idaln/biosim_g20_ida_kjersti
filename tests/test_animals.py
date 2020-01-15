@@ -489,15 +489,29 @@ class TestCarnivore:
         """
         Asserts that kill method returns True when prob_kill is one.
         """
+        herbivore = Herbivore(test_properties)
+        carnivore = Carnivore(test_properties)
+        herbivore.find_fitness()
+        carnivore.find_fitness()
+        carnivore.params["DeltaPhiMax"] = 0.1
+        assert carnivore.kill(herbivore) is True
+
     def test_not_kill_when_prob_is_zero(self):
         """
         Asserts that kill method returns False when prob_kill is zero.
         """
+        herbivore = Herbivore(test_properties)
+        carnivore = Carnivore(test_properties)
+        herbivore.find_fitness()
+        carnivore.fitness = 0.5
+        assert carnivore.kill(herbivore) is False
+
     def test_carn_doesnt_eat_when_no_herbs(self):
         """
         Asserts that carnivore hasn't gained weight when there are no
         herbivores to be eaten.
         """
+
     def test_carn_gained_weight_after_eating(self):
         """
         Assert that carnivore has gained weight after eating.
