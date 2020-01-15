@@ -107,6 +107,15 @@ class Landscape:
         for herb in self.pop_herb:
             herb.add_eaten_fodder_to_weight(self.available_fodder_herbivore())
 
+    def remove_all_eaten_herbivores(self, eaten_herbivores):
+        """
+        Removed herbivores that have been eaten from pop_herb
+        :param eaten_herbivores: list
+                List of herbivores that have been eaten
+        """
+        self.pop_herb = [herb for herb in self.pop_herb
+                         if herb not in eaten_herbivores]
+
     def feed_all_carnivores(self):
         """
         Iterates over the population of carnivores in the cell, and feeds all
