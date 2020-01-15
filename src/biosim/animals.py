@@ -336,6 +336,58 @@ class Herbivore(Animal):
         """
         super().__init__(properties)
 
+class Carnivore(Animal):
+    """
+    Class for Carnivores.
+    """
+    params = {
+        "w_birth": 6.0,
+        "sigma_birth": 1.0,
+        "beta": 0.75,
+        "eta": 0.125,
+        "a_half": 60.0,
+        "phi_age": 0.4,
+        "w_half": 4.0,
+        "phi_weight": 0.4,
+        "mu": 0.4,
+        "lambda": 1.0,
+        "gamma": 0.8,
+        "zeta": 3.5,
+        "xi": 1.1,
+        "omega": 0.9,
+        "F": 50.0,
+        "DeltaPhiMax": 10.0
+    }
+
+    def __init__(self, properties):
+        """
+        Initializes carnivore animal with given properties.
+        :param properties: dict storing age, weight and fitness of herbivore
+        """
+        super().__init__(properties)
+
+    def prob_kill(self, fitness_herb):
+        """
+        Calculates the probability of a carnivore killing a herbivore.
+        """
+    def kill(self, herb):
+        """
+        Implements prob_kill and a random number to decide whether a
+        carnivore kills or not.
+        :param herb: class '__main__.Herbivore'
+                Herbivore to be killed
+        :return: bool
+        """
+    def eat(self, pop_herb):
+        """
+
+        :param pop_herb: list
+                List of herbivores available to the carnivore sorted by
+                fitness
+        :return list
+                List of herbivores killed
+        """
+
 
 if __name__ == "__main__":
     print("hello, world")
