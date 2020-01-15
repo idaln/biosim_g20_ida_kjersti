@@ -463,3 +463,44 @@ class TestHerbivore:
         h = Herbivore(test_properties)
         assert h.age == test_properties["age"]
         assert h.weight == test_properties["weight"]
+
+class TestCarnivore:
+    """
+    Tests for Carnivore class
+    """
+    def test_constructor(self):
+        """
+        Checks that class is initialized with given weight and age.
+        """
+        h = Herbivore(test_properties)
+        assert h.age == test_properties["age"]
+        assert h.weight == test_properties["weight"]
+
+    def correct_prob(self):
+        """
+        Asserts that prob_kill returns correct probability.
+        """
+
+    def test_kill_when_prob_is_one(self):
+        """
+        Asserts that kill method returns True when prob_kill is one.
+        """
+    def test_not_kill_when_prob_is_zero(self):
+        """
+        Asserts that kill method returns False when prob_kill is zero.
+        """
+    def test_carn_doesnt_eat_when_no_herbs(self):
+        """
+        Asserts that carnivore hasn't gained weight when there are no
+        herbivores to be eaten.
+        """
+    def test_carn_gained_weight_after_eating(self):
+        """
+        Assert that carnivore has gained weight after eating.
+        """
+    def test_list_of_herbs_returned(self):
+        """
+        Asserts that eat method returns a list of herbivore class instances.
+        """
+
+
