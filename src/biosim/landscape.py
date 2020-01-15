@@ -127,8 +127,6 @@ class Landscape:
             eaten_herbivores = carn.eat(self.pop_herb)
             self.remove_all_eaten_herbivores(eaten_herbivores)
 
-
-
     def add_newborn_animals(self):
         """
         Iterates over population lists and makes animal procreate utilizing
