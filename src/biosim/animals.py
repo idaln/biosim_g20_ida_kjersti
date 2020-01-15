@@ -395,6 +395,19 @@ class Carnivore(Animal):
         self.weight += self.params["beta"] * amount_eaten
         return animals_eaten
 
+    def find_rel_abund_of_fodder(self, landscape_cell):
+        """
+        Takes an instance of a landscape class, and returns the relative
+        abundance of fodder in that instance.
+        :param landscape_cell: dict
+                Instance of landscape class
+        :return: float
+        """
+        fodder_carn = landscape_cell.available_fodder_carnivore()
+        num_carns = len(landscape_cell.pop_carn)
+        abund_fodder_carn = fodder_carn / ((num_carns + 1) * self.params["F"])
+        return abund_fodder_carn
+
 
 if __name__ == "__main__":
     test_properties = {
