@@ -5,25 +5,6 @@ __email__ = "idna@nmbu.no & kjkv@nmbu.no"
 
 import numpy as np
 
-params_carnivore = {
-        "w_birth": 6.0,
-        "sigma_birth": 1.0,
-        "beta": 0.75,
-        "eta": 0.125,
-        "a_half": 60.0,
-        "phi_age": 0.4,
-        "w_half": 4.0,
-        "phi_weight": 0.4,
-        "mu": 0.4,
-        "lambda": 1.0,
-        "gamma": 0.8,
-        "zeta": 3.5,
-        "xi": 1.1,
-        "omega": 0.9,
-        "F": 50.0,
-        "DeltaPhiMax": 10.0
-}
-
 
 class Animal:
     """
@@ -336,6 +317,7 @@ class Herbivore(Animal):
         """
         super().__init__(properties)
 
+
 class Carnivore(Animal):
     """
     Class for Carnivores.
@@ -370,6 +352,13 @@ class Carnivore(Animal):
         """
         Calculates the probability of a carnivore killing a herbivore.
         """
+        if self.fitness <= fitness_herb:
+            return 0
+        elif self.fitness - fitness_herb < self.params["DeltaPhiMax"]:
+            return (self.fitness - fitness_herb) / self.params["DeltaPhiMax"]
+        else:
+            return 1
+
     def kill(self, herb):
         """
         Implements prob_kill and a random number to decide whether a
@@ -378,15 +367,33 @@ class Carnivore(Animal):
                 Herbivore to be killed
         :return: bool
         """
+        random_number = np.random.random()
+        prob = self.prob_kill(herb.fitness)
+        if random_number <= prob:
+            return True
+        else:
+            return False
+
     def eat(self, pop_herb):
         """
-
+        Iterates through list of herbivores, and implements kill method on one
+        herbivore at the time until carnivore has satisfied it's appetite or
+        has tried to kill all herbivores without luck.
         :param pop_herb: list
                 List of herbivores available to the carnivore sorted by
                 fitness
         :return list
                 List of herbivores killed
         """
+        amount_eaten = 0
+        animals_eaten = []
+        for herb in reversed(pop_herb):
+            while amount_eaten < self.params["F"]:
+                if self.kill(herb) is True:
+                    animals_eaten.append(herb)
+                    amount_eaten += herb.weight
+        self.weight += self.params["beta"] * amount_eaten
+        return animals_eaten
 
 
 if __name__ == "__main__":
