@@ -9,6 +9,7 @@ from biosim.landscape import Jungle
 from pytest import approx
 import numpy
 
+
 class TestAnimal:
     """
     Tests for Animal class.
@@ -16,10 +17,11 @@ class TestAnimal:
     @pytest.fixture
     def example_properties(self):
         return {
-        "species": "animal",
-        "age": 5,
-        "weight": 20
-    }
+            "species": "animal",
+            "age": 5,
+            "weight": 20
+        }
+
     @pytest.fixture
     def example_properties_w_40(self):
         return {
@@ -31,10 +33,10 @@ class TestAnimal:
     @pytest.fixture
     def example_population(self):
         return [
-        {"species": "Herbivore", "age": 1, "weight": 10.0},
-        {"species": "Herbivore", "age": 1, "weight": 10.0},
-        {"species": "Herbivore", "age": 1, "weight": 10.0}
-    ]
+            {"species": "Herbivore", "age": 1, "weight": 10.0},
+            {"species": "Herbivore", "age": 1, "weight": 10.0},
+            {"species": "Herbivore", "age": 1, "weight": 10.0}
+        ]
 
     def test_constructor(self, example_properties):
         """
@@ -345,7 +347,7 @@ class TestAnimal:
         birth_weight = a.birth_process(num_animals=6)
         assert a.weight == initial_weight - (a.params['xi'] * birth_weight)
 
-    def test_birth_weight_different_from_zero(self,example_properties_w_40,
+    def test_birth_weight_different_from_zero(self, example_properties_w_40,
                                               mocker):
         """
         Tests birth_process method.
@@ -426,10 +428,10 @@ class TestHerbivore:
     @pytest.fixture
     def example_properties(self):
         return {
-        "species": "animal",
-        "age": 5,
-        "weight": 20
-    }
+            "species": "animal",
+            "age": 5,
+            "weight": 20
+        }
 
     def test_constructor(self, example_properties):
         """
@@ -447,10 +449,10 @@ class TestCarnivore:
     @pytest.fixture
     def example_properties(self):
         return {
-        "species": "animal",
-        "age": 5,
-        "weight": 20
-    }
+            "species": "animal",
+            "age": 5,
+            "weight": 20
+        }
 
     @pytest.fixture
     def setup_class(cls):
