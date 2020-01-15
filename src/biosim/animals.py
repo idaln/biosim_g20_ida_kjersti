@@ -390,4 +390,12 @@ class Carnivore(Animal):
 
 
 if __name__ == "__main__":
-    print("hello, world")
+    test_properties = {
+        "species": "animal",
+        "age": 5,
+        "weight": 20
+    }
+    c = Carnivore(test_properties)
+    c.find_fitness()
+    print(c.fitness)
+    print(c.params["DeltaPhiMax"])
