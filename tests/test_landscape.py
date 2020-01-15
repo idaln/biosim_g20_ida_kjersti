@@ -4,7 +4,7 @@ __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idaln@hotmail.com & kjkv@nmbu.no"
 
 from biosim.landscape import Landscape, Jungle, Savannah
-from biosim.animals import Animal, Herbivore
+from biosim.animals import Herbivore
 from pytest import approx
 import pytest
 import numpy
@@ -139,6 +139,8 @@ class TestLandscape:
         assert landscape.available_fodder_carnivore() == 80
         # 80 is total weight of herbivores in example_pop_herb
 
+    def
+
     def test_have_all_animals_been_fed(self):
         """
         Tests that all animals have gained weight in a situation where there
@@ -264,4 +266,3 @@ class TestSavannah:
         savannah = Savannah(test_pop_savannah)
         savannah.regrowth()
         assert savannah.fodder_amount == 90
-
