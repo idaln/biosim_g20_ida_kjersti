@@ -476,11 +476,14 @@ class TestCarnivore:
         assert c.age == test_properties["age"]
         assert c.weight == test_properties["weight"]
 
-    def correct_prob(self):
+    def test_correct_prob(self):
         """
         Asserts that prob_kill returns correct probability.
         """
-
+        herb_fitness = 0.5
+        carnivore = Carnivore(test_properties)
+        prob = carnivore.prob_kill(herb_fitness)
+        assert prob == approx(0.04983411986)
 
     def test_kill_when_prob_is_one(self):
         """
