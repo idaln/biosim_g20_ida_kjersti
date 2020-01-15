@@ -7,8 +7,6 @@ from biosim.island_map import IslandMap
 import pytest
 
 
-
-
 class TestIslandMap:
     """
     Tests for IslandMap class.
@@ -19,6 +17,7 @@ class TestIslandMap:
                 JJ
                 JJ
                 """
+
     @pytest.fixture
     def example_ini_pop(self):
         return [
@@ -37,29 +36,35 @@ class TestIslandMap:
             ]
         }
     ]
+
     def test_contructor(self, example_geogr, example_ini_pop):
         """
         Asserts that an instance of the IslandMap class can be constructed.
         """
-        island_map  = IslandMap(example_geogr, example_ini_pop)
+        island_map = IslandMap(example_geogr, example_ini_pop)
         assert isinstance(island_map, IslandMap)
 
-    def test_geography_is_converted_correctly_to_dict(self, example_ini_pop):
+    def test_geography_is_converted_correctly_to_dict(
+            self, example_geogr, example_ini_pop
+    ):
         """
         Asserts that the create_geography method creates a dictionary that is
         converted correctly.
         """
-        test_geogr = """\
-                        JO
-                        DM
-                        """
-        island_map = IslandMap(test_geogr, example_ini_pop)
+        test_geogr_convert = """\
+                                JO
+                                DM
+                                """
+        island_map = IslandMap(test_geogr_convert, example_ini_pop)
         island_map.create_geography_dict()
         assert type(island_map.geography) is dict
-        assert island_map.geography == {(1, 1): 'J', (1, 2): 'O', (2, 1): 'D',
-                                 (2, 2): 'M'}
+        assert island_map.geography == {
+            (1, 1): 'J', (1, 2): 'O', (2, 1): 'D', (2, 2): 'M'
+        }
 
-    def test_population_is_converted_correctly_to_dict(self, example_geogr, example_ini_pop):
+    def test_population_is_converted_correctly_to_dict(
+            self, example_geogr, example_ini_pop
+    ):
         """
         Asserts that the create_population method created a dictionary that is
         converted correctly.
@@ -89,30 +94,30 @@ class TestIslandMap:
         island_map.create_map_dict()
         assert type(island_map.map) is dict
 
-    # def test_feeding_season(self):
-    #    """
-    #    Asserts that one animal in each cell of the test island
-    #    have been fed.
-    #    """
-        # i_m = IslandMap(test_geogr, test_ini_pop)
-        # i_m.create_map_dict()
-        # i_m.feeding_season()
-        # assert i_m.map[(1, 2)][0]["weight"] > \
-        #    test_ini_pop[0]["pop"][0]["weight"]
-        # assert i_m.map[(2, 2)][0]["weight"] > \
-        #    test_ini_pop[1]["pop"][0]["weight"]
+    def test_feeding_season(self, example_geogr, example_ini_pop):
+        """
+        Asserts that one animal in each cell of the test island
+        have been fed.
+        """
+        island_map = IslandMap(example_geogr, example_ini_pop)
+        island_map.create_map_dict()
+        island_map.feeding_season()
+        assert island_map.map[(1, 2)].pop_herb[0].weight > \
+            example_ini_pop[0]["pop"][0]["weight"]
+        assert island_map.map[(2, 2)].pop_herb[0].weight > \
+            example_ini_pop[1]["pop"][0]["weight"]
 
-    def test_four_correct_neighbours(self, example_geogr, example_ini_pop):
+    def test_four_correct_neighbours(self, example_ini_pop):
         """
         Asserts that the neighbours_of_current_cell method return the
         correct neighbours of a cell with four neighbours.
         """
-        test_geogr = """
-                        JJJ    
-                        JJJ
-                        JJJ
-                        """
-        island_map = IslandMap(example_geogr, example_ini_pop)
+        test_geogr_neighbour = """\
+                                  JJJ    
+                                  JJJ
+                                  JJJ
+                                  """
+        island_map = IslandMap(test_geogr_neighbour, example_ini_pop)
         island_map.create_map_dict()
 
         dict_with_neighbours = island_map.neighbours_of_current_cell((2, 2))
@@ -124,7 +129,6 @@ class TestIslandMap:
         """
         Asserts that the neighbours_of_current_cell method return the
         correct neighbours for a cell with only two neighbours.
-        :return:
         """
         island_map = IslandMap(example_geogr, example_ini_pop)
         island_map.create_map_dict()
