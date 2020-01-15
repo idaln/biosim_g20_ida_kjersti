@@ -469,20 +469,15 @@ class TestCarnivore:
     """
     Tests for Carnivore class
     """
-    def setUp(self):
+    @classmethod
+    def setup_class(cls):
         """
-
-        :return:
+        Denne skulle gjerne satt opp carnivore- og herbivore instanser slik
+        at vi ikke trenger å gjøre det i hver test. Per nå funker ikke det.
         """
         Carnivore.params["DeltaPhiMax"] = 10.0
         carnivore = Carnivore(test_properties)
         herbivore = Herbivore(test_properties)
-
-    def tearDown(self):
-        """
-
-        :return:
-        """
 
     def test_constructor(self):
         """
