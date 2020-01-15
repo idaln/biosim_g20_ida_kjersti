@@ -6,35 +6,47 @@ __email__ = "idaln@hotmail.com & kjkv@nmbu.no"
 from biosim.landscape import Landscape, Jungle, Savannah
 from biosim.animals import Animal, Herbivore
 from pytest import approx
+import pytest
 import numpy
-
-test_properties_herb = {
-    "species": "animal",
-    "age": 5,
-    "weight": 20
-}
-
-test_population = [
-    {"species": "Herbivore", "age": 1, "weight": 10.0},
-    {"species": "Herbivore", "age": 3, "weight": 50.0},
-    {"species": "Herbivore", "age": 5, "weight": 20.0}
-]
-landscape = Landscape(test_population)
 
 
 class TestLandscape:
     """
     Tests for Landscape class
     """
+    @pytest.fixture
+    def example_pop_herb(self):
+        return [
+                    {"species": "Herbivore", "age": 1, "weight": 10.0},
+                    {"species": "Herbivore", "age": 3, "weight": 50.0},
+                    {"species": "Herbivore", "age": 5, "weight": 20.0}
+         ]
 
-    def test_constructor(self):
+    @pytest.fixture
+    def example_properties_herb(self):
+        return {
+                "species": "Herbivore",
+                "age": 5,
+                "weight": 20
+         }
+
+    @pytest.fixture
+    def setup_for_feed_test(self):
+        """
+        Sets up parameters for test_fittest_animal_eats_first method.
+        """
+        landscape_params = Landscape.params.copy()
+        yield None
+        Landscape.params = landscape_params
+
+    def test_constructor(self, example_pop_herb):
         """
         Asserts that the Landscape class enables creation of class
         instances and it's population attribute has correct length.
         """
-        landscape = Landscape(test_population)
+        landscape = Landscape(example_pop_herb)
         assert isinstance(landscape, Landscape)
-        assert len(landscape.pop_herb) == len(test_population)
+        assert len(landscape.pop_herb) == len(example_pop_herb)
 
     def test_sort_single_animal_by_fitness(self):
         """
@@ -45,57 +57,57 @@ class TestLandscape:
         landscape.sort_population_by_fitness()
         assert landscape.pop_herb[0].fitness == approx(0.49979521641750696)
 
-    def test_sort_several_animals_by_fitness(self):
+    def test_sort_several_animals_by_fitness(self, example_pop_herb):
         """
         Tests that the sorting method works on a list of several herbivores.
         """
-        landscape = Landscape(test_population)
+        landscape = Landscape(example_pop_herb)
         landscape.sort_population_by_fitness()
         assert landscape.pop_herb[0].fitness > landscape.pop_herb[1].fitness
         assert landscape.pop_herb[1].fitness > landscape.pop_herb[2].fitness
 
-    def test_regrowth(self):
+    def test_regrowth(self, example_pop_herb):
         """
         Asserts that amount of fodder is equal f_max after each year.
         """
-        landscape = Landscape(test_population)
+        landscape = Landscape(example_pop_herb)
         landscape.regrowth()
-        assert landscape.fodder_amount == landscape.params['f_max']
+        assert landscape.fodder_amount == landscape.params["f_max"]
 
-    def test_enough_fodder_is_available(self):
+    def test_enough_fodder_is_available(self, example_pop_herb):
         """
         Asserts that herbivore is provided with the amount it desires, when
         enough fodder is available. Asserts that the amount of fodder
-        provided is substracted from the initial fodder amount.
+        provided is subtracted from the initial fodder amount.
         """
-        landscape = Landscape(test_population)
+        landscape = Landscape(example_pop_herb)
         landscape.regrowth()
         old_fodder_amount = landscape.fodder_amount
         available_fodder_to_herb = landscape.available_fodder_herb()
         assert available_fodder_to_herb == Herbivore.params["F"]
         assert landscape.fodder_amount == old_fodder_amount - \
-               available_fodder_to_herb
+            available_fodder_to_herb
 
-    def test_restricted_amount_of_fodder_is_available(self):
+    def test_restricted_amount_of_fodder_is_available(self, example_pop_herb):
         """
         Asserts that all of the fodder is provided to the herbivore when it's
         demand is larger than the amount of fodder available. Asserts that
         the amount of fodder left now is zero.
         """
-        landscape = Landscape(test_population)
+        landscape = Landscape(example_pop_herb)
         landscape.fodder_amount = Herbivore.params["F"] / 2
         old_fodder_amount = landscape.fodder_amount
         available_fodder_to_herb = landscape.available_fodder_herb()
         assert available_fodder_to_herb == Herbivore.params["F"] / 2
         assert landscape.fodder_amount == old_fodder_amount - \
-               available_fodder_to_herb
+            available_fodder_to_herb
 
-    def test_no_fodder_available(self):
+    def test_no_fodder_available(self, example_pop_herb):
         """
         Asserts that no fodder is provided to the herbivore when there is no
         fodder available.
         """
-        landscape = Landscape(test_population)
+        landscape = Landscape(example_pop_herb)
         landscape.fodder_amount = 0
         assert landscape.available_fodder_herb() == 0
         assert landscape.fodder_amount == 0
@@ -105,37 +117,39 @@ class TestLandscape:
         Tests that all animals have gained weight in a situation where there
         is plenty of food available.
         """
-        test_population = [
+        test_population_feed = [
             {"species": "Herbivore", "age": 3, "weight": 20.0},
             {"species": "Herbivore", "age": 3, "weight": 20.0},
             {"species": "Herbivore", "age": 3, "weight": 20.0},
         ]
 
-        landscape = Landscape(test_population)
+        landscape = Landscape(test_population_feed)
         landscape.feed_all_herbivores()
-        assert landscape.pop_herb[0].weight > test_population[0]["weight"]
-        assert landscape.pop_herb[1].weight > test_population[1]["weight"]
-        assert landscape.pop_herb[2].weight > test_population[2]["weight"]
+        assert landscape.pop_herb[0].weight > test_population_feed[0]["weight"]
+        assert landscape.pop_herb[1].weight > test_population_feed[1]["weight"]
+        assert landscape.pop_herb[2].weight > test_population_feed[2]["weight"]
 
-    def test_fittest_animal_eats_first(self):
+    def test_fittest_animal_eats_first(
+            self, setup_for_feed_test, example_pop_herb
+    ):
         """
         Tests that the strongest animal has eaten first, in a situation
         where there is a limited supply of food.
         """
-        landscape = Landscape(test_population)
+        landscape = Landscape(example_pop_herb)
         landscape.params["f_max"] = Herbivore.params["F"]
         landscape.feed_all_herbivores()
-        assert landscape.pop_herb[0].weight > test_population[1]["weight"]
-        assert landscape.pop_herb[1].weight == test_population[2]["weight"]
-        assert landscape.pop_herb[2].weight == test_population[0]["weight"]
+        assert landscape.pop_herb[0].weight > example_pop_herb[1]["weight"]
+        assert landscape.pop_herb[1].weight == example_pop_herb[2]["weight"]
+        assert landscape.pop_herb[2].weight == example_pop_herb[0]["weight"]
 
     def test_newborn_animals_have_been_created(self):
         """
-        Asserts that in a situastion when all animals will give birth,
+        Asserts that in a situation when all animals will give birth,
         the population list has been updated with the right number of animals.
         """
         numpy.random.seed(1)
-        test_population = [
+        test_population_birth = [
             {"species": "Herbivore", "age": 2, "weight": 70.0},
             {"species": "Herbivore", "age": 3, "weight": 90.0},
             {"species": "Herbivore", "age": 3, "weight": 70.0},
@@ -143,31 +157,31 @@ class TestLandscape:
             {"species": "Herbivore", "age": 3, "weight": 60.0},
             {"species": "Herbivore", "age": 5, "weight": 90.0}
         ]
-        landscape = Landscape(test_population)
+        landscape = Landscape(test_population_birth)
         for animal in landscape.pop_herb:
             animal.find_fitness()
         landscape.add_newborn_animals()
-        assert len(landscape.pop_herb) == 2 * len(test_population)
+        assert len(landscape.pop_herb) == 2 * len(test_population_birth)
 
-    def test_have_all_animals_aged(self):
+    def test_have_all_animals_aged(self, example_pop_herb):
         """
         Test that all animals in the population has aged by one year.
         """
-        landscape = Landscape(test_population)
+        landscape = Landscape(example_pop_herb)
         landscape.make_all_animals_older()
-        assert landscape.pop_herb[0].age == test_population[0]["age"] + 1
-        assert landscape.pop_herb[1].age == test_population[1]["age"] + 1
-        assert landscape.pop_herb[2].age == test_population[2]["age"] + 1
+        assert landscape.pop_herb[0].age == example_pop_herb[0]["age"] + 1
+        assert landscape.pop_herb[1].age == example_pop_herb[1]["age"] + 1
+        assert landscape.pop_herb[2].age == example_pop_herb[2]["age"] + 1
 
-    def test_have_all_animals_lost_weight(self):
+    def test_have_all_animals_lost_weight(self, example_pop_herb):
         """
         Test that all animals in the population has lost some weight.
         """
-        landscape = Landscape(test_population)
+        landscape = Landscape(example_pop_herb)
         landscape.make_all_animals_lose_weight()
-        assert landscape.pop_herb[0].weight < test_population[0]["weight"]
-        assert landscape.pop_herb[1].weight < test_population[1]["weight"]
-        assert landscape.pop_herb[2].weight < test_population[2]["weight"]
+        assert landscape.pop_herb[0].weight < example_pop_herb[0]["weight"]
+        assert landscape.pop_herb[1].weight < example_pop_herb[1]["weight"]
+        assert landscape.pop_herb[2].weight < example_pop_herb[2]["weight"]
 
     def test_has_dead_animal_been_removed(self):
         """
@@ -196,7 +210,12 @@ class TestJungle:
         Asserts that class instance has been initialized with no fodder
         available.
         """
-        jungle = Jungle(test_population)
+        test_pop_jungle = [
+            {"species": "Herbivore", "age": 1, "weight": 10.0},
+            {"species": "Herbivore", "age": 3, "weight": 50.0},
+            {"species": "Herbivore", "age": 5, "weight": 20.0}
+        ]
+        jungle = Jungle(test_pop_jungle)
         assert jungle.fodder_amount == 0
 
 
@@ -204,12 +223,18 @@ class TestSavannah:
     """
     Tests for Savannah class.
     """
+
     def test_regrowth_savannah(self):
         """
         Asserts that the amount of fodder has been updated correctly after
         one year.
         """
-        savannah = Savannah(test_population)
+        test_pop_savannah = [
+            {"species": "Herbivore", "age": 1, "weight": 10.0},
+            {"species": "Herbivore", "age": 3, "weight": 50.0},
+            {"species": "Herbivore", "age": 5, "weight": 20.0}
+        ]
+        savannah = Savannah(test_pop_savannah)
         savannah.regrowth()
         assert savannah.fodder_amount == 90
 
