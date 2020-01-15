@@ -4,7 +4,7 @@
 __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idaln@hotmail.com & kjkv@nmbu.no"
 
-from biosim.animals import Animal, Herbivore
+from biosim.animals import Animal, Herbivore, Carnivore
 from biosim.landscape import Jungle
 from pytest import approx
 import numpy
@@ -472,14 +472,15 @@ class TestCarnivore:
         """
         Checks that class is initialized with given weight and age.
         """
-        h = Herbivore(test_properties)
-        assert h.age == test_properties["age"]
-        assert h.weight == test_properties["weight"]
+        c = Carnivore(test_properties)
+        assert c.age == test_properties["age"]
+        assert c.weight == test_properties["weight"]
 
     def correct_prob(self):
         """
         Asserts that prob_kill returns correct probability.
         """
+
 
     def test_kill_when_prob_is_one(self):
         """
