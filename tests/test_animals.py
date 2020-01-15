@@ -464,6 +464,7 @@ class TestHerbivore:
         assert h.age == test_properties["age"]
         assert h.weight == test_properties["weight"]
 
+
 class TestCarnivore:
     """
     Tests for Carnivore class
@@ -482,6 +483,8 @@ class TestCarnivore:
         """
         herb_fitness = 0.5
         carnivore = Carnivore(test_properties)
+        carnivore.params["DeltaPhiMax"] = 10.0
+        carnivore.find_fitness()
         prob = carnivore.prob_kill(herb_fitness)
         assert prob == approx(0.04983411986)
 
@@ -518,7 +521,6 @@ class TestCarnivore:
         new_weight = carnivore.weight
         assert new_weight == old_weight
 
-
     def test_carn_gained_weight_after_eating(self):
         """
         Assert that carnivore has gained weight after eating.
@@ -543,5 +545,3 @@ class TestCarnivore:
         herb.find_fitness()
         eaten_herbs = carnivore.eat([herb])
         assert type(eaten_herbs) is list
-
-
