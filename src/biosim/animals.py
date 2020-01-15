@@ -113,9 +113,9 @@ class Animal:
                 Instance of landscape class
         :return: float
         """
-        herb_fodder = landscape_cell.fodder_amount
+        fodder_herb = landscape_cell.fodder_amount
         num_herbs = len(landscape_cell.pop_herb)
-        abund_fodder_herb = herb_fodder / ((num_herbs + 1) * self.params["F"])
+        abund_fodder_herb = fodder_herb / ((num_herbs + 1) * self.params["F"])
         return abund_fodder_herb
 
     def propensity_move_to_each_neighbour(self, neighbours_of_current_cell):
