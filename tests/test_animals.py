@@ -511,14 +511,37 @@ class TestCarnivore:
         Asserts that carnivore hasn't gained weight when there are no
         herbivores to be eaten.
         """
+        carnivore = Carnivore(test_properties)
+        old_weight = carnivore.weight
+        pop_herb = []
+        carnivore.eat(pop_herb)
+        new_weight = carnivore.weight
+        assert new_weight == old_weight
+
 
     def test_carn_gained_weight_after_eating(self):
         """
         Assert that carnivore has gained weight after eating.
         """
+        carnivore = Carnivore(test_properties)
+        carnivore.find_fitness()
+        old_weight = carnivore.weight
+        carnivore.params["DeltaPhiMax"] = 0.1
+        herb = Herbivore(test_properties)
+        herb.find_fitness()
+        carnivore.eat([herb])
+        assert old_weight < carnivore.weight
+
     def test_list_of_herbs_returned(self):
         """
         Asserts that eat method returns a list of herbivore class instances.
         """
+        carnivore = Carnivore(test_properties)
+        carnivore.find_fitness()
+        carnivore.params["DeltaPhiMax"] = 0.1
+        herb = Herbivore(test_properties)
+        herb.find_fitness()
+        eaten_herbs = carnivore.eat([herb])
+        assert type(eaten_herbs) is list
 
 
