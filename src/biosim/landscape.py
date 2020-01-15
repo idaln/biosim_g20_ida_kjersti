@@ -129,8 +129,9 @@ class Landscape:
 
     def add_newborn_animals(self):
         """
-        Iterates over population lists and makes animal procreate utilizing
-        their inherent birth process method.
+        Iterates over both population lists in turn,
+        and makes all animal procreate utilizing their
+        inherent birth process method.
         """
         num_animals = len(self.pop_herb)
         for animal in self.pop_herb[:num_animals]:
@@ -142,12 +143,22 @@ class Landscape:
                                "weight": baby_weight})
                 )
 
+        num_animals = len(self.pop_carn)
+        for animal in self.pop_carn[:num_animals]:
+            baby_weight = animal.birth_process(num_animals)
+            if type(baby_weight) is (float or int):
+                self.pop_carn.append(
+                    Carnivore({"species": "Carnivore",
+                               "age": 0,
+                               "weight": baby_weight})
+                )
+
     def make_all_animals_older(self):
         """
         Iterates over population lists and ages all animals one year
         utilizing their inherent aging method.
         """
-        for animal in self.pop_herb:
+        for animal in (self.pop_herb + self.pop_carn):
             animal.make_animal_one_year_older()
 
     def make_all_animals_lose_weight(self):
@@ -155,7 +166,7 @@ class Landscape:
         Iterates over population lists and makes all animals lose weight
         utilizing their inherent weight loss method.
         """
-        for animal in self.pop_herb:
+        for animal in (self.pop_herb + self.pop_carn):
             animal.weight_loss()
 
     def remove_all_dead_animals(self):
@@ -165,7 +176,8 @@ class Landscape:
         """
         self.pop_herb = [animal for animal in self.pop_herb
                          if animal.will_animal_live() is True]
-
+        self.pop_carn = [animal for animal in self.pop_carn
+                         if animal.will_animal_live() is True]
 
 class Jungle(Landscape):
     """
@@ -271,13 +283,15 @@ if __name__ == "__main__":
         {"species": "Herbivore", "age": 1, "weight": 5.0},
     ]
     savannah = Savannah(test_population)
-    print(savannah.pop_herb, savannah.pop_carn)
-    savannah.feed_all_carnivores()
-    print(savannah.pop_herb, savannah.pop_carn)
-    for herb in savannah.pop_herb:
-        print (herb.fitness)
-    for carn in savannah.pop_carn:
-        print (carn.fitness)
+    total_pop = savannah.pop_carn + savannah.pop_herb
+    print(total_pop)
+    #print(savannah.pop_herb, savannah.pop_carn)
+    #savannah.feed_all_carnivores()
+    #print(savannah.pop_herb, savannah.pop_carn)
+    #for herb in savannah.pop_herb:
+    #    print (herb.fitness)
+    #for carn in savannah.pop_carn:
+    #    print (carn.fitness)
 
 
     for year in range(0):
