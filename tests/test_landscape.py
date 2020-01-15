@@ -17,10 +17,18 @@ class TestLandscape:
     @pytest.fixture
     def example_pop_herb(self):
         return [
-                    {"species": "Herbivore", "age": 1, "weight": 10.0},
-                    {"species": "Herbivore", "age": 3, "weight": 50.0},
-                    {"species": "Herbivore", "age": 5, "weight": 20.0}
+            {"species": "Herbivore", "age": 1, "weight": 10.0},
+            {"species": "Herbivore", "age": 3, "weight": 50.0},
+            {"species": "Herbivore", "age": 5, "weight": 20.0}
          ]
+
+    @pytest.fixture
+    def example_pop_carn(self):
+        return [
+            {"species": "Carnivore", "age": 1, "weight": 10.0},
+            {"species": "Carnivore", "age": 3, "weight": 50.0},
+            {"species": "Carnivore", "age": 5, "weight": 20.0}
+        ]
 
     @pytest.fixture
     def example_properties_herb(self):
@@ -54,17 +62,26 @@ class TestLandscape:
         """
         landscape = Landscape([{"species": "Herbivore", "age": 1,
                                 "weight": 10.0}])
-        landscape.sort_population_by_fitness()
+        landscape.sort_herb_population_by_fitness()
         assert landscape.pop_herb[0].fitness == approx(0.49979521641750696)
 
-    def test_sort_several_animals_by_fitness(self, example_pop_herb):
+    def test_sort_several_herbivores_by_fitness(self, example_pop_herb):
         """
         Tests that the sorting method works on a list of several herbivores.
         """
         landscape = Landscape(example_pop_herb)
-        landscape.sort_population_by_fitness()
+        landscape.sort_herb_population_by_fitness()
         assert landscape.pop_herb[0].fitness > landscape.pop_herb[1].fitness
         assert landscape.pop_herb[1].fitness > landscape.pop_herb[2].fitness
+
+    def test_sort_several_carnivores_by_fitness(self, example_pop_carn):
+        """
+        Tests that the sorting method works on a list of several herbivores.
+        """
+        landscape = Landscape(example_pop_carn)
+        landscape.sort_carn_population_by_fitness()
+        assert landscape.pop_carn[0].fitness > landscape.pop_carn[1].fitness
+        assert landscape.pop_carn[1].fitness > landscape.pop_carn[2].fitness
 
     def test_regrowth(self, example_pop_herb):
         """
@@ -83,7 +100,7 @@ class TestLandscape:
         landscape = Landscape(example_pop_herb)
         landscape.regrowth()
         old_fodder_amount = landscape.fodder_amount
-        available_fodder_to_herb = landscape.available_fodder_herb()
+        available_fodder_to_herb = landscape.available_fodder_herbivore()
         assert available_fodder_to_herb == Herbivore.params["F"]
         assert landscape.fodder_amount == old_fodder_amount - \
             available_fodder_to_herb
@@ -97,7 +114,7 @@ class TestLandscape:
         landscape = Landscape(example_pop_herb)
         landscape.fodder_amount = Herbivore.params["F"] / 2
         old_fodder_amount = landscape.fodder_amount
-        available_fodder_to_herb = landscape.available_fodder_herb()
+        available_fodder_to_herb = landscape.available_fodder_herbivore()
         assert available_fodder_to_herb == Herbivore.params["F"] / 2
         assert landscape.fodder_amount == old_fodder_amount - \
             available_fodder_to_herb
@@ -109,8 +126,17 @@ class TestLandscape:
         """
         landscape = Landscape(example_pop_herb)
         landscape.fodder_amount = 0
-        assert landscape.available_fodder_herb() == 0
+        assert landscape.available_fodder_herbivore() == 0
         assert landscape.fodder_amount == 0
+
+    def test_correct_fodder_carn(self, example_pop_herb, example_pop_carn):
+        """
+        Asserts that the fodder amount available for a carnivore is calculated
+        correctly.
+        """
+        total_pop = example_pop_herb + example_pop_carn
+        landscape = Landscape(total_pop)
+        swdvhhhhhhhhhnjbvd
 
     def test_have_all_animals_been_fed(self):
         """
