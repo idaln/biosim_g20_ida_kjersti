@@ -139,7 +139,30 @@ class TestLandscape:
         assert landscape.available_fodder_carnivore() == 80
         # 80 is total weight of herbivores in example_pop_herb
 
-    def
+    def test_eaten_herbs_have_been_removed(self, example_pop_herb):
+        """
+        Asserts that eaten herbivores are removed from pop_herb in landscape
+        cell.
+        :param example_pop_herb: list
+                List of herbivores
+        """
+        landscape = Landscape(example_pop_herb)
+        landscape.remove_all_eaten_herbivores(landscape.pop_herb)
+        assert len(landscape.pop_herb) == 0
+
+    def test_carnivores_have_been_fed(self,example_pop_herb, example_pop_carn,
+                                      mocker):
+        """
+        Assert that carnivore gains weight after eating, and that the eaten
+        herbivore is removed from population.
+        """
+        # Adds one strong carnivore and one weak herbivore to population.
+        landscape = Landscape([example_pop_herb[0]] + [example_pop_carn[1]])
+        old_weight = landscape.pop_carn[0].weight
+        mocker.patch('numpy.random.random', return_value=0.00001)
+        landscape.feed_all_carnivores()
+        assert old_weight < landscape.pop_carn[0].weight
+        assert len(landscape.pop_herb) == 0
 
     def test_have_all_animals_been_fed(self):
         """
