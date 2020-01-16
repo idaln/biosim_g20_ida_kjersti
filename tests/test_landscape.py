@@ -151,7 +151,7 @@ class TestLandscape:
         landscape.remove_all_eaten_herbivores(landscape.pop_herb)
         assert len(landscape.pop_herb) == 0
 
-    def test_carnivores_have_been_fed(self,example_pop_herb, example_pop_carn,
+    def test_carnivores_have_been_fed(self, example_pop_herb, example_pop_carn,
                                       mocker):
         """
         Assert that carnivore gains weight after eating, and that the eaten
