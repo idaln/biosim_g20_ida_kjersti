@@ -301,7 +301,11 @@ class TestSavannah:
         savannah = Savannah(example_pop_herb)
         assert isinstance(savannah, Savannah)
 
+
 class TestDesert:
+    """
+    Tests for Desert class.
+    """
     @pytest.fixture
     def example_pop_herb(self):
         return [
@@ -319,6 +323,9 @@ class TestDesert:
         assert isinstance(desert, Desert)
 
 class TestMountain:
+    """
+    Tests for Mountain class.
+    """
     @pytest.fixture
     def example_pop_herb(self):
         return [
@@ -334,7 +341,23 @@ class TestMountain:
         """
         mountain = Mountain(example_pop_herb)
         assert isinstance(mountain, Mountain)
-        
+
+class TestOcean:
+    """
+    Tests for Ocean class.
+    """
+    @pytest.fixture
+    def example_pop_herb(self):
+        return [
+            {"species": "Herbivore", "age": 1, "weight": 10.0},
+            {"species": "Herbivore", "age": 3, "weight": 50.0},
+            {"species": "Herbivore", "age": 5, "weight": 20.0}
+         ]
+    def test_constructor(self, example_pop_herb):
+        ocean = Ocean(example_pop_herb)
+        assert isinstance(ocean, Ocean)
+
+
 
 
 
