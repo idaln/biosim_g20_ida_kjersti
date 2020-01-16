@@ -108,7 +108,8 @@ class IslandMap:
                 landscape_type = type(self.map[neighbour]).__name__
                 if landscape_type is not "Mountain":
                     if landscape_type is not "Ocean":
-                        neighbours_of_current_cell[neighbour] = self.map[neighbour]
+                        neighbours_of_current_cell[neighbour] = \
+                            self.map[neighbour]
         return neighbours_of_current_cell
 
     def move_single_animal(self, current_coordinates, single_animal):
