@@ -106,8 +106,9 @@ class IslandMap:
         for neighbour in neighbours:
             if neighbour in self.map.keys():
                 landscape_type = type(self.map[neighbour]).__name__
-                if landscape_type is not ("Ocean" or "Mountain"):
-                    neighbours_of_current_cell[neighbour] = self.map[neighbour]
+                if landscape_type is not "Mountain":
+                    if landscape_type is not "Ocean":
+                        neighbours_of_current_cell[neighbour] = self.map[neighbour]
         return neighbours_of_current_cell
 
     def move_single_animal(self, current_coordinates, single_animal):
@@ -193,9 +194,9 @@ class IslandMap:
 
 if __name__ == "__main__":
     test_geogr = """\
-                    SMJSS
+                    SJSJO
                     SSJSS
-                    JJJJJ
+                    JMJJJ
                     """
 
     test_ini_pop = [
@@ -207,7 +208,7 @@ if __name__ == "__main__":
             ]
         },
         {
-            "loc": (3, 2),
+            "loc": (3, 3),
             "pop": [
                 {"species": "Herbivore", "age": 5, "weight": 20}
                 for _ in range(12)
@@ -217,9 +218,9 @@ if __name__ == "__main__":
     ]
     i_m = IslandMap(test_geogr, test_ini_pop)
     i_m.create_map_dict()
-    for _ in range(3):
+    for _ in range(80):
         sum_animals = 0
-        print(i_m.map)
+        #print(i_m.map)
         for loc, cell in i_m.map.items():
             print(f"Population of cell {loc} is "
                   f"{len(cell.pop_carn)+len(cell.pop_herb)}")
