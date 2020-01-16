@@ -94,3 +94,11 @@ class BioSim:
 
     def make_movie(self):
         """Create MPEG4 movie from visualization images saved."""
+
+if __name__ == "__main__":
+    bio = BioSim(1, 2, 3)
+    #print(Animal.params)
+    dyr = Animal({"species": "Animal", "age": 6, "weight": 30})
+    print(dyr.params)
+    bio.set_animal_parameters("Animal", {"w_birth": 12.0, "eta": 5, "mu": 0.8})
+    print(dyr.params)
