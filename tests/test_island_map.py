@@ -151,6 +151,34 @@ class TestIslandMap:
             sum_animals += len(cell.pop_carn)
         assert sum_animals == 2 * ini_sum_animals
 
+    def test_zero_neighbours(self, example_ini_pop):
+        """
+        Asserts that the neighbours_of_current_cell method handles a cell
+        with no neighbours.
+        :param example_ini_pop: list of dicts
+                Initial population of map
+        """
+        geogr_one_cell = """\
+                            J
+                            """
+        island_map = IslandMap(geogr_one_cell, example_ini_pop)
+        island_map.create_map_dict()
+        dict_with_neighbours = island_map.neighbours_of_current_cell((0, 0))
+        assert dict_with_neighbours == {}
+
+    def test_two_correct_neighbours(self, example_geogr, example_ini_pop):
+        """
+        Asserts that the neighbours_of_current_cell method return the
+        correct neighbours for a cell with only two neighbours.
+        """
+        island_map = IslandMap(example_geogr, example_ini_pop)
+        island_map.create_map_dict()
+
+        dict_with_neighbours = island_map.neighbours_of_current_cell((0, 0))
+        neighbours = [(0, 1), (1, 0)]
+        for neighbour in dict_with_neighbours.keys():
+            assert neighbour in neighbours
+
     def test_four_correct_neighbours(self, example_ini_pop):
         """
         Asserts that the neighbours_of_current_cell method return the
@@ -169,33 +197,99 @@ class TestIslandMap:
         for neighbour in dict_with_neighbours.keys():
             assert neighbour in neighbours
 
-    def test_two_correct_neighbours(self, example_geogr, example_ini_pop):
+    def test_animal_moves(self, mocker, example_geogr):
         """
-        Asserts that the neighbours_of_current_cell method return the
-        correct neighbours for a cell with only two neighbours.
+        Asserts that all animal moves if they have not moved this year and
+        mocking random number makes sure they will.
+        """
+        move_ini_pop = [
+            {
+                "loc": (0, 1),
+                "pop": [
+                    {"species": "Herbivore", "age": 5, "weight": 20}
+                    for _ in range(3)
+                ]
+            },
+            {
+                "loc": (1, 1),
+                "pop": [
+                    {"species": "Carnivore", "age": 5, "weight": 20}
+                    for _ in range(3)
+                ]
+            }
+        ]
+        mocker.patch('numpy.random.random', return_value=0.01)
+        island_map = IslandMap(example_geogr, move_ini_pop)
+        island_map.create_map_dict()
+        for loc, cell in island_map.map.items():
+            for herbivore in cell.pop_herb:
+                assert island_map.move_single_animal(loc, herbivore) is True
+            for carnivore in cell.pop_carn:
+                assert island_map.move_single_animal(loc, carnivore) is True
+
+    def test_animal_has_already_moved(
+            self, mocker, example_geogr, example_ini_pop
+    ):
+        """
+        Asserts that animal does not move if it has already moved this year.
         """
         island_map = IslandMap(example_geogr, example_ini_pop)
         island_map.create_map_dict()
+        herbivore = island_map.map[(0, 1)].pop_herb[0]
+        herbivore.has_moved_this_year = True
+        assert island_map.move_single_animal((0, 1), herbivore) is None
 
-        dict_with_neighbours = island_map.neighbours_of_current_cell((0, 0))
-        neighbours = [(0, 1), (1, 0)]
-        for neighbour in dict_with_neighbours.keys():
-            assert neighbour in neighbours
-
-    def test_zero_neighbours(self, example_ini_pop):
+    def test_animal_moves_not(self, mocker, example_geogr, example_ini_pop):
         """
-        Asserts that the neighbours_of_current_cell method handles a cell
-        with no neighbours.
-        :param example_ini_pop: list of dicts
-                Initial population of map
+        Asserts that animal does not move if it has not moved this year, but
+        mocking the random number makes sure it will not.
         """
-        geogr_one_cell = """\
-                            J
-                            """
-        island_map = IslandMap(geogr_one_cell, example_ini_pop)
+        mocker.patch('numpy.random.random', return_value=1)
+        island_map = IslandMap(example_geogr, example_ini_pop)
         island_map.create_map_dict()
-        dict_with_neighbours = island_map.neighbours_of_current_cell((0, 0))
-        assert dict_with_neighbours == {}
+        herbivore = island_map.map[(0, 1)].pop_herb[0]
+        assert island_map.move_single_animal((0, 1), herbivore) is None
+
+    def test_all_animals_move(self, mocker, example_ini_pop, example_geogr):
+        """
+        Asserts that all animals move out of a cell when mocking the random
+        number makes sure they will.
+        """
+        mocker.patch('numpy.random.random', return_value=0.0001)
+        island_map = IslandMap(example_geogr, [example_ini_pop[0]])
+        island_map.create_map_dict()
+        island_map.move_all_animals_in_cell((0, 1), island_map.map[(0, 1)])
+        final_num_animals = len(island_map.map[(0, 1)].pop_herb) + \
+                            len(island_map.map[(0, 1)].pop_carn)
+        assert final_num_animals == 0
+
+    def test_no_animals_move(self, mocker, example_ini_pop, example_geogr):
+        """
+        Asserts that no animals move out of a cell when mocking the random
+        number makes sure they will not.
+        """
+        mocker.patch('numpy.random.random', return_value=1)
+        island_map = IslandMap(example_geogr, [example_ini_pop[0]])
+        island_map.create_map_dict()
+        initial_num_animals = len(island_map.map[(0, 1)].pop_herb) + \
+                            len(island_map.map[(0, 1)].pop_carn)
+        island_map.move_all_animals_in_cell((0, 1), island_map.map[(0, 1)])
+        final_num_animals = len(island_map.map[(0, 1)].pop_herb) + \
+                            len(island_map.map[(0, 1)].pop_carn)
+        assert final_num_animals == initial_num_animals
+
+    def test_all_animals_migrate(self, mocker, example_ini_pop, example_geogr):
+        """
+        Asserts that all animals have moved after the migration season,
+        by checking their has_moved_this_year attribute.
+        """
+        mocker.patch('numpy.random.random', return_value=0.0001)
+        island_map = IslandMap(example_geogr, [example_ini_pop[0]])
+        island_map.create_map_dict()
+        island_map.migration_season()
+        for loc, cell in island_map.map.items():
+            for animal in cell.pop_herb+cell.pop_carn:
+                assert animal.has_moved_this_year is True
 
     def test_all_animals_aged(self, example_ini_pop, example_geogr):
         """
