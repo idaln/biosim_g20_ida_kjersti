@@ -107,7 +107,6 @@ class Animal:
             self.has_moved_this_year = True
             return True
 
-
     def find_rel_abund_of_fodder(self, landscape_cell):
         """
         Takes an instance of a landscape class, and returns the relative
@@ -165,7 +164,8 @@ class Animal:
 
         return moving_prob_for_each_loc
 
-    def convert_dict_to_list_and_array(self, moving_prob_for_each_loc):
+    @staticmethod
+    def convert_dict_to_list_and_array(moving_prob_for_each_loc):
         """
         Converts dictionary with locations as keys and probabilities as
         values to a list of locations and a numpy array of probabilities.
