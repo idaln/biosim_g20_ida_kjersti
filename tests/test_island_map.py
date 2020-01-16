@@ -22,14 +22,14 @@ class TestIslandMap:
     def example_ini_pop(self):
         return [
         {
-            "loc": (1, 2),
+            "loc": (0, 1),
             "pop": [
                 {"species": "Herbivore", "age": 5, "weight": 20}
                 for _ in range(3)
             ]
         },
         {
-            "loc": (2, 2),
+            "loc": (1, 1),
             "pop": [
                 {"species": "Herbivore", "age": 5, "weight": 20}
                 for _ in range(3)
@@ -59,7 +59,7 @@ class TestIslandMap:
         island_map.create_geography_dict()
         assert type(island_map.geography) is dict
         assert island_map.geography == {
-            (1, 1): 'J', (1, 2): 'O', (2, 1): 'D', (2, 2): 'M'
+            (0, 0): 'J', (0, 1): 'O', (1, 0): 'D', (1, 1): 'M'
         }
 
     def test_population_is_converted_correctly_to_dict(
@@ -73,12 +73,12 @@ class TestIslandMap:
         island_map.create_population_dict()
         assert type(island_map.population) is dict
         assert island_map.population == {
-            (1, 2): [
+            (0, 1): [
                 {'species': 'Herbivore', 'age': 5, 'weight': 20},
                 {'species': 'Herbivore', 'age': 5, 'weight': 20},
                 {'species': 'Herbivore', 'age': 5, 'weight': 20}
             ],
-            (2, 2): [
+            (1, 1): [
                 {'species': 'Herbivore', 'age': 5, 'weight': 20},
                 {'species': 'Herbivore', 'age': 5, 'weight': 20},
                 {'species': 'Herbivore', 'age': 5, 'weight': 20}
@@ -107,11 +107,11 @@ class TestIslandMap:
                         """
         island_map = IslandMap(all_types, example_ini_pop)
         island_map.create_map_dict()
-        assert type(island_map.map[(1, 1)]).__name__ is "Jungle"
-        assert type(island_map.map[(1, 2)]).__name__ is "Ocean"
-        assert type(island_map.map[(2, 1)]).__name__ is "Desert"
-        assert type(island_map.map[(2, 2)]).__name__ is "Mountain"
-        assert type(island_map.map[(3, 1)]).__name__ is "Savannah"
+        assert type(island_map.map[(0, 0)]).__name__ is "Jungle"
+        assert type(island_map.map[(0, 1)]).__name__ is "Ocean"
+        assert type(island_map.map[(1, 0)]).__name__ is "Desert"
+        assert type(island_map.map[(1, 1)]).__name__ is "Mountain"
+        assert type(island_map.map[(2, 0)]).__name__ is "Savannah"
 
     def test_feeding_season(self, example_geogr, example_ini_pop):
         """
@@ -121,10 +121,35 @@ class TestIslandMap:
         island_map = IslandMap(example_geogr, example_ini_pop)
         island_map.create_map_dict()
         island_map.feeding_season()
-        assert island_map.map[(1, 2)].pop_herb[0].weight > \
+        assert island_map.map[(0, 1)].pop_herb[0].weight > \
             example_ini_pop[0]["pop"][0]["weight"]
-        assert island_map.map[(2, 2)].pop_herb[0].weight > \
+        assert island_map.map[(1, 1)].pop_herb[0].weight > \
             example_ini_pop[1]["pop"][0]["weight"]
+
+    def test_all_animals_gave_birth(
+            self, mocker, example_ini_pop, example_geogr
+    ):
+        """
+        Asserts that all animals on island give birth when their probability
+        of giving birth is one.
+        :param example_ini_pop: list
+                Initial population
+        :param example_geogr: str
+                Map
+        :return:
+        """
+        mocker.patch("numpy.random.random", return_value=0.01)
+        island_map = IslandMap(example_geogr, example_ini_pop)
+        ini_sum_animals = 0
+        for cell in island_map.map.values():
+            ini_sum_animals += len(cell.pop_herb)
+            ini_sum_animals += len(cell.pop_carn)
+        island_map.procreation_season()
+        sum_animals = 0
+        for cell in island_map.map.values():
+            sum_animals += len(cell.pop_herb)
+            sum_animals += len(cell.pop_carn)
+        assert sum_animals == 2 * ini_sum_animals
 
     def test_four_correct_neighbours(self, example_ini_pop):
         """
@@ -139,8 +164,8 @@ class TestIslandMap:
         island_map = IslandMap(geogr_neighbour, example_ini_pop)
         island_map.create_map_dict()
 
-        dict_with_neighbours = island_map.neighbours_of_current_cell((2, 2))
-        neighbours = [(1, 2), (2, 1), (2, 3), (3, 2)]
+        dict_with_neighbours = island_map.neighbours_of_current_cell((1, 1))
+        neighbours = [(0, 1), (1, 0), (1, 2), (2, 1)]
         for neighbour in dict_with_neighbours.keys():
             assert neighbour in neighbours
 
@@ -152,8 +177,8 @@ class TestIslandMap:
         island_map = IslandMap(example_geogr, example_ini_pop)
         island_map.create_map_dict()
 
-        dict_with_neighbours = island_map.neighbours_of_current_cell((1, 1))
-        neighbours = [(1, 2), (2, 1)]
+        dict_with_neighbours = island_map.neighbours_of_current_cell((0, 0))
+        neighbours = [(0, 1), (1, 0)]
         for neighbour in dict_with_neighbours.keys():
             assert neighbour in neighbours
 
@@ -169,20 +194,55 @@ class TestIslandMap:
                             """
         island_map = IslandMap(geogr_one_cell, example_ini_pop)
         island_map.create_map_dict()
-        dict_with_neighbours = island_map.neighbours_of_current_cell((1, 1))
+        dict_with_neighbours = island_map.neighbours_of_current_cell((0, 0))
         assert dict_with_neighbours == {}
+
+    def test_all_animals_aged(self, example_ini_pop, example_geogr):
+        """
+        Asserts that all animals on the island on the island have aged.
+        :param example_ini_pop: list
+                Initial population of animals saved in one dict per animal.
+        :param example_geogr: str
+                Island geography
+        :return:
+        """
+        island_map = IslandMap(example_geogr, example_ini_pop)
+        island_map.create_map_dict()
+        island_map.aging_season()
+        initial_age_animal = example_ini_pop[0]["pop"][0]["age"]
+        for cell in island_map.map.values():
+            for animal in cell.pop_herb+cell.pop_carn:
+                assert animal.age > initial_age_animal
+
+    def test_all_animals_lost_weight(self, example_ini_pop, example_geogr):
+        """
+        Asserts that all animals on the island on the island has lost weight.
+        :param example_ini_pop: list
+                Initial population of animals saved in one dict per animal.
+                All animals have same initial weight.
+        :param example_geogr: str
+                Island geography
+        :return:
+        """
+        island_map = IslandMap(example_geogr, example_ini_pop)
+        island_map.create_map_dict()
+        island_map.weight_loss_season()
+        initial_weight_animal = example_ini_pop[0]["pop"][0]["weight"]
+        for cell in island_map.map.values():
+            for animal in cell.pop_herb+cell.pop_carn:
+                assert animal.weight < initial_weight_animal
 
     def test_all_animals_die(self, mocker, example_ini_pop, example_geogr):
         """
-        Asserts that all animals on island die when their probability of dying
-        is one.
+        Asserts that all animals on island die, when the random number that
+        decides has been mocked to ensure all animals die.
         :param example_ini_pop: list
                 Initial population
         :param example_geogr: str
                 Map
         :return:
         """
-        mocker.patch("numpy.random.random", return_value = 1)
+        mocker.patch("numpy.random.random", return_value=1)
         island_map = IslandMap(example_geogr, example_ini_pop)
         island_map.dying_season()
         sum_animals = 0
@@ -190,5 +250,3 @@ class TestIslandMap:
             sum_animals += len(cell.pop_herb)
             sum_animals += len(cell.pop_carn)
         assert sum_animals == 0
-
-
