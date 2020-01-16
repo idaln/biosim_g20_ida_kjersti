@@ -81,6 +81,21 @@ class BioSim:
         :param landscape: String, code letter for landscape
         :param params: Dict with valid parameter specification for landscape
         """
+        class_names = {'J': Jungle, 'S': Savannah, 'D': Desert, 'M': Mountain,
+                       'O': Ocean}
+        for param_name in params.keys():
+            if param_name in class_names[landscape].params.keys():
+                if param_name is "f_max" and params[param_name] >= 0:
+                    class_names[landscape].params[param_name] = params[
+                        param_name]
+                elif param_name is "alpha":
+                    class_names[landscape].params[param_name] = params[
+                        param_name]
+                else:
+                    raise ValueError(f'{params[param_name]} is an invalid '
+                                     f'parameter value!')
+            else:
+                raise ValueError(f'{param_name} is an invalid parameter name!')
 
     def simulate(self, num_years, vis_years=1, img_years=None):
         """
@@ -88,7 +103,8 @@ class BioSim:
 
         :param num_years: number of years to simulate
         :param vis_years: years between visualization updates
-        :param img_years: years between visualizations saved to files (default: vis_years)
+        :param img_years: years between visualizations saved to files
+        (default: vis_years)
 
         Image files will be numbered consecutively.
         """
@@ -122,7 +138,7 @@ class BioSim:
 if __name__ == "__main__":
     bio = BioSim(1, 2, 3)
     #print(Animal.params)
-    dyr = Animal({"species": "Animal", "age": 6, "weight": 30})
-    print(dyr.params)
-    bio.set_animal_parameters("Animal", {"w_birth": 12.0, "eta": 5, "mu": 0.8})
-    print(dyr.params)
+    ju = Jungle([{"species": "Herbivore", "age": 6, "weight": 30}])
+    print(ju.params)
+    bio.set_landscape_parameters("J", {"f_max": 40})
+    print(ju.params)
