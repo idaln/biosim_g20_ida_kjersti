@@ -45,17 +45,17 @@ class TestIslandMap:
         assert isinstance(island_map, IslandMap)
 
     def test_geography_is_converted_correctly_to_dict(
-            self, example_geogr, example_ini_pop
+            self, example_ini_pop
     ):
         """
         Asserts that the create_geography method creates a dictionary that is
         converted correctly.
         """
-        test_geogr_convert = """\
-                                JO
-                                DM
-                                """
-        island_map = IslandMap(test_geogr_convert, example_ini_pop)
+        geogr_convert = """\
+                           JO
+                           DM
+                           """
+        island_map = IslandMap(geogr_convert, example_ini_pop)
         island_map.create_geography_dict()
         assert type(island_map.geography) is dict
         assert island_map.geography == {
@@ -112,12 +112,12 @@ class TestIslandMap:
         Asserts that the neighbours_of_current_cell method return the
         correct neighbours of a cell with four neighbours.
         """
-        test_geogr_neighbour = """\
+        geogr_neighbour = """\
                                   JJJ    
                                   JJJ
                                   JJJ
                                   """
-        island_map = IslandMap(test_geogr_neighbour, example_ini_pop)
+        island_map = IslandMap(geogr_neighbour, example_ini_pop)
         island_map.create_map_dict()
 
         dict_with_neighbours = island_map.neighbours_of_current_cell((2, 2))
