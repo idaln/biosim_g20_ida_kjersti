@@ -11,10 +11,6 @@ class IslandMap:
     """
     Class that contains all island cells.
     """
-    geography = {}
-    population = {}
-    map = {}
-
     def __init__(self, geogr, ini_pop):
         """
         Initialize map class with given island map and initial population
@@ -22,6 +18,9 @@ class IslandMap:
         :param geogr: string
         :param ini_pop: list of dictionaries
         """
+        self.geography = {}
+        self.population = {}
+        self.map = {}
         self.geogr = textwrap.dedent(geogr)
         self.ini_pop = ini_pop
 
