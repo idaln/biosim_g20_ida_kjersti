@@ -315,5 +315,7 @@ class TestDesert:
         Asserts that Desert class enables initiation of class instances.
         :param example_pop_herb: list
         """
-        desert = Desert
+        desert = Desert(example_pop_herb)
+        assert isinstance(desert, Desert)
+        
 
