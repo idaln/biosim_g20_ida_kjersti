@@ -3,7 +3,8 @@
 __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idaln@hotmail.com & kjkv@nmbu.no"
 
-from biosim.landscape import Landscape, Jungle, Savannah
+from biosim.landscape import Landscape, Jungle, Savannah, Desert, Mountain, \
+    Ocean
 from biosim.animals import Herbivore
 from pytest import approx
 import pytest
