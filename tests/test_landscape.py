@@ -276,17 +276,44 @@ class TestSavannah:
     """
     Tests for Savannah class.
     """
+    @pytest.fixture
+    def example_pop_herb(self):
+        return [
+            {"species": "Herbivore", "age": 1, "weight": 10.0},
+            {"species": "Herbivore", "age": 3, "weight": 50.0},
+            {"species": "Herbivore", "age": 5, "weight": 20.0}
+         ]
 
-    def test_regrowth_savannah(self):
+    def test_regrowth_savannah(self, example_pop_herb):
         """
         Asserts that the amount of fodder has been updated correctly after
         one year.
         """
-        test_pop_savannah = [
+        savannah = Savannah(example_pop_herb)
+        savannah.regrowth()
+        assert savannah.fodder_amount == 90
+
+    def test_constructor(self, example_pop_herb):
+        """
+        Asserts that Savannah class enables initiation of class instances.
+        :param example_pop_herb: list
+        """
+        savannah = Savannah(example_pop_herb)
+        assert isinstance(savannah, Savannah)
+
+class TestDesert:
+    @pytest.fixture
+    def example_pop_herb(self):
+        return [
             {"species": "Herbivore", "age": 1, "weight": 10.0},
             {"species": "Herbivore", "age": 3, "weight": 50.0},
             {"species": "Herbivore", "age": 5, "weight": 20.0}
-        ]
-        savannah = Savannah(test_pop_savannah)
-        savannah.regrowth()
-        assert savannah.fodder_amount == 90
+         ]
+
+    def test_constructor(self, example_pop_herb):
+        """
+        Asserts that Desert class enables initiation of class instances.
+        :param example_pop_herb: list
+        """
+        desert = Desert
+
