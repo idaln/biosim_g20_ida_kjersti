@@ -405,10 +405,9 @@ class Carnivore(Animal):
         amount_eaten = 0
         animals_eaten = []
         for herb in reversed(pop_herb):
-            while amount_eaten < self.params["F"]:
-                if self.kill(herb) is True:
-                    animals_eaten.append(herb)
-                    amount_eaten += herb.weight
+            if amount_eaten < self.params["F"] and self.kill(herb) is True:
+                animals_eaten.append(herb)
+                amount_eaten += herb.weight
         self.weight += self.params["beta"] * amount_eaten
         return animals_eaten
 
