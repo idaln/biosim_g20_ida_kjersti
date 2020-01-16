@@ -179,6 +179,7 @@ class Landscape:
         self.pop_carn = [animal for animal in self.pop_carn
                          if animal.will_animal_live() is True]
 
+
 class Jungle(Landscape):
     """
     Class for Jungle landscape type.
