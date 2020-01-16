@@ -48,10 +48,31 @@ class BioSim:
     def set_animal_parameters(self, species, params):
         """
         Set parameters for animal species.
+        All animal parameters shall be positive. However, DeltaPhiMax shall be
+        strictly positive and eta shall lie between zero and one.
 
         :param species: String, name of animal species
         :param params: Dict with valid parameter specification for species
         """
+        class_names = {"Herbivore": Herbivore,
+                       "Carnivore": Carnivore}
+        for param_name in params.keys():
+            if param_name in class_names[species].params:
+                if params[param_name] >= 0 and param_name is not "DeltaPhiMax"\
+                        and param_name is not "eta":
+                    class_names[species].params[param_name] = params[
+                        param_name]
+                elif param_name is "eta" and 0 <= params[param_name] <= 1:
+                    class_names[species].params[param_name] = params[
+                        param_name]
+                elif param_name is "DeltaPhiMax" and params[param_name] > 0:
+                    class_names[species].params[param_name] = params[
+                        param_name]
+                else:
+                    raise ValueError(f'{params[param_name]} is an invalid '
+                                     f'parameter value!')
+            else:
+                raise ValueError(f'{param_name} is an invalid parameter name!')
 
     def set_landscape_parameters(self, landscape, params):
         """
