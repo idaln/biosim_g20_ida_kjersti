@@ -117,18 +117,20 @@ class IslandMap:
         :param current_coordinates: tuple
         :param single_animal: class instance of animal class
         """
-        neighbours_of_current_cell = self.neighbours_of_current_cell(
-            current_coordinates
-        )
-        new_coordinates = single_animal.return_new_coordinates(
-            neighbours_of_current_cell
-        )
-        if new_coordinates is not None:
-            if type(single_animal).__name__ is "Herbivore":
-                self.map[new_coordinates].pop_herb.append(single_animal)
-                return True
-            else:
-                self.map[new_coordinates].pop_carn.append(single_animal)
+        if single_animal.has_moved_this_year is False:
+            neighbours_of_current_cell = self.neighbours_of_current_cell(
+                current_coordinates
+            )
+            new_coordinates = single_animal.return_new_coordinates(
+                neighbours_of_current_cell
+            )
+            if new_coordinates is not None:
+                if type(single_animal).__name__ is "Herbivore":
+                    self.map[new_coordinates].pop_herb.append(single_animal)
+                    return True
+                else:
+                    self.map[new_coordinates].pop_carn.append(single_animal)
+                    return True
 
     def move_all_animals_in_cell(self, current_coordinates, current_landscape):
         """
