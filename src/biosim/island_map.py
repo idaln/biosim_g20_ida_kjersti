@@ -29,9 +29,9 @@ class IslandMap:
         Converts string map to a dictionary with coordinates as keys and
         the landscape types as values.
         """
-        x_coord = 1
+        x_coord = 0
         for line in self.geogr.splitlines():
-            y_coord = 1
+            y_coord = 0
             for landscape_type in line:
                 self.geography[(x_coord, y_coord)] = landscape_type
                 y_coord += 1
@@ -201,14 +201,14 @@ if __name__ == "__main__":
 
     test_ini_pop = [
         {
-            "loc": (2, 3),
+            "loc": (2, 2),
             "pop": [
                 {"species": "Carnivore", "age": 5, "weight": 20}
                 for _ in range(6)
             ]
         },
         {
-            "loc": (3, 3),
+            "loc": (1, 1),
             "pop": [
                 {"species": "Herbivore", "age": 5, "weight": 20}
                 for _ in range(12)
