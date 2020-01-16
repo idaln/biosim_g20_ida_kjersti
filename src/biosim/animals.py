@@ -113,14 +113,15 @@ class Animal:
                 Instance of landscape class
         :return: float
         """
-        fodder_herb = landscape_cell.fodder_amount
-        num_herbs = len(landscape_cell.pop_herb)
-        abund_fodder_herb = fodder_herb / ((num_herbs + 1) * self.params["F"])
-        return abund_fodder_herb
+        fodder_animal = landscape_cell.fodder_amount
+        num_animals = len(landscape_cell.population)
+        abund_fodder_animal = fodder_animal / \
+                              ((num_animals + 1) * self.params["F"])
+        return abund_fodder_animal
 
     def propensity_move_to_each_neighbour(self, neighbours_of_current_cell):
         """
-
+        Finds the propensity for the animal to move to each of it's neighbours.
         :param neighbours_of_current_cell: dict
                 Contains neighbours of current cell.
                 Location as keys, instance of landscape class as value
@@ -316,6 +317,19 @@ class Herbivore(Animal):
         :param properties: dict storing age, weight and fitness of herbivore
         """
         super().__init__(properties)
+
+    def find_rel_abund_of_fodder(self, landscape_cell):
+        """
+        Takes an instance of a landscape class, and returns the relative
+        abundance of fodder in that instance.
+        :param landscape_cell: dict
+                Instance of landscape class
+        :return: float
+        """
+        fodder_herb = landscape_cell.fodder_amount
+        num_herbs = len(landscape_cell.pop_herb)
+        abund_fodder_herb = fodder_herb / ((num_herbs + 1) * self.params["F"])
+        return abund_fodder_herb
 
 
 class Carnivore(Animal):
