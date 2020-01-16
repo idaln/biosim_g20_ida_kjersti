@@ -33,7 +33,7 @@ class Animal:
         """
         Initializing class by unpacking all parameters given as input.
         """
-
+        self.has_moved_this_year = False
         self.weight = properties["weight"]
         self.age = properties["age"]
 
@@ -59,11 +59,12 @@ class Animal:
     def add_eaten_fodder_to_weight(self, fodder):
         """
         Adds amount of weight to animals total body weight given by
-        beta*F
+        beta*F. Also reserts have_moved_this_year to False.
         :param fodder
                Amount of fodder available to the animal
         """
         self.weight += self.params['beta'] * fodder
+        self.has_moved_this_year = False
 
     def find_fitness(self):
         """
@@ -94,7 +95,7 @@ class Animal:
 
     def will_animal_move(self):
         """
-        Uses the probability of the animal moving to decide wether it should
+        Uses the probability of the animal moving to decide whether it should
         move or not.
         :return: bool
                 True if animal will move, False if not.
@@ -103,7 +104,9 @@ class Animal:
         random_number = np.random.random()
 
         if random_number <= prob:
+            self.has_moved_this_year = True
             return True
+
 
     def find_rel_abund_of_fodder(self, landscape_cell):
         """
@@ -116,7 +119,7 @@ class Animal:
         fodder_animal = landscape_cell.fodder_amount
         num_animals = len(landscape_cell.population)
         abund_fodder_animal = fodder_animal / \
-                              ((num_animals + 1) * self.params["F"])
+            ((num_animals + 1) * self.params["F"])
         return abund_fodder_animal
 
     def propensity_move_to_each_neighbour(self, neighbours_of_current_cell):
