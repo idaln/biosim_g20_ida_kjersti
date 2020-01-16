@@ -125,137 +125,6 @@ class TestAnimal:
         animal.fitness = 1
         assert animal.will_animal_move() is True
 
-    def test_correct_rel_abund_fodder(self, example_population,
-                                      example_properties):
-        """
-        Checks that method for calculating relative abundance of fodder
-        returns the correct value.
-        """
-        jungle = Jungle(example_population)
-        jungle.regrowth()
-        animal = Animal(example_properties)
-        rel_abund_fodder = animal.find_rel_abund_of_fodder(jungle)
-        assert rel_abund_fodder == 4.0
-
-    def test_propensity_dict_correct_types(self, example_properties,
-                                           example_population):
-        """
-        Asserts that the propensity_of_each_neighbouring_cell method
-        returns a dictionary with tuples as keys and floats as values.
-        """
-        animal = Animal(example_properties)
-        dict_of_neighbours = {(1, 2): Jungle(example_population),
-                              (2, 1): Jungle(example_population),
-                              (2, 3): Jungle(example_population),
-                              (3, 2): Jungle(example_population)
-                              }
-        for jungle in dict_of_neighbours.values():
-            jungle.regrowth()
-        prop_dict = animal.propensity_move_to_each_neighbour(
-            dict_of_neighbours)
-        assert type(prop_dict) is dict
-        for loc, prop in prop_dict.items():
-            assert type(loc) is tuple
-            assert type(prop) is numpy.float64
-
-    def test_dict_with_correct_key_and_value_types(self, example_population,
-                                                   example_properties):
-        """
-        Asserts that the prob_move_to_each_neighbour method returns a
-        dictionary with tuples as keys and floats as values.
-        """
-        animal = Animal(example_properties)
-        dict_of_neighbours = {(1, 2): Jungle(example_population),
-                              (2, 1): Jungle(example_population),
-                              (2, 3): Jungle(example_population),
-                              (3, 2): Jungle(example_population)
-                              }
-        for jungle in dict_of_neighbours.values():
-            jungle.regrowth()
-        prob_dict = animal.prob_move_to_each_neighbour(dict_of_neighbours)
-        assert type(prob_dict) is dict
-        for loc, prob in prob_dict.items():
-            assert type(loc) is tuple
-            assert type(prob) is numpy.float64
-            
-    def test_dict_converted_correctly_to_list_array(self, example_properties,
-                                                    example_population):
-        """
-        Asserts that the output from convert_dict_to_list_and_array
-        method are of the correct types.
-        """
-        animal = Animal(example_properties)
-        dict_of_neighbours = {(1, 2): Jungle(example_population),
-                              (2, 1): Jungle(example_population),
-                              (2, 3): Jungle(example_population),
-                              (3, 2): Jungle(example_population)
-                              }
-        for jungle in dict_of_neighbours.values():
-            jungle.regrowth()
-        prob_dict = animal.prob_move_to_each_neighbour(dict_of_neighbours)
-        locs, probs = animal.convert_dict_to_list_and_array(prob_dict)
-        assert type(locs) is list
-        assert type(probs) is numpy.ndarray
-
-    def test_tuple_returned(self, example_population, example_properties):
-        """
-        Asserts that the where_will_animal_move method returns a tuple
-        """
-        dict_of_neighbours = {(1, 2): Jungle(example_population),
-                              (2, 1): Jungle(example_population),
-                              (2, 3): Jungle(example_population),
-                              (3, 2): Jungle(example_population)
-                              }
-        for jungle in dict_of_neighbours.values():
-            jungle.regrowth()
-        animal = Animal(example_properties)
-        assert type(animal.find_new_coordinates(dict_of_neighbours)) is tuple
-
-    def test_find_correct_coordinates(self):
-        """
-        Implements seeding to assert that animal returned correct location to
-        move to.
-        """
-        numpy.random.seed(1)
-        test_population_coords = [
-            {"species": "Herbivore", "age": 1, "weight": 10.0}
-        ]
-        test_properties_coords = {
-            "species": "Herbivore",
-            "age": 1,
-            "weight": 10
-        }
-        dict_of_neighbours = {(1, 2): Jungle(test_population_coords),
-                              (2, 1): Jungle(test_population_coords),
-                              (2, 3): Jungle(test_population_coords),
-                              (3, 2): Jungle(test_population_coords)
-                              }
-        for jungle in dict_of_neighbours.values():
-            jungle.regrowth()
-        animal = Animal(test_properties_coords)
-        assert animal.find_new_coordinates(dict_of_neighbours) == (2, 1)
-
-    def test_coordinates_returned_when_true(self, mocker, example_properties):
-        """
-        Asserts that a tuple of coordinates is returned if the animal will
-        move.
-        """
-        test_population_true = [
-            {"species": "Herbivore", "age": 1, "weight": 10.0}
-        ]
-        dict_of_neighbours = {(1, 2): Jungle(test_population_true),
-                              (2, 1): Jungle(test_population_true),
-                              (2, 3): Jungle(test_population_true),
-                              (3, 2): Jungle(test_population_true)
-                              }
-        for jungle in dict_of_neighbours.values():
-            jungle.regrowth()
-        animal = Animal(example_properties)
-        animal.fitness = 1
-        mocker.patch('numpy.random.random', return_value=0.1)
-        new_coordinates = animal.return_new_coordinates(dict_of_neighbours)
-        assert type(new_coordinates) == tuple
-
     def test_prob_give_birth_one_animal_in_square(self, example_properties):
         """
         Asserts that if there is only one animal in the square, then the
@@ -428,10 +297,18 @@ class TestHerbivore:
     @pytest.fixture
     def example_properties(self):
         return {
-            "species": "animal",
+            "species": "Herbivore",
             "age": 5,
             "weight": 20
         }
+
+    @pytest.fixture
+    def example_population(self):
+        return [
+            {"species": "Herbivore", "age": 1, "weight": 10.0},
+            {"species": "Herbivore", "age": 1, "weight": 10.0},
+            {"species": "Herbivore", "age": 1, "weight": 10.0}
+        ]
 
     def test_constructor(self, example_properties):
         """
@@ -440,6 +317,139 @@ class TestHerbivore:
         h = Herbivore(example_properties)
         assert h.age == example_properties["age"]
         assert h.weight == example_properties["weight"]
+
+    def test_correct_rel_abund_fodder_herb(self, example_population,
+                                      example_properties):
+        """
+        Checks that method for calculating relative abundance of fodder
+        returns the correct value.
+        """
+        jungle = Jungle(example_population)
+        jungle.regrowth()
+        herbivore = Herbivore(example_properties)
+        rel_abund_fodder = herbivore.find_rel_abund_of_fodder(jungle)
+        assert rel_abund_fodder == 20.0
+        # 20 is rel abundance of fodder for this herbivore calculated by hand
+
+    def test_propensity_dict_correct_types(self, example_properties,
+                                           example_population):
+        """
+        Asserts that the propensity_of_each_neighbouring_cell method
+        returns a dictionary with tuples as keys and floats as values.
+        """
+        herbivore = Herbivore(example_properties)
+        dict_of_neighbours = {(1, 2): Jungle(example_population),
+                              (2, 1): Jungle(example_population),
+                              (2, 3): Jungle(example_population),
+                              (3, 2): Jungle(example_population)
+                              }
+        for jungle in dict_of_neighbours.values():
+            jungle.regrowth()
+        prop_dict = herbivore.propensity_move_to_each_neighbour(
+            dict_of_neighbours)
+        assert type(prop_dict) is dict
+        for loc, prop in prop_dict.items():
+            assert type(loc) is tuple
+            assert type(prop) is numpy.float64
+
+    def test_dict_with_correct_key_and_value_types(self, example_population,
+                                                   example_properties):
+        """
+        Asserts that the prob_move_to_each_neighbour method returns a
+        dictionary with tuples as keys and floats as values.
+        """
+        herbivore = Herbivore(example_properties)
+        dict_of_neighbours = {(1, 2): Jungle(example_population),
+                              (2, 1): Jungle(example_population),
+                              (2, 3): Jungle(example_population),
+                              (3, 2): Jungle(example_population)
+                              }
+        for jungle in dict_of_neighbours.values():
+            jungle.regrowth()
+        prob_dict = herbivore.prob_move_to_each_neighbour(dict_of_neighbours)
+        assert type(prob_dict) is dict
+        for loc, prob in prob_dict.items():
+            assert type(loc) is tuple
+            assert type(prob) is numpy.float64
+
+    def test_dict_converted_correctly_to_list_array(self, example_properties,
+                                                    example_population):
+        """
+        Asserts that the output from convert_dict_to_list_and_array
+        method are of the correct types.
+        """
+        herbivore = Herbivore(example_properties)
+        dict_of_neighbours = {(1, 2): Jungle(example_population),
+                              (2, 1): Jungle(example_population),
+                              (2, 3): Jungle(example_population),
+                              (3, 2): Jungle(example_population)
+                              }
+        for jungle in dict_of_neighbours.values():
+            jungle.regrowth()
+        prob_dict = herbivore.prob_move_to_each_neighbour(dict_of_neighbours)
+        locs, probs = herbivore.convert_dict_to_list_and_array(prob_dict)
+        assert type(locs) is list
+        assert type(probs) is numpy.ndarray
+
+    def test_tuple_returned(self, example_population, example_properties):
+        """
+        Asserts that the where_will_animal_move method returns a tuple
+        """
+        dict_of_neighbours = {(1, 2): Jungle(example_population),
+                              (2, 1): Jungle(example_population),
+                              (2, 3): Jungle(example_population),
+                              (3, 2): Jungle(example_population)
+                              }
+        for jungle in dict_of_neighbours.values():
+            jungle.regrowth()
+        herbivore = Herbivore(example_properties)
+        assert type(herbivore.find_new_coordinates(
+            dict_of_neighbours)) is tuple
+
+    def test_find_correct_coordinates(self):
+        """
+        Implements seeding to assert that animal returned correct location to
+        move to.
+        """
+        numpy.random.seed(1)
+        test_population_coords = [
+            {"species": "Herbivore", "age": 1, "weight": 10.0}
+        ]
+        test_properties_coords = {
+            "species": "Herbivore",
+            "age": 1,
+            "weight": 10
+        }
+        dict_of_neighbours = {(1, 2): Jungle(test_population_coords),
+                              (2, 1): Jungle(test_population_coords),
+                              (2, 3): Jungle(test_population_coords),
+                              (3, 2): Jungle(test_population_coords)
+                              }
+        for jungle in dict_of_neighbours.values():
+            jungle.regrowth()
+        herbivore = Herbivore(test_properties_coords)
+        assert herbivore.find_new_coordinates(dict_of_neighbours) == (2, 1)
+
+    def test_coordinates_returned_when_true(self, mocker, example_properties):
+        """
+        Asserts that a tuple of coordinates is returned if the animal will
+        move.
+        """
+        test_population_true = [
+            {"species": "Herbivore", "age": 1, "weight": 10.0}
+        ]
+        dict_of_neighbours = {(1, 2): Jungle(test_population_true),
+                              (2, 1): Jungle(test_population_true),
+                              (2, 3): Jungle(test_population_true),
+                              (3, 2): Jungle(test_population_true)
+                              }
+        for jungle in dict_of_neighbours.values():
+            jungle.regrowth()
+        herbivore = Herbivore(example_properties)
+        herbivore.fitness = 1
+        mocker.patch('numpy.random.random', return_value=0.1)
+        new_coordinates = herbivore.return_new_coordinates(dict_of_neighbours)
+        assert type(new_coordinates) == tuple
 
 
 class TestCarnivore:
@@ -453,6 +463,17 @@ class TestCarnivore:
             "age": 5,
             "weight": 20
         }
+
+    @pytest.fixture
+    def example_population_carn(self):
+        return [
+            {"species": "Herbivore", "age": 1, "weight": 10.0},
+            {"species": "Herbivore", "age": 1, "weight": 10.0},
+            {"species": "Herbivore", "age": 1, "weight": 10.0},
+            {"species": "Carnivore", "age": 1, "weight": 10.0},
+            {"species": "Carnivore", "age": 1, "weight": 10.0},
+            {"species": "Carnivore", "age": 1, "weight": 10.0},
+        ]
 
     @pytest.fixture
     def setup_class(cls):
@@ -542,3 +563,15 @@ class TestCarnivore:
         herb.find_fitness()
         eaten_herbs = carnivore.eat([herb])
         assert type(eaten_herbs) is list
+
+    def test_correct_rel_abund_fodder_carn(self, example_population_carn,
+                                           example_properties):
+        """
+        Checks that method for calculating relative abundance of fodder
+        returns the correct value.
+        """
+        jungle = Jungle(example_population_carn)
+        carnivore = Carnivore(example_properties)
+        rel_abund_fodder = carnivore.find_rel_abund_of_fodder(jungle)
+        assert rel_abund_fodder == 0.15
+        # 0.15 is rel abundance of fodder for this carnivore calculated by hand
