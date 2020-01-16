@@ -156,3 +156,19 @@ class TestIslandMap:
         neighbours = [(1, 2), (2, 1)]
         for neighbour in dict_with_neighbours.keys():
             assert neighbour in neighbours
+
+    def test_zero_neighbours(self, example_ini_pop):
+        """
+        Asserts that the neighbours_of_current_cell method handles a cell
+        with no neighbours.
+        :param example_ini_pop: list of dicts
+                Initial population of map
+        """
+        geogr_one_cell = """\
+                            J
+                            """
+        island_map = IslandMap(geogr_one_cell, example_ini_pop)
+        island_map.create_map_dict()
+        dict_with_neighbours = island_map.neighbours_of_current_cell((1, 1))
+        assert dict_with_neighbours == {}
+
