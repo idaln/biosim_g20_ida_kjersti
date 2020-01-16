@@ -21,9 +21,9 @@ class Landscape:
         :param population: list of dictionaries
         """
         self.fodder_amount = 0
-
         self.pop_carn = []
         self.pop_herb = []
+        
         for individual in population:
             if individual["species"] is "Herbivore":
                 self.pop_herb.append(Herbivore(individual))
