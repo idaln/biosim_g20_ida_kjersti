@@ -317,5 +317,24 @@ class TestDesert:
         """
         desert = Desert(example_pop_herb)
         assert isinstance(desert, Desert)
+
+class TestMountain:
+    @pytest.fixture
+    def example_pop_herb(self):
+        return [
+            {"species": "Herbivore", "age": 1, "weight": 10.0},
+            {"species": "Herbivore", "age": 3, "weight": 50.0},
+            {"species": "Herbivore", "age": 5, "weight": 20.0}
+         ]
+
+    def test_constructor(self, example_pop_herb):
+        """
+        Asserts that Mountain class enables initiation of class instances.
+        :param example_pop_herb: list
+        """
+        mountain = Mountain(example_pop_herb)
+        assert isinstance(mountain, Mountain)
         
+
+
 
