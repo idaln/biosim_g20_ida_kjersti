@@ -94,6 +94,25 @@ class TestIslandMap:
         island_map.create_map_dict()
         assert type(island_map.map) is dict
 
+    def test_map_includes_all_landscape_types(self, example_ini_pop):
+        """
+        Asserts that map can be created with all landscape types.
+        :param example_ini_pop: list
+                Initial population
+        """
+        all_types = """\
+                        JO
+                        DM
+                        SJ
+                        """
+        island_map = IslandMap(all_types, example_ini_pop)
+        island_map.create_map_dict()
+        assert type(island_map.map[(1, 1)]).__name__ is "Jungle"
+        assert type(island_map.map[(1, 2)]).__name__ is "Ocean"
+        assert type(island_map.map[(2, 1)]).__name__ is "Desert"
+        assert type(island_map.map[(2, 2)]).__name__ is "Mountain"
+        assert type(island_map.map[(3, 1)]).__name__ is "Savannah"
+
     def test_feeding_season(self, example_geogr, example_ini_pop):
         """
         Asserts that one animal in each cell of the test island
