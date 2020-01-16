@@ -172,3 +172,23 @@ class TestIslandMap:
         dict_with_neighbours = island_map.neighbours_of_current_cell((1, 1))
         assert dict_with_neighbours == {}
 
+    def test_all_animals_die(self, mocker, example_ini_pop, example_geogr):
+        """
+        Asserts that all animals on island die when their probability of dying
+        is one.
+        :param example_ini_pop: list
+                Initial population
+        :param example_geogr: str
+                Map
+        :return:
+        """
+        mocker.patch("numpy.random.random", return_value = 1)
+        island_map = IslandMap(example_geogr, example_ini_pop)
+        island_map.dying_season()
+        sum_animals = 0
+        for cell in island_map.map.values():
+            sum_animals += len(cell.pop_herb)
+            sum_animals += len(cell.pop_carn)
+        assert sum_animals == 0
+
+
