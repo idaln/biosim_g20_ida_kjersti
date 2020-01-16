@@ -2,7 +2,10 @@
 
 """
 """
-
+from biosim.animals import Animal, Herbivore, Carnivore
+from biosim.landscape import Landscape, Jungle, Savannah, Desert, Mountain, \
+    Ocean
+from biosim.island_map import IslandMap
 __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idaln@hotmail.com & kjkv@nmbu.no"
 
