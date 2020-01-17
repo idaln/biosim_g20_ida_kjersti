@@ -40,14 +40,14 @@ def setup_teardown_all_params():
 
 def test_empty_island():
     """Empty island can be created"""
-    biosim = BioSim(island_map="OO\nOO", ini_pop=[], seed=1)
+    BioSim(island_map="OO\nOO", ini_pop=[], seed=1)
     #island_map = biosim.island_map
     #assert isinstance(island_map, IslandMap)
 
 
 def test_minimal_island():
     """Island of single jungle cell"""
-    biosim = BioSim(island_map="OOO\nOJO\nOOO", ini_pop=[], seed=1)
+    BioSim(island_map="OOO\nOJO\nOOO", ini_pop=[], seed=1)
     #island_map = biosim.island_map
     #assert isinstance(island_map, IslandMap)
     #assert isinstance(island_map.map[(1, 1)], Jungle)
@@ -55,7 +55,7 @@ def test_minimal_island():
 
 def test_all_types():
     """All types of landscape can be created"""
-    biosim = BioSim(island_map="OOOO\nOJSO\nOMDO\nOOOO", ini_pop=[], seed=1)
+    BioSim(island_map="OOOO\nOJSO\nOMDO\nOOOO", ini_pop=[], seed=1)
     #island_map = biosim.island_map
     #assert isinstance(island_map.map[(0, 0)], Ocean)
     #assert isinstance(island_map.map[(1, 1)], Jungle)
