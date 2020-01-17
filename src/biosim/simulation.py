@@ -44,6 +44,8 @@ class BioSim:
         where img_no are consecutive image numbers starting from 0.
         img_base should contain a path and beginning of a file name.
         """
+        self.island_map = IslandMap(island_map, ini_pop)
+        self.island_map.create_map_dict()
 
     def set_animal_parameters(self, species, params):
         """
@@ -135,10 +137,9 @@ class BioSim:
     def make_movie(self):
         """Create MPEG4 movie from visualization images saved."""
 
+
 if __name__ == "__main__":
-    bio = BioSim(1, 2, 3)
-    #print(Animal.params)
-    ju = Jungle([{"species": "Herbivore", "age": 6, "weight": 30}])
-    print(ju.params)
-    bio.set_landscape_parameters("J", {"f_max": 40})
-    print(ju.params)
+    Jungle.params["f_max"] = 800
+    biosim = BioSim(island_map="OO\nOO", ini_pop=[], seed=1)
+    biosim.set_landscape_parameters("S", {"f_max": 300, "alpha": 0.3})
+    biosim.set_landscape_parameters("J", {"f_max": 800})
