@@ -69,7 +69,7 @@ class Landscape:
         Sets amount of fodder for herbivores to maximum at the beginning of
         each year.
         """
-        self.fodder_amount = self.params['f_max']
+        self.fodder_amount = self.params["f_max"]
 
     def available_fodder_herbivore(self):
         """
