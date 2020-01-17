@@ -122,7 +122,6 @@ class BioSim:
 
         Image files will be numbered consecutively.
         """
-        self.num_years_simulated = 0
         for year in range(num_years):
             self.island_map.run_all_seasons()
             self.num_years_simulated += 1
@@ -152,7 +151,7 @@ class BioSim:
     @property
     def num_animals_per_species(self):
         """Number of animals per species in island, as dictionary."""
-        num_animals_per_species = {}
+        num_animals_per_species = {"Herbivore": 0, "Carnivore": 0}
         for cell in self.island_map.map.values():
             num_animals_per_species["Herbivore"] += len(cell.pop_herb)
             num_animals_per_species["Carnivore"] += len(cell.pop_carn)
