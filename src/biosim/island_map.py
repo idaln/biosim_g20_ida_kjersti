@@ -4,6 +4,7 @@ __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idna@nmbu.no & kjkv@nmbu.no"
 
 from biosim.landscape import Jungle, Savannah, Desert, Mountain, Ocean
+from biosim.animals import Animal, Herbivore, Carnivore
 import textwrap
 
 
@@ -82,6 +83,22 @@ class IslandMap:
         """
         for pop_info in self.ini_pop:
             self.population[pop_info["loc"]] = pop_info["pop"]
+
+    def add_population(self, population):
+        """
+        Adds a new population to the already existing population
+        :param population: list
+                List of dictionaries containing the new population
+        """
+        new_pop = {}
+        for pop_info in population:
+            new_pop[pop_info["loc"]] = pop_info["pop"]
+        for loc, pop in new_pop.items():
+            for individual in pop:
+                if individual["species"] == "Carnivore":
+                    self.map[loc].pop_carn.append(Carnivore(individual))
+                else:
+                    self.map[loc].pop_herb.append(Herbivore(individual))
 
     def create_map_dict(self):
         """
