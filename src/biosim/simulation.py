@@ -150,17 +150,53 @@ class BioSim:
     @property
     def num_animals_per_species(self):
         """Number of animals per species in island, as dictionary."""
+        num_animals_per_species = {}
+        for cell in self.island_map.map.values():
+            num_animals_per_species["Herbivore"] += len(cell.pop_herb)
+            num_animals_per_species["Carnivore"] += len(cell.pop_carn)
+        return num_animals_per_species
 
     @property
     def animal_distribution(self):
-        """Pandas DataFrame with animal count per species for each cell on island."""
+        """
+        Pandas DataFrame with animal count per species for each cell on island.
+        """
+        data_all_cells = []
+        i = 0
+        for coord, cell in self.island_map.map.items():
+            row = coord[0]
+            col = coord[1]
+            herb = len(cell.pop_herb)
+            carn = len(cell.pop_carn)
+            data_all_cells.append([row, col, herb, carn])
+            i += 1
+        return pandas.DataFrame(data=data_all_cells, columns=[
+            'Row', 'Col', 'Herbivores', 'Carnivores'])
 
     def make_movie(self):
         """Create MPEG4 movie from visualization images saved."""
 
 
 if __name__ == "__main__":
-    Jungle.params["f_max"] = 800
-    biosim = BioSim(island_map="OO\nOO", ini_pop=[], seed=1)
-    biosim.set_landscape_parameters("S", {"f_max": 300, "alpha": 0.3})
-    biosim.set_landscape_parameters("J", {"f_max": 800})
+    ini_pop = [
+        {
+            "loc": (1, 1),
+            "pop": [
+                {"species": "Carnivore", "age": 5, "weight": 200}
+                for _ in range(6)
+            ]
+        },
+        {
+            "loc": (1, 2),
+            "pop": [
+                {"species": "Herbivore", "age": 5, "weight": 20}
+                for _ in range(12)
+            ]
+        }
+    ]
+
+    island = "OOOO\nOJSO\nOSSO\nOOOO"
+    biosim = BioSim(island, ini_pop, 1)
+    print(biosim.animal_distribution)
+    biosim.simulate(15)
+    print(biosim.animal_distribution)
