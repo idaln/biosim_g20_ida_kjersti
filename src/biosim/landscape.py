@@ -20,13 +20,13 @@ class Landscape:
         "alpha": None
     }
 
-    @property
-    def DEFAULT_PARAMS(self):
-        return self._DEFAULT_PARAMS
+    @classmethod
+    def GET_DEFAULT_PARAMS(cls):
+        return cls._DEFAULT_PARAMS
 
     @classmethod
     def reset_params(cls):
-        cls.params = cls.DEFAULT_PARAMS
+        cls.params = cls.GET_DEFAULT_PARAMS()
 
     def __init__(self, population):
         """
