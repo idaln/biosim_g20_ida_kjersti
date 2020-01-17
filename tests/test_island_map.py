@@ -121,6 +121,11 @@ class TestIslandMap:
         assert type(island_map.map[(2, 1)]).__name__ is "Savannah"
         assert type(island_map.map[(2, 2)]).__name__ is "Jungle"
 
+    def test_add_animals(self, example_ini_pop, example_geogr):
+        island_map = IslandMap(example_geogr, ini_pop=[])
+        island_map.create_map_dict()
+        island_map.add_population(example_ini_pop)
+
     def test_feeding_season(self, example_geogr, example_ini_pop):
         """
         Asserts that one animal in each cell of the test island
