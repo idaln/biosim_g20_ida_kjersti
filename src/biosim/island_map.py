@@ -234,9 +234,11 @@ class IslandMap:
 
 
 if __name__ == "__main__":
-    test_geogr = """\
-                    OOOO
-                    OSJSO
+    geogr_ex = """\
+                    OOOOO
+                    OJJJO
+                    OJJJO
+                    OJJJO
                     OOOOO
                     """
 
@@ -257,7 +259,7 @@ if __name__ == "__main__":
         }
     ]
 
-    i_m = IslandMap(test_geogr, test_ini_pop)
+    i_m = IslandMap(geogr_ex, test_ini_pop)
     i_m.create_map_dict()
     for _ in range(10):
         sum_animals = 0

@@ -14,22 +14,24 @@ class TestIslandMap:
     @pytest.fixture
     def example_geogr(self):
         return """\
-                JJ
-                JJ
+                OOOO
+                OJJO
+                OJJO
+                OOOO
                 """
 
     @pytest.fixture
     def example_ini_pop(self):
         return [
         {
-            "loc": (0, 1),
+            "loc": (1, 2),
             "pop": [
                 {"species": "Herbivore", "age": 5, "weight": 20}
                 for _ in range(3)
             ]
         },
         {
-            "loc": (1, 1),
+            "loc": (2, 2),
             "pop": [
                 {"species": "Herbivore", "age": 5, "weight": 20}
                 for _ in range(3)
@@ -52,14 +54,19 @@ class TestIslandMap:
         converted correctly.
         """
         geogr_convert = """\
-                           JO
-                           DM
-                           """
+                            OOOO
+                            OJSO
+                            ODMO
+                            OOOO
+                            """
         island_map = IslandMap(geogr_convert, example_ini_pop)
         island_map.create_geography_dict()
         assert type(island_map.geography) is dict
         assert island_map.geography == {
-            (0, 0): 'J', (0, 1): 'O', (1, 0): 'D', (1, 1): 'M'
+            (0, 0): 'O', (0, 1): 'O', (0, 2): 'O', (0, 3): 'O',
+            (1, 0): 'O', (1, 1): 'J', (1, 2): 'S', (1, 3): 'O',
+            (2, 0): 'O', (2, 1): 'D', (2, 2): 'M', (2, 3): 'O',
+            (3, 0): 'O', (3, 1): 'O', (3, 2): 'O', (3, 3): 'O',
         }
 
     def test_population_is_converted_correctly_to_dict(
@@ -73,12 +80,12 @@ class TestIslandMap:
         island_map.create_population_dict()
         assert type(island_map.population) is dict
         assert island_map.population == {
-            (0, 1): [
+            (1, 2): [
                 {'species': 'Herbivore', 'age': 5, 'weight': 20},
                 {'species': 'Herbivore', 'age': 5, 'weight': 20},
                 {'species': 'Herbivore', 'age': 5, 'weight': 20}
             ],
-            (1, 1): [
+            (2, 2): [
                 {'species': 'Herbivore', 'age': 5, 'weight': 20},
                 {'species': 'Herbivore', 'age': 5, 'weight': 20},
                 {'species': 'Herbivore', 'age': 5, 'weight': 20}
@@ -101,17 +108,18 @@ class TestIslandMap:
                 Initial population
         """
         all_types = """\
-                        JO
-                        DM
-                        SJ
+                        OOOO
+                        ODMO
+                        OSJO
+                        OOOO
                         """
         island_map = IslandMap(all_types, example_ini_pop)
         island_map.create_map_dict()
-        assert type(island_map.map[(0, 0)]).__name__ is "Jungle"
-        assert type(island_map.map[(0, 1)]).__name__ is "Ocean"
-        assert type(island_map.map[(1, 0)]).__name__ is "Desert"
-        assert type(island_map.map[(1, 1)]).__name__ is "Mountain"
-        assert type(island_map.map[(2, 0)]).__name__ is "Savannah"
+        assert type(island_map.map[(0, 0)]).__name__ is "Ocean"
+        assert type(island_map.map[(1, 1)]).__name__ is "Desert"
+        assert type(island_map.map[(1, 2)]).__name__ is "Mountain"
+        assert type(island_map.map[(2, 1)]).__name__ is "Savannah"
+        assert type(island_map.map[(2, 2)]).__name__ is "Jungle"
 
     def test_feeding_season(self, example_geogr, example_ini_pop):
         """
@@ -121,9 +129,9 @@ class TestIslandMap:
         island_map = IslandMap(example_geogr, example_ini_pop)
         island_map.create_map_dict()
         island_map.feeding_season()
-        assert island_map.map[(0, 1)].pop_herb[0].weight > \
+        assert island_map.map[(1, 2)].pop_herb[0].weight > \
             example_ini_pop[0]["pop"][0]["weight"]
-        assert island_map.map[(1, 1)].pop_herb[0].weight > \
+        assert island_map.map[(2, 2)].pop_herb[0].weight > \
             example_ini_pop[1]["pop"][0]["weight"]
 
     def test_all_animals_gave_birth(
@@ -154,16 +162,18 @@ class TestIslandMap:
     def test_zero_neighbours(self, example_ini_pop):
         """
         Asserts that the neighbours_of_current_cell method handles a cell
-        with no neighbours.
+        with no habitable neighbours.
         :param example_ini_pop: list of dicts
                 Initial population of map
         """
         geogr_one_cell = """\
-                            J
+                            OOO
+                            OJO
+                            OOO
                             """
         island_map = IslandMap(geogr_one_cell, example_ini_pop)
         island_map.create_map_dict()
-        dict_with_neighbours = island_map.neighbours_of_current_cell((0, 0))
+        dict_with_neighbours = island_map.neighbours_of_current_cell((1, 1))
         assert dict_with_neighbours == {}
 
     def test_two_correct_neighbours(self, example_geogr, example_ini_pop):
@@ -174,8 +184,8 @@ class TestIslandMap:
         island_map = IslandMap(example_geogr, example_ini_pop)
         island_map.create_map_dict()
 
-        dict_with_neighbours = island_map.neighbours_of_current_cell((0, 0))
-        neighbours = [(0, 1), (1, 0)]
+        dict_with_neighbours = island_map.neighbours_of_current_cell((1, 1))
+        neighbours = [(1, 2), (2, 1)]
         for neighbour in dict_with_neighbours.keys():
             assert neighbour in neighbours
 
@@ -184,16 +194,18 @@ class TestIslandMap:
         Asserts that the neighbours_of_current_cell method return the
         correct neighbours of a cell with four neighbours.
         """
-        geogr_neighbour = """\
-                                  JJJ    
-                                  JJJ
-                                  JJJ
-                                  """
-        island_map = IslandMap(geogr_neighbour, example_ini_pop)
+        test_geogr = """\
+                            OOOOO
+                            OJJJO
+                            OJJJO
+                            OJJJO
+                            OOOOO
+                            """
+        island_map = IslandMap(test_geogr, example_ini_pop)
         island_map.create_map_dict()
 
-        dict_with_neighbours = island_map.neighbours_of_current_cell((1, 1))
-        neighbours = [(0, 1), (1, 0), (1, 2), (2, 1)]
+        dict_with_neighbours = island_map.neighbours_of_current_cell((2, 2))
+        neighbours = [(1, 2), (2, 1), (2, 3), (3, 2)]
         for neighbour in dict_with_neighbours.keys():
             assert neighbour in neighbours
 
@@ -204,14 +216,14 @@ class TestIslandMap:
         """
         move_ini_pop = [
             {
-                "loc": (0, 1),
+                "loc": (1, 2),
                 "pop": [
                     {"species": "Herbivore", "age": 5, "weight": 20}
                     for _ in range(3)
                 ]
             },
             {
-                "loc": (1, 1),
+                "loc": (2, 2),
                 "pop": [
                     {"species": "Carnivore", "age": 5, "weight": 20}
                     for _ in range(3)
@@ -235,9 +247,9 @@ class TestIslandMap:
         """
         island_map = IslandMap(example_geogr, example_ini_pop)
         island_map.create_map_dict()
-        herbivore = island_map.map[(0, 1)].pop_herb[0]
+        herbivore = island_map.map[(1, 2)].pop_herb[0]
         herbivore.has_moved_this_year = True
-        assert island_map.move_single_animal((0, 1), herbivore) is None
+        assert island_map.move_single_animal((1, 2), herbivore) is None
 
     def test_animal_moves_not(self, mocker, example_geogr, example_ini_pop):
         """
@@ -247,8 +259,8 @@ class TestIslandMap:
         mocker.patch('numpy.random.random', return_value=1)
         island_map = IslandMap(example_geogr, example_ini_pop)
         island_map.create_map_dict()
-        herbivore = island_map.map[(0, 1)].pop_herb[0]
-        assert island_map.move_single_animal((0, 1), herbivore) is None
+        herbivore = island_map.map[(1, 2)].pop_herb[0]
+        assert island_map.move_single_animal((1, 2), herbivore) is None
 
     def test_all_animals_move(self, mocker, example_ini_pop, example_geogr):
         """
@@ -258,9 +270,9 @@ class TestIslandMap:
         mocker.patch('numpy.random.random', return_value=0.0001)
         island_map = IslandMap(example_geogr, [example_ini_pop[0]])
         island_map.create_map_dict()
-        island_map.move_all_animals_in_cell((0, 1), island_map.map[(0, 1)])
-        final_num_animals = len(island_map.map[(0, 1)].pop_herb) + \
-                            len(island_map.map[(0, 1)].pop_carn)
+        island_map.move_all_animals_in_cell((1, 2), island_map.map[(1, 2)])
+        final_num_animals = len(island_map.map[(1, 2)].pop_herb) + \
+                            len(island_map.map[(1, 2)].pop_carn)
         assert final_num_animals == 0
 
     def test_no_animals_move(self, mocker, example_ini_pop, example_geogr):
@@ -271,11 +283,11 @@ class TestIslandMap:
         mocker.patch('numpy.random.random', return_value=1)
         island_map = IslandMap(example_geogr, [example_ini_pop[0]])
         island_map.create_map_dict()
-        initial_num_animals = len(island_map.map[(0, 1)].pop_herb) + \
-                            len(island_map.map[(0, 1)].pop_carn)
-        island_map.move_all_animals_in_cell((0, 1), island_map.map[(0, 1)])
-        final_num_animals = len(island_map.map[(0, 1)].pop_herb) + \
-                            len(island_map.map[(0, 1)].pop_carn)
+        initial_num_animals = len(island_map.map[(1, 2)].pop_herb) + \
+                            len(island_map.map[(1, 2)].pop_carn)
+        island_map.move_all_animals_in_cell((1, 2), island_map.map[(1, 2)])
+        final_num_animals = len(island_map.map[(1, 2)].pop_herb) + \
+                            len(island_map.map[(1, 2)].pop_carn)
         assert final_num_animals == initial_num_animals
 
     def test_all_animals_migrate(self, mocker, example_ini_pop, example_geogr):
