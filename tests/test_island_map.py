@@ -39,7 +39,7 @@ class TestIslandMap:
         }
     ]
 
-    def test_contructor(self, example_geogr, example_ini_pop):
+    def test_constructor(self, example_geogr, example_ini_pop):
         """
         Asserts that an instance of the IslandMap class can be constructed.
         """
