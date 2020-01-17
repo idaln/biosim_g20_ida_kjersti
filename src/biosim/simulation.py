@@ -7,6 +7,7 @@ from biosim.landscape import Landscape, Jungle, Savannah, Desert, Mountain, \
     Ocean
 from biosim.island_map import IslandMap
 import pandas
+import random
 __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idaln@hotmail.com & kjkv@nmbu.no"
 
@@ -45,6 +46,7 @@ class BioSim:
         where img_no are consecutive image numbers starting from 0.
         img_base should contain a path and beginning of a file name.
         """
+        random.seed()
         self.island_map = IslandMap(island_map, ini_pop)
         self.island_map.create_map_dict()
         self.num_years_simulated = 0
