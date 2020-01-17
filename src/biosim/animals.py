@@ -324,7 +324,7 @@ class Herbivore(Animal):
     def find_rel_abund_of_fodder(self, landscape_cell):
         """
         Takes an instance of a landscape class, and returns the relative
-        abundance of fodder in that instance.
+        abundance of fodder for herbivores in that instance.
         :param landscape_cell: dict
                 Instance of landscape class
         :return: float
