@@ -47,6 +47,12 @@ class BioSim:
         self.island_map = IslandMap(island_map, ini_pop)
         self.island_map.create_map_dict()
 
+    @staticmethod
+    def reset_params():
+        for class_name in [Landscape, Jungle, Savannah, Desert, Mountain,
+                           Ocean, Animal, Herbivore, Carnivore]:
+            class_name.reset_params()
+
     def set_animal_parameters(self, species, params):
         """
         Set parameters for animal species.
@@ -76,8 +82,7 @@ class BioSim:
             else:
                 raise ValueError(f'{param_name} is an invalid parameter name!')
 
-    def reset_params(self):
-        for thing in [Jungle, Landscape, .... ]
+
 
     def set_landscape_parameters(self, landscape, params):
         """
