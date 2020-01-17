@@ -128,13 +128,13 @@ class BioSim:
             self.island_map.run_all_seasons()
             self.num_years_simulated += 1
 
-
     def add_population(self, population):
         """
         Add a population to the island
 
         :param population: List of dictionaries specifying population
         """
+        self.island_map.add_population(population)
 
     @property
     def year(self):
