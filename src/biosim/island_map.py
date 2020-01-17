@@ -24,11 +24,49 @@ class IslandMap:
         self.geogr = textwrap.dedent(geogr)
         self.ini_pop = ini_pop
 
+    def check_boundaries_are_ocean(self):
+        """
+        Checks that all boundary cells for the map are Ocean.
+        :raise ValueError:
+        """
+        map_lines = []
+        for line in self.geogr.splitlines():
+            map_lines.append(line)
+
+        for line_num in range(len(map_lines)):
+            if line_num == 0:
+                for landscape_type in map_lines[line_num]:
+                    if landscape_type is not "O":
+                        raise ValueError("Map boundary has to be only 'O'")
+            elif 0 < line_num < (len(map_lines) - 1):
+                if map_lines[line_num][0] is not "O":
+                    raise ValueError("Map boundary has to be only 'O'")
+                elif map_lines[line_num][-1] is not "O":
+                    raise ValueError("Map boundary has to be only 'O'")
+            else:
+                for landscape_type in map_lines[line_num]:
+                    if landscape_type is not "O":
+                        raise ValueError("Map boundary has to be only 'O'")
+
+    def check_map_lines_have_equal_length(self):
+        """
+        Checks that all lines in the map are of equal length.
+        :raise ValueError:
+        """
+        line_lengths = []
+        for line in self.geogr.splitlines():
+            line_lengths.append(len(line))
+
+        if len(set(line_lengths)) != 1:
+            raise ValueError(f"Inconsistent line length.")
+
     def create_geography_dict(self):
         """
         Converts string map to a dictionary with coordinates as keys and
         the landscape types as values.
         """
+        self.check_boundaries_are_ocean()
+        self.check_map_lines_have_equal_length()
         x_coord = 0
         for line in self.geogr.splitlines():
             y_coord = 0
@@ -71,8 +109,10 @@ class IslandMap:
                     self.map[loc] = Desert([])
             elif landscape_type is "O":
                 self.map[loc] = Ocean([])
-            else:
+            elif landscape_type is "M":
                 self.map[loc] = Mountain([])
+            else:
+                raise ValueError(f"Invalid landscape type {landscape_type}")
 
     def feeding_season(self):
         """
@@ -195,21 +235,21 @@ class IslandMap:
 
 if __name__ == "__main__":
     test_geogr = """\
-                    SJSJO
-                    SSJSS
-                    JMJJJ
+                    OOOO
+                    OSJSO
+                    OOOOO
                     """
 
     test_ini_pop = [
         {
-            "loc": (2, 2),
+            "loc": (1, 1),
             "pop": [
                 {"species": "Carnivore", "age": 5, "weight": 20}
                 for _ in range(6)
             ]
         },
         {
-            "loc": (1, 1),
+            "loc": (1, 3),
             "pop": [
                 {"species": "Herbivore", "age": 5, "weight": 20}
                 for _ in range(12)
