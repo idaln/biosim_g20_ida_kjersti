@@ -259,7 +259,9 @@ def test_set_plot_limits():
 
 @pytest.fixture
 def figfile_root():
-    """Provide name for figfile root and delete figfiles after test completes"""
+    """
+    Provide name for figfile root and delete figfiles after test completes
+    """
 
     ffroot = os.path.join(".", "testfigroot")
     yield ffroot
