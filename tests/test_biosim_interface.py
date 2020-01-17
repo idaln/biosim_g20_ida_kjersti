@@ -31,7 +31,12 @@ from biosim.landscape import Jungle, Desert, Savannah, Mountain, Ocean
 
 @pytest.fixture(autouse=True)
 def setup_teardown_all_params():
-    l_params = (Jungle.params, Desert.params)
+    """
+    Teardown for parameters that are changed in tests.
+    """
+    yield None
+    BioSim.reset_params()
+
 
 def test_empty_island():
     """Empty island can be created"""
