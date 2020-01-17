@@ -22,7 +22,7 @@ class Landscape:
 
     @classmethod
     def GET_DEFAULT_PARAMS(cls):
-        return cls._DEFAULT_PARAMS
+        return cls._DEFAULT_PARAMS.copy()
 
     @classmethod
     def reset_params(cls):
