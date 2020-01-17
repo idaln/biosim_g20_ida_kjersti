@@ -76,6 +76,9 @@ class BioSim:
             else:
                 raise ValueError(f'{param_name} is an invalid parameter name!')
 
+    def reset_params(self):
+        for thing in [Jungle, Landscape, .... ]
+
     def set_landscape_parameters(self, landscape, params):
         """
         Set parameters for landscape type.

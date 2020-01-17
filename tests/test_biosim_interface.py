@@ -29,6 +29,10 @@ from biosim.island_map import IslandMap
 from biosim.landscape import Jungle, Desert, Savannah, Mountain, Ocean
 
 
+@pytest.fixture(autouse=True)
+def setup_teardown_all_params():
+    l_params = (Jungle.params, Desert.params)
+
 def test_empty_island():
     """Empty island can be created"""
     biosim = BioSim(island_map="OO\nOO", ini_pop=[], seed=1)

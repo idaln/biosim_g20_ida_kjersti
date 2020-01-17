@@ -10,10 +10,21 @@ class Landscape:
     """
     Parent class for all landscape types.
     """
-    params = {
+    _DEFAULT_PARAMS = {
         "f_max": 800,
         "alpha": None
     }
+
+    @property
+    def DEFAULT_PARAMS(self):
+        return self._DEFAULT_PARAMS
+
+    # Initialised by init at first instance
+    params = None
+
+    @classmethod
+    def reset_params(cls):
+        cls.params = cls.DEFAULT_PARAMS
 
     def __init__(self, population):
         """
@@ -23,6 +34,9 @@ class Landscape:
         self.fodder_amount = 0
         self.pop_carn = []
         self.pop_herb = []
+
+        if self.params is None:
+            self.reset_params()
         
         for individual in population:
             if individual["species"] is "Herbivore":
@@ -184,6 +198,10 @@ class Jungle(Landscape):
     """
     Class for Jungle landscape type.
     """
+    _DEFAULT_PARAMS = {
+        "f_max": 800,
+    }
+
     params = {
         "f_max": 800,
     }
