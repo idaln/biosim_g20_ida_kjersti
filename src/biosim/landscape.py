@@ -15,12 +15,14 @@ class Landscape:
         "alpha": None
     }
 
+    params = {
+        "f_max": 800,
+        "alpha": None
+    }
+
     @property
     def DEFAULT_PARAMS(self):
         return self._DEFAULT_PARAMS
-
-    # Initialised by init at first instance
-    params = None
 
     @classmethod
     def reset_params(cls):
@@ -34,9 +36,6 @@ class Landscape:
         self.fodder_amount = 0
         self.pop_carn = []
         self.pop_herb = []
-
-        if self.params is None:
-            self.reset_params()
         
         for individual in population:
             if individual["species"] is "Herbivore":
@@ -217,6 +216,11 @@ class Savannah(Landscape):
     """
     Class for Savannah landscape type.
     """
+    _DEFAULT_PARAMS = {
+        "f_max": 300,
+        "alpha": 0.3
+    }
+
     params = {
         "f_max": 300,
         "alpha": 0.3
@@ -242,6 +246,10 @@ class Desert(Landscape):
     """
     Class for Desert landscape type.
     """
+    _DEFAULT_PARAMS = {
+        "f_max": 0
+    }
+
     params = {
         "f_max": 0
     }
@@ -259,6 +267,10 @@ class Mountain(Landscape):
     """
     Class for Mountain landscape type.
     """
+    _DEFAULT_PARAMS = {
+        "f_max": 0
+    }
+
     params = {
         "f_max": 0
     }
@@ -277,6 +289,10 @@ class Ocean(Landscape):
     """
     Class for Ocean landscape type.
     """
+    _DEFAULT_PARAMS = {
+        "f_max": 0
+    }
+
     params = {
         "f_max": 0
     }
