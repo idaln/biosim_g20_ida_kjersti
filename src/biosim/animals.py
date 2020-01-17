@@ -54,7 +54,7 @@ class Animal:
 
     @classmethod
     def reset_params(cls):
-        cls.params = cls.GET_DEFAULT_PARAMS
+        cls.params = cls.GET_DEFAULT_PARAMS()
 
     def __init__(self, properties):
         """
