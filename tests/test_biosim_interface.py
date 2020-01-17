@@ -9,9 +9,10 @@ the simulation module of the biosim package.
 Notes:
      - The BioSim class should pass all tests in this set.
      - The tests check only that the class interface can be used, not that
-       the class functions correctly. You need to write your own tests for that.
-     - You should only run these tests on your code *after* you have implemented
-       both animal and all landscape classes.
+       the class functions correctly. You need to write your own tests for
+       that.
+     - You should only run these tests on your code *after* you have
+       implemented both animal and all landscape classes.
 """
 
 __author__ = "Hans Ekkehard Plesser"
@@ -41,27 +42,16 @@ def setup_teardown_all_params():
 def test_empty_island():
     """Empty island can be created"""
     BioSim(island_map="OO\nOO", ini_pop=[], seed=1)
-    #island_map = biosim.island_map
-    #assert isinstance(island_map, IslandMap)
 
 
 def test_minimal_island():
     """Island of single jungle cell"""
     BioSim(island_map="OOO\nOJO\nOOO", ini_pop=[], seed=1)
-    #island_map = biosim.island_map
-    #assert isinstance(island_map, IslandMap)
-    #assert isinstance(island_map.map[(1, 1)], Jungle)
 
 
 def test_all_types():
     """All types of landscape can be created"""
     BioSim(island_map="OOOO\nOJSO\nOMDO\nOOOO", ini_pop=[], seed=1)
-    #island_map = biosim.island_map
-    #assert isinstance(island_map.map[(0, 0)], Ocean)
-    #assert isinstance(island_map.map[(1, 1)], Jungle)
-    #assert isinstance(island_map.map[(1, 2)], Savannah)
-    #assert isinstance(island_map.map[(2, 1)], Mountain)
-    #assert isinstance(island_map.map[(2, 2)], Desert)
 
 
 @pytest.mark.parametrize("bad_boundary", ["J", "S", "M", "D"])

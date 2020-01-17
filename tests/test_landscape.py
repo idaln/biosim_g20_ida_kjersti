@@ -322,6 +322,7 @@ class TestDesert:
         desert = Desert(example_pop_herb)
         assert isinstance(desert, Desert)
 
+
 class TestMountain:
     """
     Tests for Mountain class.
@@ -342,6 +343,7 @@ class TestMountain:
         mountain = Mountain(example_pop_herb)
         assert isinstance(mountain, Mountain)
 
+
 class TestOcean:
     """
     Tests for Ocean class.
@@ -353,11 +355,7 @@ class TestOcean:
             {"species": "Herbivore", "age": 3, "weight": 50.0},
             {"species": "Herbivore", "age": 5, "weight": 20.0}
          ]
+
     def test_constructor(self, example_pop_herb):
         ocean = Ocean(example_pop_herb)
         assert isinstance(ocean, Ocean)
-
-
-
-
-

@@ -319,7 +319,7 @@ class TestHerbivore:
         assert h.weight == example_properties["weight"]
 
     def test_correct_rel_abund_fodder_herb(self, example_population,
-                                      example_properties):
+                                           example_properties):
         """
         Checks that method for calculating relative abundance of fodder
         returns the correct value.
