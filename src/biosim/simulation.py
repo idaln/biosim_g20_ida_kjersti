@@ -46,6 +46,7 @@ class BioSim:
         """
         self.island_map = IslandMap(island_map, ini_pop)
         self.island_map.create_map_dict()
+        self.which_year = 0
 
     @staticmethod
     def reset_params():
@@ -118,6 +119,11 @@ class BioSim:
 
         Image files will be numbered consecutively.
         """
+        self.which_year = 0
+        for year in range(num_years):
+            self.island_map.run_all_seasons()
+            self.which_year += 1
+
 
     def add_population(self, population):
         """
@@ -129,6 +135,7 @@ class BioSim:
     @property
     def year(self):
         """Last year simulated."""
+        return self.which_year
 
     @property
     def num_animals(self):
