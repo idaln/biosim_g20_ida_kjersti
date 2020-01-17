@@ -173,7 +173,7 @@ class BioSim:
             data_all_cells.append([row, col, herb, carn])
             i += 1
         return pandas.DataFrame(data=data_all_cells, columns=[
-            'Row', 'Col', 'Herbivores', 'Carnivores'])
+            'Row', 'Col', 'Herbivore', 'Carnivore'])
 
     def make_movie(self):
         """Create MPEG4 movie from visualization images saved."""
