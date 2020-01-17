@@ -215,11 +215,11 @@ if __name__ == "__main__":
                 for _ in range(12)
             ]
         }
-
     ]
+
     i_m = IslandMap(test_geogr, test_ini_pop)
     i_m.create_map_dict()
-    for _ in range(80):
+    for _ in range(10):
         sum_animals = 0
         #print(i_m.map)
         for loc, cell in i_m.map.items():
