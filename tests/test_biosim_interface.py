@@ -25,21 +25,34 @@ import os
 import os.path
 
 from biosim.simulation import BioSim
+from biosim.island_map import IslandMap
+from biosim.landscape import Jungle, Desert, Savannah, Mountain, Ocean
 
 
 def test_empty_island():
     """Empty island can be created"""
-    BioSim(island_map="OO\nOO", ini_pop=[], seed=1)
+    biosim = BioSim(island_map="OO\nOO", ini_pop=[], seed=1)
+    island_map = biosim.island_map
+    assert isinstance(island_map, IslandMap)
 
 
 def test_minimal_island():
     """Island of single jungle cell"""
-    BioSim(island_map="OOO\nOJO\nOOO", ini_pop=[], seed=1)
+    biosim = BioSim(island_map="OOO\nOJO\nOOO", ini_pop=[], seed=1)
+    island_map = biosim.island_map
+    assert isinstance(island_map, IslandMap)
+    assert isinstance(island_map.map[(1, 1)], Jungle)
 
 
 def test_all_types():
     """All types of landscape can be created"""
-    BioSim(island_map="OOOO\nOJSO\nOMDO\nOOOO", ini_pop=[], seed=1)
+    biosim = BioSim(island_map="OOOO\nOJSO\nOMDO\nOOOO", ini_pop=[], seed=1)
+    island_map = biosim.island_map
+    assert isinstance(island_map.map[(0, 0)], Ocean)
+    assert isinstance(island_map.map[(1, 1)], Jungle)
+    assert isinstance(island_map.map[(1, 2)], Savannah)
+    assert isinstance(island_map.map[(2, 1)], Mountain)
+    assert isinstance(island_map.map[(2, 2)], Desert)
 
 
 @pytest.mark.parametrize("bad_boundary", ["J", "S", "M", "D"])
