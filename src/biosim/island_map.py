@@ -79,10 +79,13 @@ class IslandMap:
     def create_population_dict(self):
         """
         Converts list of populations to a dictionary with coordinates as keys
-        and lists of animals at this location as values.
+        and lists of the properties of the animals at this location as values.
         """
-        for pop_info in self.ini_pop:
-            self.population[pop_info["loc"]] = pop_info["pop"]
+        for cell_info in self.ini_pop:
+            if cell_info["loc"] in self.population.keys():
+                self.population[cell_info["loc"]].extend(cell_info["pop"])
+            else:
+                self.population[cell_info["loc"]] = cell_info["pop"]
 
     def add_population(self, population):
         """
