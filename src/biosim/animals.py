@@ -4,6 +4,7 @@ __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idna@nmbu.no & kjkv@nmbu.no"
 
 import numpy as np
+import math
 
 
 class Animal:
@@ -98,10 +99,10 @@ class Animal:
         Updates fitness.
         Fitness is zero if weight is zero, otherwise given by formula (3).
         """
-        q_plus = 1/(1 + np.exp(
+        q_plus = 1/(1 + math.exp(
             self.params["phi_age"]*(self.age - self.params["a_half"])
         ))
-        q_minus = 1/(1 + np.exp(
+        q_minus = 1/(1 + math.exp(
             -self.params["phi_weight"]*(self.weight - self.params["w_half"])
         ))
 
@@ -159,7 +160,7 @@ class Animal:
 
         loc_to_propensity_dict = {}
         for loc, landscape_instance in neighbours_of_current_cell.items():
-            loc_to_propensity_dict[loc] = np.exp(
+            loc_to_propensity_dict[loc] = math.exp(
                 self.params["lambda"] * self.find_rel_abund_of_fodder(
                     landscape_instance)
             )
