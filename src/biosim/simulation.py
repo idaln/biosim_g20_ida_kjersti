@@ -213,12 +213,43 @@ class BioSim:
             self.island_map.run_all_seasons()
             self.num_years_simulated += 1
 
+    def create_map_graphics(self):
+
+
+        #                   R    G    B
+        rgb_value = {'O': (0.0, 0.0, 1.0),  # blue
+                     'M': (0.5, 0.5, 0.5),  # grey
+                     'J': (0.0, 0.6, 0.0),  # dark green
+                     'S': (0.5, 1.0, 0.5),  # light green
+                     'D': (1.0, 1.0, 0.5)}  # light yellow
+
+        geogr_rgb = [[rgb_value[column] for column in row]
+                     for row in self.island_map.geogr.splitlines()]
+
+        axim = self._map_ax
+
+        #axim = fig.add_axes([0.1, 0.1, 0.7, 0.8])  # llx, lly, w, h
+        axim.imshow(geogr_rgb)
+        axim.set_xticks(range(len(geogr_rgb[0])))
+        axim.set_xticklabels(range(1, 1 + len(geogr_rgb[0])))
+        axim.set_yticks(range(len(geogr_rgb)))
+        axim.set_yticklabels(range(1, 1 + len(geogr_rgb)))
+
+        #axlg = fig.add_axes([0.85, 0.1, 0.1, 0.8])  # llx, lly, w, h
+        #axlg.axis('off')
+        #for ix, name in enumerate(('Ocean', 'Mountain', 'Jungle',
+        #                           'Savannah', 'Desert')):
+        #    axlg.add_patch(plt.Rectangle((0., ix * 0.2), 0.3, 0.1,
+        #                                 edgecolor='none',
+        #                                 facecolor=rgb_value[name[0]]))
+        #    axlg.text(0.35, ix * 0.2, name, transform=axlg.transAxes)
+
     def setup_graphics(self):
         """
         Creates subplots.
         :param num_years: number of years to simulate
         """
-        # create new figure window
+        # Create new figure window
         if self._fig is None:
             self._fig = plt.figure()
 
@@ -343,18 +374,26 @@ if __name__ == "__main__":
             ]
         },
         {
-            "loc": (1, 1),
+            "loc": (1, 2),
             "pop": [
                 {"species": "Herbivore", "age": 5, "weight": 20}
-                for _ in range(300)
+                for _ in range(10)
             ]
         }
     ]
 
-    island = "OOOOO\nOJJJO\nOJJJO\nOOOOO"
+    island = "OOOOO\nOJMJO\nODJJO\nODSJO\nOJMDO\nOOOOO"
     biosim = BioSim(island, ini_pop, 1)
     #print(biosim.animal_distribution)
     #biosim.simulate(15)
     #print(biosim.animal_distribution)
     biosim.simulate(5, 1, 5)
     plt.show()
+
+
+
+
+
+
+
+
