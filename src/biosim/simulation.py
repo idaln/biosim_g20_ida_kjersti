@@ -8,6 +8,8 @@ from biosim.landscape import Landscape, Jungle, Savannah, Desert, Mountain, \
 from biosim.island_map import IslandMap
 import pandas
 import numpy
+import matplotlib.pyplot as plt
+
 __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idaln@hotmail.com & kjkv@nmbu.no"
 
@@ -54,6 +56,22 @@ class BioSim:
         self.island_map = IslandMap(island_map, ini_pop)
         self.island_map.create_map_dict()
         self.num_years_simulated = 0
+
+        self._fig = None
+        self._line_graph_ax = None
+        self._line_graph_line = None
+        self._map_ax = None
+        self._img_axis = None
+        self.cmax = cmax_animals
+        self.img_base = img_base
+        self.img_fmt = img_fmt
+        self._final_year = None
+
+        if ymax_animals is None:
+            self.ymax = 500
+        else:
+            self.ymax = ymax_animals
+
 
     @staticmethod
     def reset_params():
@@ -113,40 +131,6 @@ class BioSim:
             else:
                 raise ValueError(f'{param_name} is an invalid parameter name!')
 
-    def create_line_graph(self, vis_years, img_years):
-        """
-        Creates line graph with one line for each species.
-        :param vis_years: years between visualization updates
-        :param img_years: years between visualizations saved to files
-        """
-
-    def save_visualization_images(self):
-        """
-
-        :return:
-        """
-
-    def simulate(self, num_years, vis_years=1, img_years=None):
-        """
-        Run simulation while visualizing the result.
-
-        :param num_years: number of years to simulate
-        :param vis_years: years between visualization updates
-        :param img_years: years between visualizations saved to files
-        (default: vis_years)
-
-        Image files will be numbered consecutively.
-        """
-        if img_years is None:
-            img_years = vis_years
-
-        for year in range(num_years):
-            self.island_map.run_all_seasons()
-            self.num_years_simulated += 1
-            self.create_line_graph(vis_years, vis_years)
-            #self.save_simulation_images()
-        #self.make_movie()
-
     def add_population(self, population):
         """
         Add a population to the island
@@ -195,8 +179,113 @@ class BioSim:
         return pandas.DataFrame(data=data_all_cells, columns=[
             'Row', 'Col', 'Herbivore', 'Carnivore'])
 
+    def simulate(self, num_years, vis_years=1, img_years=None):
+        """
+        Run simulation while visualizing the result.
+
+        :param num_years: number of years to simulate
+        :param vis_years: years between visualization updates
+        :param img_years: years between visualizations saved to files
+        (default: vis_years)
+
+        Image files will be numbered consecutively.
+        """
+        if img_years is None:
+            img_years = vis_years
+
+        self._final_year = self.year + num_years
+        self.setup_graphics()
+
+        while self.year < self._final_year:
+
+            if self.num_years_simulated % vis_years:
+                self.update_graphics()
+
+            if self.num_years_simulated % img_years:
+                self.save_graphics()
+
+            self.island_map.run_all_seasons()
+            self.num_years_simulated += 1
+
+    def setup_graphics(self):
+        """
+        Creates subplots.
+        :param num_years: number of years to simulate
+        """
+        # create new figure window
+        if self._fig is None:
+            self._fig = plt.figure()
+
+        # Add left subplot for images created with imshow().
+        # We cannot create the actual ImageAxis object before we know
+        # the size of the image, so we delay its creation.
+        if self._map_ax is None:
+            self._map_ax = self._fig.add_subplot(1, 2, 1)
+            self._img_axis = None
+
+        # Add right subplot for line graph of mean.
+        self.ymax = 500
+        if self._line_graph_ax is None:
+            self._line_graph_ax = self._fig.add_subplot(1, 2, 2)
+            self._line_graph_ax.set_ylim(0, self.ymax)
+
+        # needs updating on subsequent calls to simulate()
+        self._line_graph_ax.set_xlim(0, self._final_year + 1)
+
+        if self._line_graph_line is None:
+            line_graph_plot = self._line_graph_ax.plot(
+                numpy.arange(0, self._final_year),
+                numpy.full(self._final_year, numpy.nan)
+            )
+            self._line_graph_line = line_graph_plot[0]
+        else:
+            xdata, ydata = self._line_graph_line.get_data()
+            xnew = numpy.arange(xdata[-1] + 1, self._final_year)
+            if len(xnew) > 0:
+                ynew = numpy.full(xnew.shape, numpy.nan)
+                self._line_graph_line.set_data(
+                    numpy.hstack((xdata, xnew)), numpy.hstack((ydata, ynew))
+                )
+
+    def update_graphics(self):
+        """
+        Updates all graphics with current data.
+        """
+        self.update_line_graph()
+        self.update_island_map()
+        self.update_heat_maps()
+
+    def update_island_map(self):
+        """
+        Update the 2D visualization of the island map.
+        """
+        pass
+
+    def update_line_graph(self):
+        """
+        Updates line graph. Line graph has one line for each species.
+        """
+        ydata = self._line_graph_line.get_ydata()
+        ydata[self.num_years_simulated] = self.num_animals_per_species
+        self._line_graph_line.set_ydata(ydata)
+
+    def update_heat_maps(self):
+        """
+        Update visualization of heat maps for both species.
+        """
+        pass
+
+    def save_graphics(self):
+        """
+        Saves graphics to file, if file name is given.
+        """
+        pass
+
     def make_movie(self):
-        """Create MPEG4 movie from visualization images saved."""
+        """
+        Create MPEG4 movie from visualization images saved.
+        """
+        pass
 
 
 if __name__ == "__main__":
@@ -219,9 +308,5 @@ if __name__ == "__main__":
 
     island = "OOOOO\nOJJJO\nOJJJO\nOOOOO"
     biosim = BioSim(island, ini_pop, 1)
-    biosim.simulate(15)
-    print(biosim.animal_distribution)
-    print(biosim.num_animals_per_species)
-    biosim.simulate(15)
-    print(biosim.animal_distribution)
-    print(biosim.num_animals_per_species)
+    biosim.simulate(15, 1, 5)
+    plt.show()
