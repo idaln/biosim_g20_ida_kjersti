@@ -73,7 +73,6 @@ class BioSim:
         else:
             self.ymax = ymax_animals
 
-
     @staticmethod
     def reset_params():
         for class_name in [Landscape, Jungle, Savannah, Desert, Mountain,
@@ -224,7 +223,8 @@ class BioSim:
             self._map_ax = self._fig.add_subplot(1, 2, 1)
             self._img_axis = None
 
-        # Add right subplot for line graph of mean.
+        # Add right subplot for line graph of herbivore and carnivore
+        # populations.
         if self._line_graph_ax is None:
             self._line_graph_ax = self._fig.add_subplot(1, 2, 2)
             self._line_graph_ax.set_ylim(0, self.ymax)
@@ -264,6 +264,12 @@ class BioSim:
                     numpy.hstack((xdata, xnew)),
                     numpy.hstack((ydata, ynew))
                 )
+        self._line_graph_ax.yaxis.tick_right()
+        self._line_graph_ax.legend(["Herbivore", "Carnivore"], loc='best')
+        self._line_graph_ax.title.set_text('Population dynamics')
+        self._line_graph_ax.set_ylabel('Number of animals')
+        self._line_graph_ax.set_xlabel('Year')
+
 
     def update_graphics(self):
         """
@@ -334,8 +340,8 @@ if __name__ == "__main__":
 
     island = "OOOOO\nOJJJO\nOJJJO\nOOOOO"
     biosim = BioSim(island, ini_pop, 1)
-    print(biosim.animal_distribution)
-    biosim.simulate(15)
-    print(biosim.animal_distribution)
-    #biosim.simulate(150, 1, 5)
-    #plt.show()
+    #print(biosim.animal_distribution)
+    #biosim.simulate(15)
+    #print(biosim.animal_distribution)
+    biosim.simulate(5, 1, 5)
+    plt.show()
