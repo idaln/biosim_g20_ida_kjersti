@@ -324,7 +324,7 @@ if __name__ == "__main__":
             ]
         },
         {
-            "loc": (1, 2),
+            "loc": (1, 1),
             "pop": [
                 {"species": "Herbivore", "age": 5, "weight": 20}
                 for _ in range(300)
@@ -334,5 +334,8 @@ if __name__ == "__main__":
 
     island = "OOOOO\nOJJJO\nOJJJO\nOOOOO"
     biosim = BioSim(island, ini_pop, 1)
-    biosim.simulate(150, 1, 5)
-    plt.show()
+    print(biosim.animal_distribution)
+    biosim.simulate(15)
+    print(biosim.animal_distribution)
+    #biosim.simulate(150, 1, 5)
+    #plt.show()
