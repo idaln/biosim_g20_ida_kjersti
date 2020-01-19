@@ -226,19 +226,21 @@ class BioSim:
         # We cannot create the actual ImageAxis object before we know
         # the size of the image, so we delay its creation.
         if self._map_ax is None:
-            self._map_ax = self._fig.add_subplot(1, 2, 1)
-            self._img_axis = None
+            self._map_ax = self._fig.add_subplot(2, 2, 1)
+            self.create_map_graphics()
+
+        self._map_ax.title.set_text('Island')
 
         # Add right subplot for line graph of herbivore and carnivore
         # populations.
         if self._line_graph_ax is None:
-            self._line_graph_ax = self._fig.add_subplot(1, 2, 2)
+            self._line_graph_ax = self._fig.add_subplot(2, 2, 2)
             self._line_graph_ax.set_ylim(0, self.ymax)
 
-        # needs updating on subsequent calls to simulate()
+        # Needs updating on subsequent calls to simulate()
         self._line_graph_ax.set_xlim(0, self._final_year + 1)
 
-        # for herbivores
+        # Line for herbivores
         if self._line_graph_line_herb is None:
             line_graph_plot_herb = self._line_graph_ax.plot(
                 numpy.arange(0, self._final_year),
