@@ -69,7 +69,7 @@ class BioSim:
         self._final_year = None
 
         if ymax_animals is None:
-            self.ymax = 500
+            self.ymax = 1500
         else:
             self.ymax = ymax_animals
 
@@ -201,10 +201,9 @@ class BioSim:
 
             if self.year % vis_years == 0:
                 self.update_graphics()
-                #print(self.num_animals_per_species["Herbivore"])
 
-            # if self.year % img_years == 0:
-                # self.save_graphics()
+            if self.year % img_years == 0:
+                self.save_graphics()
 
             self.island_map.run_all_seasons()
             self.num_years_simulated += 1
@@ -226,7 +225,6 @@ class BioSim:
             self._img_axis = None
 
         # Add right subplot for line graph of mean.
-        self.ymax = 500
         if self._line_graph_ax is None:
             self._line_graph_ax = self._fig.add_subplot(1, 2, 2)
             self._line_graph_ax.set_ylim(0, self.ymax)
@@ -322,19 +320,19 @@ if __name__ == "__main__":
             "loc": (1, 1),
             "pop": [
                 {"species": "Carnivore", "age": 5, "weight": 200}
-                for _ in range(6)
+                for _ in range(10)
             ]
         },
         {
             "loc": (1, 2),
             "pop": [
                 {"species": "Herbivore", "age": 5, "weight": 20}
-                for _ in range(12)
+                for _ in range(300)
             ]
         }
     ]
 
     island = "OOOOO\nOJJJO\nOJJJO\nOOOOO"
     biosim = BioSim(island, ini_pop, 1)
-    biosim.simulate(15, 1, 5)
+    biosim.simulate(150, 1, 5)
     plt.show()
