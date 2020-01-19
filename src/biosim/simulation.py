@@ -256,7 +256,7 @@ class BioSim:
                     numpy.hstack((xdata, xnew)), numpy.hstack((ydata, ynew))
                 )
 
-        # for carnivores
+        # Line for carnivores
         if self._line_graph_line_carn is None:
             line_graph_plot_carn = self._line_graph_ax.plot(
                 numpy.arange(0, self._final_year),
@@ -272,27 +272,31 @@ class BioSim:
                     numpy.hstack((xdata, xnew)),
                     numpy.hstack((ydata, ynew))
                 )
+        # Features for line graph
         self._line_graph_ax.yaxis.tick_right()
+        self._line_graph_ax.yaxis.set_label_position('right')
         self._line_graph_ax.legend(["Herbivore", "Carnivore"], loc='best')
         self._line_graph_ax.title.set_text('Population dynamics')
         self._line_graph_ax.set_ylabel('Number of animals')
         self._line_graph_ax.set_xlabel('Year')
 
+        # Heat map for herbivores
+        if self._heat_map_herb_ax is None:
+            self._heat_map_herb_ax = self._fig.add_subplot(2, 2, 3)
+            self._img_herb_axis = None
+
+        # Heat map for carnivores
+        if self._heat_map_carn_ax is None:
+            self._heat_map_carn_ax = self._fig.add_subplot(2, 2, 4)
+            self._img_carn_axis = None
 
     def update_graphics(self):
         """
         Updates all graphics with current data.
         """
         self.update_line_graph()
-        self.update_island_map()
         self.update_heat_maps()
         plt.pause(1e-6)
-
-    def update_island_map(self):
-        """
-        Update the 2D visualization of the island map.
-        """
-        pass
 
     def update_line_graph(self):
         """
@@ -300,7 +304,8 @@ class BioSim:
         """
         # for herbivores
         ydata_herb = self._line_graph_line_herb.get_ydata()
-        ydata_herb[self.num_years_simulated] = self.num_animals_per_species["Herbivore"]
+        ydata_herb[self.num_years_simulated] = self.num_animals_per_species[
+            "Herbivore"]
         self._line_graph_line_herb.set_ydata(ydata_herb)
 
         # for carnivores
