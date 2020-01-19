@@ -59,7 +59,8 @@ class BioSim:
 
         self._fig = None
         self._line_graph_ax = None
-        self._line_graph_line = None
+        self._line_graph_line_herb = None
+        self._line_graph_line_carn = None
         self._map_ax = None
         self._img_axis = None
         self.cmax = cmax_animals
@@ -198,11 +199,12 @@ class BioSim:
 
         while self.year < self._final_year:
 
-            if self.num_years_simulated % vis_years:
+            if self.year % vis_years == 0:
                 self.update_graphics()
+                #print(self.num_animals_per_species["Herbivore"])
 
-            if self.num_years_simulated % img_years:
-                self.save_graphics()
+            # if self.year % img_years == 0:
+                # self.save_graphics()
 
             self.island_map.run_all_seasons()
             self.num_years_simulated += 1
@@ -232,19 +234,37 @@ class BioSim:
         # needs updating on subsequent calls to simulate()
         self._line_graph_ax.set_xlim(0, self._final_year + 1)
 
-        if self._line_graph_line is None:
-            line_graph_plot = self._line_graph_ax.plot(
+        # for herbivores
+        if self._line_graph_line_herb is None:
+            line_graph_plot_herb = self._line_graph_ax.plot(
                 numpy.arange(0, self._final_year),
                 numpy.full(self._final_year, numpy.nan)
             )
-            self._line_graph_line = line_graph_plot[0]
+            self._line_graph_line_herb = line_graph_plot_herb[0]
         else:
-            xdata, ydata = self._line_graph_line.get_data()
+            xdata, ydata = self._line_graph_line_herb.get_data()
             xnew = numpy.arange(xdata[-1] + 1, self._final_year)
             if len(xnew) > 0:
                 ynew = numpy.full(xnew.shape, numpy.nan)
-                self._line_graph_line.set_data(
+                self._line_graph_line_herb.set_data(
                     numpy.hstack((xdata, xnew)), numpy.hstack((ydata, ynew))
+                )
+
+        # for carnivores
+        if self._line_graph_line_carn is None:
+            line_graph_plot_carn = self._line_graph_ax.plot(
+                numpy.arange(0, self._final_year),
+                numpy.full(self._final_year, numpy.nan)
+            )
+            self._line_graph_line_carn = line_graph_plot_carn[0]
+        else:
+            xdata, ydata = self._line_graph_line_carn.get_data()
+            xnew = numpy.arange(xdata[-1] + 1, self._final_year)
+            if len(xnew) > 0:
+                ynew = numpy.full(xnew.shape, numpy.nan)
+                self._line_graph_line_carn.set_data(
+                    numpy.hstack((xdata, xnew)),
+                    numpy.hstack((ydata, ynew))
                 )
 
     def update_graphics(self):
@@ -254,6 +274,7 @@ class BioSim:
         self.update_line_graph()
         self.update_island_map()
         self.update_heat_maps()
+        plt.pause(1e-6)
 
     def update_island_map(self):
         """
@@ -265,9 +286,16 @@ class BioSim:
         """
         Updates line graph. Line graph has one line for each species.
         """
-        ydata = self._line_graph_line.get_ydata()
-        ydata[self.num_years_simulated] = self.num_animals_per_species
-        self._line_graph_line.set_ydata(ydata)
+        # for herbivores
+        ydata_herb = self._line_graph_line_herb.get_ydata()
+        ydata_herb[self.num_years_simulated] = self.num_animals_per_species["Herbivore"]
+        self._line_graph_line_herb.set_ydata(ydata_herb)
+
+        # for carnivores
+        ydata_carn = self._line_graph_line_carn.get_ydata()
+        ydata_carn[self.num_years_simulated] = self.num_animals_per_species[
+            "Carnivore"]
+        self._line_graph_line_carn.set_ydata(ydata_carn)
 
     def update_heat_maps(self):
         """
