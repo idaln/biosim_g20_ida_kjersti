@@ -53,25 +53,31 @@ class BioSim:
         img_base should contain a path and beginning of a file name.
         """
         numpy.random.seed(seed)
+
+        self.cmax = cmax_animals
+        self.img_base = img_base
+        self.img_fmt = img_fmt
+        if ymax_animals is None:
+            self.ymax = 1500
+        else:
+            self.ymax = ymax_animals
+
         self.island_map = IslandMap(island_map, ini_pop)
         self.island_map.create_map_dict()
         self.num_years_simulated = 0
+        self._final_year = None
 
+        # The following will be initialized by setup_graphics
         self._fig = None
         self._line_graph_ax = None
         self._line_graph_line_herb = None
         self._line_graph_line_carn = None
         self._map_ax = None
         self._img_axis = None
-        self.cmax = cmax_animals
-        self.img_base = img_base
-        self.img_fmt = img_fmt
-        self._final_year = None
-
-        if ymax_animals is None:
-            self.ymax = 1500
-        else:
-            self.ymax = ymax_animals
+        self._heat_map_herb_ax = None
+        self._img_herb_axis = None
+        self._heat_map_carn_ax = None
+        self._img_carn_axis = None
 
     @staticmethod
     def reset_params():
