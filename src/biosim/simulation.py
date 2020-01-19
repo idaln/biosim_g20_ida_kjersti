@@ -113,6 +113,19 @@ class BioSim:
             else:
                 raise ValueError(f'{param_name} is an invalid parameter name!')
 
+    def create_line_graph(self, vis_years, img_years):
+        """
+        Creates line graph with one line for each species.
+        :param vis_years: years between visualization updates
+        :param img_years: years between visualizations saved to files
+        """
+
+    def save_visualization_images(self):
+        """
+
+        :return:
+        """
+
     def simulate(self, num_years, vis_years=1, img_years=None):
         """
         Run simulation while visualizing the result.
@@ -124,9 +137,15 @@ class BioSim:
 
         Image files will be numbered consecutively.
         """
+        if img_years is None:
+            img_years = vis_years
+
         for year in range(num_years):
             self.island_map.run_all_seasons()
             self.num_years_simulated += 1
+            self.create_line_graph(vis_years, vis_years)
+            #self.save_simulation_images()
+        #self.make_movie()
 
     def add_population(self, population):
         """
@@ -198,8 +217,11 @@ if __name__ == "__main__":
         }
     ]
 
-    island = "OOOO\nOJSO\nOSSO\nOOOO"
+    island = "OOOOO\nOJJJO\nOJJJO\nOOOOO"
     biosim = BioSim(island, ini_pop, 1)
-    print(biosim.animal_distribution)
     biosim.simulate(15)
     print(biosim.animal_distribution)
+    print(biosim.num_animals_per_species)
+    biosim.simulate(15)
+    print(biosim.animal_distribution)
+    print(biosim.num_animals_per_species)
