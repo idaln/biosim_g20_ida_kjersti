@@ -50,7 +50,8 @@ class Landscape:
         """
         for individual in self.pop_herb:
             individual.find_fitness()
-        self.pop_herb = sorted(self.pop_herb, key=lambda x: x.fitness)
+        self.pop_herb = sorted(self.pop_herb, key=lambda x: x.fitness,
+                               reverse=True)
 
     def sort_carn_population_by_fitness(self):
         """
@@ -59,7 +60,8 @@ class Landscape:
         """
         for individual in self.pop_carn:
             individual.find_fitness()
-        self.pop_carn = sorted(self.pop_carn, key=lambda x: x.fitness)
+        self.pop_carn = sorted(self.pop_carn, key=lambda x: x.fitness,
+                               reverse=True)
 
     def regrowth(self):
         """
