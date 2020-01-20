@@ -497,15 +497,3 @@ class Carnivore(Animal):
         num_carns = len(landscape_cell.pop_carn)
         abund_fodder_carn = fodder_carn / ((num_carns + 1) * self.params["F"])
         return abund_fodder_carn
-
-
-if __name__ == "__main__":
-    test_properties = {
-        "species": "animal",
-        "age": 5,
-        "weight": 20
-    }
-    c = Carnivore(test_properties)
-    c.find_fitness()
-    print(c.fitness)
-    print(c.params["DeltaPhiMax"])

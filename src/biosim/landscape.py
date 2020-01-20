@@ -291,18 +291,3 @@ class Ocean(Landscape):
                  Should be empty.
         """
         super().__init__(population)
-
-
-if __name__ == "__main__":
-    import numpy
-    test_population = [
-        {"species": "Herbivore", "age": 1, "weight": 5.0},
-        {"species": "Carnivore", "age": 5, "weight": 6.0},
-        {"species": "Herbivore", "age": 1, "weight": 5.0},
-        {"species": "Carnivore", "age": 2, "weight": 10.0},
-        {"species": "Carnivore", "age": 10, "weight": 90.0},
-        {"species": "Herbivore", "age": 1, "weight": 5.0},
-    ]
-    savannah = Savannah(test_population)
-    total_pop = savannah.pop_carn + savannah.pop_herb
-    print(total_pop)
