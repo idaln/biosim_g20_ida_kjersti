@@ -48,6 +48,7 @@ class Landscape:
         Sorts herbivore populations by fitness, from highest to
         lowest. Uses the Bubble Sort algorithm.
         """
+        # sorted_list = self.pop_herb.sort(key=lambda x: x.fitness, reverse=True)
         for individual in self.pop_herb:
             individual.find_fitness()
         n = len(self.pop_herb)
