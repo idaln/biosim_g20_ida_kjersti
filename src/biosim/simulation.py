@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
+
 """
 from biosim.animals import Animal, Herbivore, Carnivore
 from biosim.landscape import Landscape, Jungle, Savannah, Desert, Mountain, \
@@ -118,10 +119,13 @@ class BioSim:
         for param_name in params.keys():
             if param_name in class_names[species].params:
                 if params[param_name] >= 0 and param_name is not "DeltaPhiMax"\
-                        and param_name is not "eta":
+                        and param_name is not "eta" and param_name is not "F":
                     class_names[species].params[param_name] = params[
                         param_name]
                 elif param_name is "eta" and 0 <= params[param_name] <= 1:
+                    class_names[species].params[param_name] = params[
+                        param_name]
+                elif param_name is "F" and 0 < params[param_name]:
                     class_names[species].params[param_name] = params[
                         param_name]
                 elif param_name is "DeltaPhiMax" and params[param_name] > 0:
@@ -129,7 +133,8 @@ class BioSim:
                         param_name]
                 else:
                     raise ValueError(f'{params[param_name]} is an invalid '
-                                     f'parameter value!')
+                                     f'parameter value for parameter '
+                                     f'{param_name}!')
             else:
                 raise ValueError(f'{param_name} is an invalid parameter name!')
 
@@ -517,5 +522,6 @@ if __name__ == "__main__":
 
     ex_img_base = "../../data/img"
     biosim = BioSim(island, initial_pop, 1, img_base=ex_img_base)
-    biosim.simulate(15, 1, 5)
+    biosim.set_animal_parameters("Herbivore", {"F": 60})
+    biosim.simulate(16, 1, 5)
     plt.show()
