@@ -396,9 +396,14 @@ if __name__ == "__main__":
     ]
 
     island = "OOOOO\nOJMJO\nODJJO\nODSJO\nOJMDO\nOOOOO"
+    geogr = """\
+               OOOOO
+               OOOOO"""
     biosim = BioSim(island, ini_pop, 1)
-    print(biosim.animal_distribution)
-    biosim.simulate(15)
-    print(biosim.animal_distribution)
-    biosim.simulate(5, 1, 5)
+    #print(biosim.animal_distribution)
+    #biosim.simulate(15)
+    #df = biosim.animal_distribution
+    #print(df["Row"])
+    biosim.simulate(15, 1, 5)
     plt.show()
+
