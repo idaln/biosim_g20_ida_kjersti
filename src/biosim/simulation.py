@@ -352,7 +352,7 @@ class BioSim:
         axim.set_ylabel('y coordinate')
         axim.set_xlabel('x coordinate')
 
-        axlg = self._fig.add_axes([0.4, 0.55, 0.1, 0.3])  # llx, lly, w, h
+        axlg = self._fig.add_axes([0.4, 0.55, 0.1, 0.3])
         axlg.axis('off')
         for ix, name in enumerate(('Ocean', 'Mountain', 'Jungle',
                                    'Savannah', 'Desert')):
