@@ -339,7 +339,8 @@ class BioSim:
         Updates all graphics with current data.
         """
         self.update_line_graph()
-        self.update_heat_maps()
+        self.update_heat_map_herbs()
+        self.update_heat_map_carns()
         plt.pause(1e-6)
 
     def update_line_graph(self):
@@ -358,10 +359,66 @@ class BioSim:
             "Carnivore"]
         self._line_graph_line_carn.set_ydata(ydata_carn)
 
-    def update_heat_maps(self):
+    def create_array_herbs(self):
         """
-        Update visualization of heat maps for both species.
+        Creates array used to create heat map of herbivore population.
         """
+        df = self.animal_distribution
+        num_rows = df["Row"].iloc[-1] + 1
+        num_cols = df["Col"].iloc[-1] + 1
+
+        index = 0
+        array_herbs = numpy.zeros(shape=(num_rows, num_cols))
+        for row in range(num_rows):
+            for col in range(num_cols):
+                array_herbs[row, col] = df["Herbivore"].iloc[index]
+                index += 1
+        return array_herbs
+
+    def update_heat_map_herbs(self):
+        """
+        Update visualization of heat map for herbivores.
+        """
+        if self._img_herb_axis is not None:
+            self._img_herb_axis.set_data(self.create_array_herbs())
+        else:
+            self._img_herb_axis = self._heat_map_herb_ax.imshow(
+                self.create_array_herbs(),
+                                                 interpolation='nearest',
+                                                 vmin=0, vmax=20)
+            plt.colorbar(self._img_herb_axis, ax=self._heat_map_herb_ax,
+                         orientation='horizontal')
+        pass
+
+    def create_array_carns(self):
+        """
+        Creates arrays used to create heat map of carnivore population.
+        """
+        df = self.animal_distribution
+        num_rows = df["Row"].iloc[-1] + 1
+        num_cols = df["Col"].iloc[-1] + 1
+
+        index = 0
+        array_carns = numpy.zeros(shape=(num_rows, num_cols))
+        for row in range(num_rows):
+            for col in range(num_cols):
+                array_carns[row, col] = df["Carnivore"].iloc[index]
+                index += 1
+        return array_carns
+
+    def update_heat_map_carns(self):
+        """
+        Update visualization of heat map for carnivores.
+        """
+        if self._img_carn_axis is not None:
+            self._img_carn_axis.set_data(self.create_array_carns())
+        else:
+            self._img_carn_axis = self._heat_map_carn_ax.imshow(
+                self.create_array_carns(),
+                                                 interpolation='nearest',
+                                                 vmin=0, vmax=20)
+            plt.colorbar(self._img_carn_axis, ax=self._heat_map_carn_ax,
+                         orientation='horizontal')
         pass
 
     def save_graphics(self):
