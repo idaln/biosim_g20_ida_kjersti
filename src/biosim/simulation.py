@@ -65,7 +65,7 @@ class BioSim:
         self._img_base = img_base
         self._img_fmt = img_fmt
         if ymax_animals is None:
-            self.ymax = 1500
+            self.ymax = 15000
         else:
             self.ymax = ymax_animals
 
