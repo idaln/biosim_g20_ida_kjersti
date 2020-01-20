@@ -62,13 +62,21 @@ class Animal:
         Initializing class by unpacking all parameters given as input.
         """
         self.has_moved_this_year = False
-        self.weight = properties["weight"]
-        self.age = properties["age"]
 
         if "fitness" not in properties.keys():
             self.fitness = None
         else:
             self.fitness = properties["fitness"]
+
+        if properties["age"] < 0:
+            raise ValueError('Age must be nonnegative')
+        else:
+            self.age = properties["age"]
+
+        if properties["weight"] <= 0:
+            raise ValueError('Weight must be positive')
+        else:
+            self.weight = properties["weight"]
 
     def make_animal_one_year_older(self):
         """
