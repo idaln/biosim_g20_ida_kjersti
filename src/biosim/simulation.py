@@ -150,12 +150,16 @@ class BioSim:
 
     @property
     def year(self):
-        """Last year simulated."""
+        """
+        Last year simulated.
+        """
         return self.num_years_simulated
 
     @property
     def num_animals(self):
-        """Total number of animals on island."""
+        """
+        Total number of animals on island.
+        """
         num_animals = 0
         for cell in self.island_map.map.values():
             num_animals += len(cell.pop_herb)
@@ -164,7 +168,9 @@ class BioSim:
 
     @property
     def num_animals_per_species(self):
-        """Number of animals per species in island, as dictionary."""
+        """
+        Number of animals per species in island, as dictionary.
+        """
         num_animals_per_species = {"Herbivore": 0, "Carnivore": 0}
         for cell in self.island_map.map.values():
             num_animals_per_species["Herbivore"] += len(cell.pop_herb)
