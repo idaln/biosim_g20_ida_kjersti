@@ -50,6 +50,45 @@ class TestAnimal:
         assert a.params['a_half'] == 60
         assert a.params['omega'] == 0.9
 
+    def test_invalid_age(self):
+        """
+        Tests that ValueError is raised if animal with negative age is created.
+        """
+        properties_age = {
+            "species": "animal",
+            "age": -5,
+            "weight": 40
+        }
+
+        with pytest.raises(ValueError):
+            Animal(properties_age)
+
+    def test_negative_weight(self):
+        """
+        Tests that ValueError is raised if animal with negative weight is
+        created.
+        """
+        properties_weight = {
+            "species": "animal",
+            "age": 5,
+            "weight": -40
+        }
+        with pytest.raises(ValueError):
+            Animal(properties_weight)
+
+    def test_weight_zero(self):
+        """
+        Tests that ValueError is raised if animal with weight zero is
+        created.
+        """
+        properties_weight_zero = {
+            "species": "animal",
+            "age": 5,
+            "weight": 0
+        }
+        with pytest.raises(ValueError):
+            Animal(properties_weight_zero)
+
     def test_is_animal_one_year_older(self, example_properties):
         """
         Checks that animal is one year older than last year.
@@ -86,16 +125,12 @@ class TestAnimal:
         a.find_fitness()
         assert 0 <= a.fitness <= 1
 
-    def test_fitness_zero_if_weight_zero(self):
+    def test_fitness_zero_if_weight_zero(self, example_properties):
         """
         Checks that fitness is zero if weight is zero.
         """
-        test_properties_zero_fitness = {
-            "species": "animal",
-            "age": 5,
-            "weight": 0
-        }
-        a = Animal(test_properties_zero_fitness)
+        a = Animal(example_properties)
+        a.weight = 0
         a.find_fitness()
         assert a.fitness == 0
 
@@ -227,16 +262,12 @@ class TestAnimal:
         a.find_fitness()
         assert a.birth_process(num_animals=6) is None
 
-    def test_prob_death_is_one(self):
+    def test_prob_death_is_one(self, example_properties):
         """
         Asserts that the probability of dying is one if fitness equals zero.
         """
-        test_properties = {
-            "species": "animal",
-            "age": 5,
-            "weight": 0
-        }
-        a = Animal(test_properties)
+        a = Animal(example_properties)
+        a.weight = 0
         a.find_fitness()
         assert a.prob_death() == 1
 
@@ -248,16 +279,12 @@ class TestAnimal:
         a.find_fitness()
         assert a.prob_death() == approx(0.0014929212599999687)
 
-    def test_false_death_prob_is_one(self):
+    def test_false_death_prob_is_one(self, example_properties):
         """
         Assert that False is returned if probability of dying is one.
         """
-        test_properties = {
-            "species": "animal",
-            "age": 5,
-            "weight": 0
-        }
-        a = Animal(test_properties)
+        a = Animal(example_properties)
+        a.weight = 0
         a.find_fitness()
         assert a.will_animal_live() is not True
 
