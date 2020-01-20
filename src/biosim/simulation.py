@@ -9,12 +9,17 @@ from biosim.island_map import IslandMap
 import pandas
 import numpy
 import matplotlib.pyplot as plt
+import subprocess
+import os
 
 __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idaln@hotmail.com & kjkv@nmbu.no"
 
 
 class BioSim:
+    #obs
+    _DEFAULT_MOVIE_FORMAT = "mp4"
+    _FFMPEG_BINARY = 'C:/Program Files/ffmpeg-20200115-0dc0837-win64-static/bin'
     def __init__(
         self,
         island_map,
@@ -55,8 +60,8 @@ class BioSim:
         numpy.random.seed(seed)
 
         self.cmax = cmax_animals
-        self.img_base = img_base
-        self.img_fmt = img_fmt
+        self._img_base = img_base
+        self._img_fmt = img_fmt
         if ymax_animals is None:
             self.ymax = 1500
         else:
@@ -66,6 +71,7 @@ class BioSim:
         self.island_map.create_map_dict()
         self.num_years_simulated = 0
         self._final_year = None
+        self.img_no = 0
 
         # The following will be initialized by setup_graphics
         self._fig = None
@@ -261,12 +267,9 @@ class BioSim:
         # Create new figure window
         if self._fig is None:
             self._fig = plt.figure(figsize=(13, 8))
-            self._fig.set_tight_layout(True)
             self._fig.subplots_adjust(hspace=0.2, wspace=0.2)
 
-        # Add left subplot for images created with imshow().
-        # We cannot create the actual ImageAxis object before we know
-        # the size of the image, so we delay its creation.
+        # Add left upper subplot for map of island.
         if self._map_ax is None:
             self._map_ax = self._fig.add_subplot(2, 2, 1)
             self._map_ax.set_position(pos=[0, 0.5, 0.5, 0.4])
@@ -274,7 +277,7 @@ class BioSim:
 
         self._map_ax.title.set_text('Island')
 
-        # Add right subplot for line graph of herbivore and carnivore
+        # Add upper right subplot for line graph of herbivore and carnivore
         # populations.
         if self._line_graph_ax is None:
             self._line_graph_ax = self._fig.add_subplot(2, 2, 2)
@@ -323,12 +326,12 @@ class BioSim:
         self._line_graph_ax.set_ylabel('Number of animals')
         self._line_graph_ax.set_xlabel('Year')
 
-        # Heat map for herbivores
+        # Add lower left heat map for herbivores
         if self._heat_map_herb_ax is None:
             self._heat_map_herb_ax = self._fig.add_subplot(2, 2, 3)
             self._img_herb_axis = None
 
-        # Heat map for carnivores
+        # Add lower right heat map for carnivores
         if self._heat_map_carn_ax is None:
             self._heat_map_carn_ax = self._fig.add_subplot(2, 2, 4)
             self._img_carn_axis = None
@@ -424,13 +427,43 @@ class BioSim:
         """
         Saves graphics to file, if file name is given.
         """
-        pass
+        if self._img_base is None:
+            return
 
-    def make_movie(self):
+        plt.savefig(f"{self._img_base}_{self.img_no:05d}.{self._img_fmt}")
+
+        self.img_no += 1
+
+    def make_movie(self, movie_fmt = _DEFAULT_MOVIE_FORMAT):
         """
-        Create MPEG4 movie from visualization images saved.
+        Creates MPEG4 movie from visualization images saved.
+
+        .. :note:
+            Requires ffmpeg
+
+        The movie is stored as img_base + movie_fmt
         """
-        pass
+
+        if self._img_base is None:
+            raise RuntimeError("No filename defined.")
+
+        if movie_fmt == 'mp4':
+            try:
+                # Parameters chosen according to http://trac.ffmpeg.org/wiki/Encode/H.264,
+                # section "Compatibility"
+                subprocess.check_call([self._FFMPEG_BINARY,
+                                       '-i',
+                                       '{}_%05d.png'.format(self._img_base),
+                                       '-y',
+                                       '-profile:v', 'baseline',
+                                       '-level', '3.0',
+                                       '-pix_fmt', 'yuv420p',
+                                       '{}.{}'.format(self._img_base,
+                                                      movie_fmt)])
+            except subprocess.CalledProcessError as err:
+                raise RuntimeError('ERROR: ffmpeg failed with: {}'.format(err))
+        else:
+            raise ValueError('Unknown movie format: ' + movie_fmt)
 
 
 if __name__ == "__main__":
@@ -443,10 +476,10 @@ if __name__ == "__main__":
             ]
         },
         {
-            "loc": (1, 3),
+            "loc": (1, 1),
             "pop": [
                 {"species": "Herbivore", "age": 5, "weight": 20}
-                for _ in range(10)
+                for _ in range(100)
             ]
         }
     ]
@@ -457,11 +490,15 @@ if __name__ == "__main__":
                OOOOOOOOOOOOOOO
                OOOOOOOOOOOOOOO
                """
-    biosim = BioSim(island, ini_pop, 1)
+    #C:\Users\Bruker\Documents\Programmering\biosim_g20_ida_kjersti\data
+    img_base = "../../data/img"
+    biosim = BioSim(island, ini_pop, 1, img_base=img_base)
     #print(biosim.animal_distribution)
     #biosim.simulate(15)
     #df = biosim.animal_distribution
     #print(df["Row"])
+
     biosim.simulate(15, 1, 5)
     plt.show()
+    biosim.make_movie()
 
