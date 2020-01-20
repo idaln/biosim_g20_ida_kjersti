@@ -1,2 +1,6 @@
 pytest
+pytest-mock
 tox
+numpy
+pandas
+matplotlib

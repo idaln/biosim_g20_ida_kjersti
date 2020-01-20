@@ -2,12 +2,28 @@
 
 """
 """
+from biosim.animals import Animal, Herbivore, Carnivore
+from biosim.landscape import Landscape, Jungle, Savannah, Desert, Mountain, \
+    Ocean
+from biosim.island_map import IslandMap
+import pandas
+import numpy
+import matplotlib.pyplot as plt
+import subprocess
 
 __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idaln@hotmail.com & kjkv@nmbu.no"
 
+_DEFAULT_MOVIE_FORMAT = 'mp4'
+# Update this variable to point to your ffmpeg binary
+_FFMPEG_BINARY = 'C:/Program Files/' \
+                 'ffmpeg-20200115-0dc0837-win64-static/bin/ffmpeg'
+
 
 class BioSim:
+    """
+    Class for simulating a model of the ecosystem of Rossumøya.
+    """
     def __init__(
         self,
         island_map,
@@ -22,12 +38,16 @@ class BioSim:
         :param island_map: Multi-line string specifying island geography
         :param ini_pop: List of dictionaries specifying initial population
         :param seed: Integer used as random number seed
-        :param ymax_animals: Number specifying y-axis limit for graph showing animal numbers
-        :param cmax_animals: Dict specifying color-code limits for animal densities
-        :param img_base: String with beginning of file name for figures, including path
+        :param ymax_animals: Number specifying y-axis limit for graph showing
+        animal numbers
+        :param cmax_animals: Dict specifying color-code limits for animal
+        densities
+        :param img_base: String with beginning of file name for figures,
+        including path
         :param img_fmt: String with file type for figures, e.g. 'png'
 
-        If ymax_animals is None, the y-axis limit should be adjusted automatically.
+        If ymax_animals is None, the y-axis limit should be adjusted
+        automatically.
 
         If cmax_animals is None, sensible, fixed default values should be used.
         cmax_animals is a dict mapping species names to numbers, e.g.,
@@ -41,33 +61,101 @@ class BioSim:
         where img_no are consecutive image numbers starting from 0.
         img_base should contain a path and beginning of a file name.
         """
+        numpy.random.seed(seed)
 
-    def set_animal_parameters(self, species, params):
+        self._img_base = img_base
+        self._img_fmt = img_fmt
+
+        if cmax_animals is None:
+            self.cmax = {'Herbivore': 300, 'Carnivore': 100}
+        else:
+            self.cmax = cmax_animals
+
+        if ymax_animals is None:
+            self.ymax = 15000
+        else:
+            self.ymax = ymax_animals
+
+        self.island_map = IslandMap(island_map, ini_pop)
+        self.island_map.create_map_dict()
+        self.num_years_simulated = 0
+        self._final_year = None
+        self.img_no = 0
+
+        # The following will be initialized by setup_graphics
+        self._fig = None
+        self._line_graph_ax = None
+        self._line_graph_line_herb = None
+        self._line_graph_line_carn = None
+        self._map_ax = None
+        self._img_axis = None
+        self._heat_map_herb_ax = None
+        self._img_herb_axis = None
+        self._heat_map_carn_ax = None
+        self._img_carn_axis = None
+
+    @staticmethod
+    def reset_params():
+        """
+        Resets parameters of all classes.
+        """
+        for class_name in [Landscape, Jungle, Savannah, Desert, Mountain,
+                           Ocean, Animal, Herbivore, Carnivore]:
+            class_name.reset_params()
+
+    @staticmethod
+    def set_animal_parameters(species, params):
         """
         Set parameters for animal species.
+        All animal parameters shall be positive. However, DeltaPhiMax shall be
+        strictly positive and eta shall lie between zero and one.
 
         :param species: String, name of animal species
         :param params: Dict with valid parameter specification for species
         """
+        class_names = {"Herbivore": Herbivore,
+                       "Carnivore": Carnivore}
+        for param_name in params.keys():
+            if param_name in class_names[species].params:
+                if params[param_name] >= 0 and param_name is not "DeltaPhiMax"\
+                        and param_name is not "eta":
+                    class_names[species].params[param_name] = params[
+                        param_name]
+                elif param_name is "eta" and 0 <= params[param_name] <= 1:
+                    class_names[species].params[param_name] = params[
+                        param_name]
+                elif param_name is "DeltaPhiMax" and params[param_name] > 0:
+                    class_names[species].params[param_name] = params[
+                        param_name]
+                else:
+                    raise ValueError(f'{params[param_name]} is an invalid '
+                                     f'parameter value!')
+            else:
+                raise ValueError(f'{param_name} is an invalid parameter name!')
 
-    def set_landscape_parameters(self, landscape, params):
+    @staticmethod
+    def set_landscape_parameters(landscape, params):
         """
         Set parameters for landscape type.
 
         :param landscape: String, code letter for landscape
         :param params: Dict with valid parameter specification for landscape
         """
-
-    def simulate(self, num_years, vis_years=1, img_years=None):
-        """
-        Run simulation while visualizing the result.
-
-        :param num_years: number of years to simulate
-        :param vis_years: years between visualization updates
-        :param img_years: years between visualizations saved to files (default: vis_years)
-
-        Image files will be numbered consecutively.
-        """
+        class_names = {'J': Jungle, 'S': Savannah, 'D': Desert, 'M': Mountain,
+                       'O': Ocean}
+        for param_name in params.keys():
+            if param_name in class_names[landscape].params.keys():
+                if param_name is "f_max" and params[param_name] >= 0:
+                    class_names[landscape].params[param_name] = params[
+                        param_name]
+                elif param_name is "alpha":
+                    class_names[landscape].params[param_name] = params[
+                        param_name]
+                else:
+                    raise ValueError(f'{params[param_name]} is an invalid '
+                                     f'parameter value!')
+            else:
+                raise ValueError(f'{param_name} is an invalid parameter name!')
 
     def add_population(self, population):
         """
@@ -75,22 +163,359 @@ class BioSim:
 
         :param population: List of dictionaries specifying population
         """
+        self.island_map.add_population(population)
 
     @property
     def year(self):
-        """Last year simulated."""
+        """
+        Last year simulated.
+        """
+        return self.num_years_simulated
 
     @property
     def num_animals(self):
-        """Total number of animals on island."""
+        """
+        Total number of animals on island.
+        """
+        num_animals = 0
+        for cell in self.island_map.map.values():
+            num_animals += len(cell.pop_herb)
+            num_animals += len(cell.pop_carn)
+        return num_animals
 
     @property
     def num_animals_per_species(self):
-        """Number of animals per species in island, as dictionary."""
+        """
+        Number of animals per species in island, as dictionary.
+        """
+        num_animals_per_species = {"Herbivore": 0, "Carnivore": 0}
+        for cell in self.island_map.map.values():
+            num_animals_per_species["Herbivore"] += len(cell.pop_herb)
+            num_animals_per_species["Carnivore"] += len(cell.pop_carn)
+        return num_animals_per_species
 
     @property
     def animal_distribution(self):
-        """Pandas DataFrame with animal count per species for each cell on island."""
+        """
+        Pandas DataFrame with animal count per species for each cell on island.
+        """
+        data_all_cells = []
+        i = 0
+        for coord, cell in self.island_map.map.items():
+            row = coord[0]
+            col = coord[1]
+            herb = len(cell.pop_herb)
+            carn = len(cell.pop_carn)
+            data_all_cells.append([row, col, herb, carn])
+            i += 1
+        return pandas.DataFrame(data=data_all_cells, columns=[
+            'Row', 'Col', 'Herbivore', 'Carnivore'])
 
-    def make_movie(self):
-        """Create MPEG4 movie from visualization images saved."""
+    def simulate(self, num_years, vis_years=1, img_years=None):
+        """
+        Run simulation while visualizing the result.
+
+        :param num_years: number of years to simulate
+        :param vis_years: years between visualization updates
+        :param img_years: years between visualizations saved to files
+        (default: vis_years)
+
+        Image files will be numbered consecutively.
+        """
+        if img_years is None:
+            img_years = vis_years
+
+        self._final_year = self.year + num_years
+        self.setup_graphics()
+
+        while self.year < self._final_year:
+
+            if self.year % vis_years == 0:
+                self.update_graphics()
+
+            if self.year % img_years == 0:
+                self.save_graphics()
+
+            self.island_map.run_all_seasons()
+            self.num_years_simulated += 1
+
+    def setup_graphics(self):
+        """
+        Creates subplots.
+        """
+        # Create new figure window
+        if self._fig is None:
+            self._fig = plt.figure(figsize=(13, 8))
+            self._fig.subplots_adjust(hspace=0.2, wspace=0.2)
+
+        # Add left upper subplot with features for map of island
+        if self._map_ax is None:
+            self._map_ax = self._fig.add_subplot(2, 2, 1)
+            self._map_ax.set_position(pos=[0, 0.55, 0.4, 0.3])
+            self.create_map_graphics()
+            self._map_ax.title.set_text('Island')
+
+        # Add upper right subplot for line graph of herbivore and carnivore
+        # populations.
+        if self._line_graph_ax is None:
+            self._line_graph_ax = self._fig.add_subplot(2, 2, 2)
+            self._line_graph_ax.set_ylim(0, self.ymax)
+            self._line_graph_ax.set_position(pos=[0.5, 0.55, 0.35, 0.35])
+
+        # Needs updating on subsequent calls to simulate()
+        self._line_graph_ax.set_xlim(0, self._final_year + 1)
+
+        # Line graph for herbivores
+        if self._line_graph_line_herb is None:
+            line_graph_plot_herb = self._line_graph_ax.plot(
+                numpy.arange(0, self._final_year),
+                numpy.full(self._final_year, numpy.nan)
+            )
+            self._line_graph_line_herb = line_graph_plot_herb[0]
+        else:
+            xdata, ydata = self._line_graph_line_herb.get_data()
+            xnew = numpy.arange(xdata[-1] + 1, self._final_year)
+            if len(xnew) > 0:
+                ynew = numpy.full(xnew.shape, numpy.nan)
+                self._line_graph_line_herb.set_data(
+                    numpy.hstack((xdata, xnew)), numpy.hstack((ydata, ynew))
+                )
+
+        # Line graph for carnivores
+        if self._line_graph_line_carn is None:
+            line_graph_plot_carn = self._line_graph_ax.plot(
+                numpy.arange(0, self._final_year),
+                numpy.full(self._final_year, numpy.nan)
+            )
+            self._line_graph_line_carn = line_graph_plot_carn[0]
+        else:
+            xdata, ydata = self._line_graph_line_carn.get_data()
+            xnew = numpy.arange(xdata[-1] + 1, self._final_year)
+            if len(xnew) > 0:
+                ynew = numpy.full(xnew.shape, numpy.nan)
+                self._line_graph_line_carn.set_data(
+                    numpy.hstack((xdata, xnew)),
+                    numpy.hstack((ydata, ynew))
+                )
+        # Features for line graph
+        self._line_graph_ax.yaxis.tick_right()
+        self._line_graph_ax.yaxis.set_label_position('right')
+        self._line_graph_ax.legend(["Herbivore", "Carnivore"], loc='best')
+        self._line_graph_ax.title.set_text('Population dynamics')
+        self._line_graph_ax.set_ylabel('Number of animals')
+        self._line_graph_ax.set_xlabel('Year')
+
+        # Add lower left heat map for herbivores
+        if self._heat_map_herb_ax is None:
+            self._heat_map_herb_ax = self._fig.add_subplot(2, 2, 3)
+            self._heat_map_herb_ax.set_position(pos=[0, 0, 0.4, 0.4])
+            self._img_herb_axis = None
+
+        # Features for herbivore heat map
+        self._heat_map_herb_ax.title.set_text('Herbivore population')
+        self._heat_map_herb_ax.set_ylabel('y coordinate')
+        self._heat_map_herb_ax.set_xlabel('x coordinate')
+
+        # Add lower right heat map for carnivores
+        if self._heat_map_carn_ax is None:
+            self._heat_map_carn_ax = self._fig.add_subplot(2, 2, 4)
+            self._heat_map_carn_ax.set_position(pos=[0.5, 0, 0.4, 0.4])
+            self._img_carn_axis = None
+
+        # Features for carnivore heat map
+        self._heat_map_carn_ax.title.set_text('Carnivore population')
+        self._heat_map_carn_ax.set_ylabel('y coordinate')
+        self._heat_map_carn_ax.set_xlabel('x coordinate')
+
+    def create_map_graphics(self):
+        """
+        Creates a map of the island's geography.
+        """
+        #                   R    G    B
+        rgb_value = {'O': (0.0, 0.0, 1.0),  # blue
+                     'M': (0.5, 0.5, 0.5),  # grey
+                     'J': (0.0, 0.6, 0.0),  # dark green
+                     'S': (0.5, 1.0, 0.5),  # light green
+                     'D': (1.0, 1.0, 0.5)}  # light yellow
+
+        geogr_rgb = [[rgb_value[column] for column in row]
+                     for row in self.island_map.geogr.splitlines()]
+
+        axim = self._map_ax
+
+        axim.imshow(geogr_rgb)
+        axim.set_xticks(range(len(geogr_rgb[0])))
+        axim.set_xticklabels(range(1, 1 + len(geogr_rgb[0])))
+        axim.set_yticks(range(len(geogr_rgb)))
+        axim.set_yticklabels(range(1, 1 + len(geogr_rgb)))
+
+        axlg = self._fig.add_axes([0.4, 0.55, 0.1, 0.3])  # llx, lly, w, h
+        axlg.axis('off')
+        for ix, name in enumerate(('Ocean', 'Mountain', 'Jungle',
+                                   'Savannah', 'Desert')):
+            axlg.add_patch(plt.Rectangle((0., ix * 0.2), 0.3, 0.1,
+                                         edgecolor='none',
+                                         facecolor=rgb_value[name[0]]))
+            axlg.text(0.35, ix * 0.21, name,
+                      transform=axlg.transAxes,
+                      fontsize=8)
+
+    def update_graphics(self):
+        """
+        Updates all graphics with current data.
+        """
+        self.update_line_graph()
+        self.update_heat_map_herbs()
+        self.update_heat_map_carns()
+        plt.suptitle(f"Simulation of year {self.year}", fontsize=26)
+        plt.pause(1e-6)
+
+    def update_line_graph(self):
+        """
+        Updates line graph. Line graph has one line for each species.
+        """
+        # for herbivores
+        ydata_herb = self._line_graph_line_herb.get_ydata()
+        ydata_herb[self.num_years_simulated] = self.num_animals_per_species[
+            "Herbivore"]
+        self._line_graph_line_herb.set_ydata(ydata_herb)
+
+        # for carnivores
+        ydata_carn = self._line_graph_line_carn.get_ydata()
+        ydata_carn[self.num_years_simulated] = self.num_animals_per_species[
+            "Carnivore"]
+        self._line_graph_line_carn.set_ydata(ydata_carn)
+
+    def create_array_herbs(self):
+        """
+        Creates array used to create heat map of herbivore population.
+        """
+        df = self.animal_distribution
+        num_rows = df["Row"].iloc[-1] + 1
+        num_cols = df["Col"].iloc[-1] + 1
+
+        index = 0
+        array_herbs = numpy.zeros(shape=(num_rows, num_cols))
+        for row in range(num_rows):
+            for col in range(num_cols):
+                array_herbs[row, col] = df["Herbivore"].iloc[index]
+                index += 1
+        return array_herbs
+
+    def update_heat_map_herbs(self):
+        """
+        Update visualization of heat map for herbivores.
+        """
+        if self._img_herb_axis is not None:
+            self._img_herb_axis.set_data(self.create_array_herbs())
+        else:
+            self._img_herb_axis = self._heat_map_herb_ax.imshow(
+                self.create_array_herbs(),
+                interpolation='nearest',
+                vmin=0,
+                vmax=self.cmax["Herbivore"]
+            )
+            plt.colorbar(self._img_herb_axis, ax=self._heat_map_herb_ax,
+                         orientation='vertical'
+                         )
+
+    def create_array_carns(self):
+        """
+        Creates arrays used to create heat map of carnivore population.
+        """
+        df = self.animal_distribution
+        num_rows = df["Row"].iloc[-1] + 1
+        num_cols = df["Col"].iloc[-1] + 1
+
+        index = 0
+        array_carns = numpy.zeros(shape=(num_rows, num_cols))
+        for row in range(num_rows):
+            for col in range(num_cols):
+                array_carns[row, col] = df["Carnivore"].iloc[index]
+                index += 1
+        return array_carns
+
+    def update_heat_map_carns(self):
+        """
+        Update visualization of heat map for carnivores.
+        """
+        if self._img_carn_axis is not None:
+            self._img_carn_axis.set_data(self.create_array_carns())
+        else:
+            self._img_carn_axis = self._heat_map_carn_ax.imshow(
+                self.create_array_carns(),
+                interpolation='nearest',
+                vmin=0,
+                vmax=self.cmax["Carnivore"]
+            )
+            plt.colorbar(self._img_carn_axis, ax=self._heat_map_carn_ax,
+                         orientation='vertical')
+
+    def save_graphics(self):
+        """
+        Saves graphics to file, if file name is given.
+        """
+        if self._img_base is None:
+            return
+
+        plt.savefig(f"{self._img_base}_{self.img_no:05d}.{self._img_fmt}")
+
+        self.img_no += 1
+
+    def make_movie(self, movie_fmt=_DEFAULT_MOVIE_FORMAT):
+        """
+        Creates MPEG4 movie from visualization images saved.
+
+        .. :note:
+            Requires ffmpeg
+
+        The movie is stored as img_base + movie_fmt
+        """
+
+        if self._img_base is None:
+            raise RuntimeError("No filename defined.")
+
+        if movie_fmt == 'mp4':
+            try:
+                # Parameters chosen according to
+                # http://trac.ffmpeg.org/wiki/Encode/H.264,
+                # section "Compatibility"
+                subprocess.check_call([_FFMPEG_BINARY,
+                                       '-i',
+                                       '{}_%05d.png'.format(self._img_base),
+                                       '-y',
+                                       '-profile:v', 'baseline',
+                                       '-level', '3.0',
+                                       '-pix_fmt', 'yuv420p',
+                                       '{}.{}'.format(self._img_base,
+                                                      movie_fmt)])
+            except subprocess.CalledProcessError as err:
+                raise RuntimeError('ERROR: ffmpeg failed with: {}'.format(err))
+        else:
+            raise ValueError('Unknown movie format: ' + movie_fmt)
+
+
+if __name__ == "__main__":
+    initial_pop = [
+        {
+            "loc": (1, 1),
+            "pop": [
+                {"species": "Carnivore", "age": 5, "weight": 200}
+                for _ in range(10)
+            ]
+        },
+        {
+            "loc": (1, 1),
+            "pop": [
+                {"species": "Herbivore", "age": 5, "weight": 20}
+                for _ in range(100)
+            ]
+        }
+    ]
+
+    island = "OOOOO\nOJMJO\nODJJO\nODSJO\nOJMDO\nOOOOO"
+
+    ex_img_base = "../../data/img"
+    biosim = BioSim(island, initial_pop, 1, img_base=ex_img_base)
+    biosim.simulate(15, 1, 5)
+    plt.show()
