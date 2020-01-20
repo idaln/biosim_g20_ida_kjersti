@@ -350,7 +350,7 @@ class TestHerbivore:
         assert type(prop_dict) is dict
         for loc, prop in prop_dict.items():
             assert type(loc) is tuple
-            assert type(prop) is numpy.float64
+            assert type(prop) is float
 
     def test_dict_with_correct_key_and_value_types(self, example_population,
                                                    example_properties):
@@ -370,7 +370,7 @@ class TestHerbivore:
         assert type(prob_dict) is dict
         for loc, prob in prob_dict.items():
             assert type(loc) is tuple
-            assert type(prob) is numpy.float64
+            assert type(prob) is float
 
     def test_dict_converted_correctly_to_list_array(self, example_properties,
                                                     example_population):
