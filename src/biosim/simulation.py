@@ -389,7 +389,7 @@ class BioSim:
             self._img_herb_axis = self._heat_map_herb_ax.imshow(
                 self.create_array_herbs(),
                                                  interpolation='nearest',
-                                                 vmin=0, vmax=20)
+                                                 vmin=0, vmax=300)
             plt.colorbar(self._img_herb_axis, ax=self._heat_map_herb_ax,
                          orientation='horizontal')
         pass
@@ -420,7 +420,7 @@ class BioSim:
             self._img_carn_axis = self._heat_map_carn_ax.imshow(
                 self.create_array_carns(),
                                                  interpolation='nearest',
-                                                 vmin=0, vmax=20)
+                                                 vmin=0, vmax=100)
             plt.colorbar(self._img_carn_axis, ax=self._heat_map_carn_ax,
                          orientation='horizontal')
         pass
