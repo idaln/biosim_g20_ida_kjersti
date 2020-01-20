@@ -313,7 +313,7 @@ class BioSim:
             self._img_herb_axis = None
 
         # Features for herbivore heat map
-        self._heat_map_herb_ax.title.set_text('Herbivore population')
+        self._heat_map_herb_ax.title.set_text('Herbivore distribution')
         self._heat_map_herb_ax.set_ylabel('y coordinate')
         self._heat_map_herb_ax.set_xlabel('x coordinate')
 
@@ -324,7 +324,7 @@ class BioSim:
             self._img_carn_axis = None
 
         # Features for carnivore heat map
-        self._heat_map_carn_ax.title.set_text('Carnivore population')
+        self._heat_map_carn_ax.title.set_text('Carnivore distribution')
         self._heat_map_carn_ax.set_ylabel('y coordinate')
         self._heat_map_carn_ax.set_xlabel('x coordinate')
 
@@ -349,6 +349,8 @@ class BioSim:
         axim.set_xticklabels(range(1, 1 + len(geogr_rgb[0])))
         axim.set_yticks(range(len(geogr_rgb)))
         axim.set_yticklabels(range(1, 1 + len(geogr_rgb)))
+        axim.set_ylabel('y coordinate')
+        axim.set_xlabel('x coordinate')
 
         axlg = self._fig.add_axes([0.4, 0.55, 0.1, 0.3])  # llx, lly, w, h
         axlg.axis('off')
