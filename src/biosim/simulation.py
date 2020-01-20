@@ -16,7 +16,7 @@ __email__ = "idaln@hotmail.com & kjkv@nmbu.no"
 
 _DEFAULT_MOVIE_FORMAT = 'mp4'
 # Update these variables to point to your ffmpeg binary
-_FFMPEG_BINARY = 'C:/Program Files/ffmpeg-20200115-0dc0837-win64-static/bin'
+_FFMPEG_BINARY = 'C:/Program Files/ffmpeg-20200115-0dc0837-win64-static/bin/ffmpeg'
 
 
 class BioSim:
