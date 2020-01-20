@@ -10,16 +10,18 @@ import pandas
 import numpy
 import matplotlib.pyplot as plt
 import subprocess
-import os
 
 __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idaln@hotmail.com & kjkv@nmbu.no"
 
+_DEFAULT_MOVIE_FORMAT = 'mp4'
+# Update these variables to point to your ffmpeg binary
+_FFMPEG_BINARY = 'C:/Program Files/ffmpeg-20200115-0dc0837-win64-static/bin'
+
 
 class BioSim:
     #obs
-    _DEFAULT_MOVIE_FORMAT = "mp4"
-    _FFMPEG_BINARY = 'C:/Program Files/ffmpeg-20200115-0dc0837-win64-static/bin'
+
     def __init__(
         self,
         island_map,
