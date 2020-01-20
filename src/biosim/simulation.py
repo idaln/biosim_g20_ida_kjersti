@@ -72,10 +72,7 @@ class BioSim:
         else:
             self.cmax = cmax_animals
 
-        if ymax_animals is None:
-            self.ymax = 15000
-        else:
-            self.ymax = ymax_animals
+        self.ymax = ymax_animals
 
         self.island_map = IslandMap(island_map, ini_pop)
         self.island_map.create_map_dict()
@@ -264,7 +261,6 @@ class BioSim:
         # populations.
         if self._line_graph_ax is None:
             self._line_graph_ax = self._fig.add_subplot(2, 2, 2)
-            self._line_graph_ax.set_ylim(0, self.ymax)
             self._line_graph_ax.set_position(pos=[0.5, 0.55, 0.35, 0.35])
 
         # Needs updating on subsequent calls to simulate()
@@ -390,6 +386,11 @@ class BioSim:
         ydata_carn[self.num_years_simulated] = self.num_animals_per_species[
             "Carnivore"]
         self._line_graph_line_carn.set_ydata(ydata_carn)
+
+        if self.ymax:
+            self._line_graph_ax.set_ylim(0, self.ymax)
+        else:
+            self._line_graph_ax.set_ylim(0, self.num_animals*1.3)
 
     def create_array_herbs(self):
         """
@@ -523,5 +524,5 @@ if __name__ == "__main__":
     ex_img_base = "../../data/img"
     biosim = BioSim(island, initial_pop, 1, img_base=ex_img_base)
     biosim.set_animal_parameters("Herbivore", {"F": 60})
-    biosim.simulate(16, 1, 5)
+    biosim.simulate(160, 1, 5)
     plt.show()
