@@ -46,37 +46,20 @@ class Landscape:
     def sort_herb_population_by_fitness(self):
         """
         Sorts herbivore populations by fitness, from highest to
-        lowest. Uses the Bubble Sort algorithm.
+        lowest. Uses lambda sorting.
         """
-        # sorted_list = self.pop_herb.sort(key=lambda x: x.fitness, reverse=True)
         for individual in self.pop_herb:
             individual.find_fitness()
-        n = len(self.pop_herb)
-        while n > 0:
-            i = 1
-            while i < n:
-                if self.pop_herb[i].fitness > self.pop_herb[i - 1].fitness:
-                    self.pop_herb[i], self.pop_herb[i - 1] = \
-                        self.pop_herb[i - 1], self.pop_herb[i]
-                i += 1
-            n -= 1
+        self.pop_herb = sorted(self.pop_herb, key=lambda x: x.fitness)
 
     def sort_carn_population_by_fitness(self):
         """
         Sorts carnivore population by fitness, from highest to
-        lowest. Uses the Bubble Sort algorithm.
+        lowest. Uses lambda sorting.
         """
         for individual in self.pop_carn:
             individual.find_fitness()
-        n = len(self.pop_carn)
-        while n > 0:
-            i = 1
-            while i < n:
-                if self.pop_carn[i].fitness > self.pop_carn[i - 1].fitness:
-                    self.pop_carn[i], self.pop_carn[i - 1] = \
-                        self.pop_carn[i - 1], self.pop_carn[i]
-                i += 1
-            n -= 1
+        self.pop_carn = sorted(self.pop_carn, key=lambda x: x.fitness)
 
     def regrowth(self):
         """
