@@ -238,14 +238,13 @@ class BioSim:
 
         axim = self._map_ax
 
-        #axim = self._fig.add_axes([0.1, 0.1, 0.7, 0.8])  # llx, lly, w, h
         axim.imshow(geogr_rgb)
         axim.set_xticks(range(len(geogr_rgb[0])))
         axim.set_xticklabels(range(1, 1 + len(geogr_rgb[0])))
         axim.set_yticks(range(len(geogr_rgb)))
         axim.set_yticklabels(range(1, 1 + len(geogr_rgb)))
 
-        axlg = self._fig.add_axes([0.42, 0.5, 0.1, 0.5])  # llx, lly, w, h
+        axlg = self._fig.add_axes([0.4, 0.5, 0.1, 0.5])  # llx, lly, w, h
         axlg.axis('off')
         for ix, name in enumerate(('Ocean', 'Mountain', 'Jungle',
                                    'Savannah', 'Desert')):
@@ -261,16 +260,16 @@ class BioSim:
         """
         # Create new figure window
         if self._fig is None:
-            self._fig = plt.figure(figsize=(10,5))
+            self._fig = plt.figure(figsize=(13, 8))
             self._fig.set_tight_layout(True)
-            self._fig.subplots_adjust(hspace=0.4, wspace=0.4)
+            self._fig.subplots_adjust(hspace=0.2, wspace=0.2)
 
         # Add left subplot for images created with imshow().
         # We cannot create the actual ImageAxis object before we know
         # the size of the image, so we delay its creation.
         if self._map_ax is None:
             self._map_ax = self._fig.add_subplot(2, 2, 1)
-            self._map_ax.set_position(pos=[-0.5, 0.5, 0.5, 0.4])
+            self._map_ax.set_position(pos=[0, 0.5, 0.5, 0.4])
             self.create_map_graphics()
 
         self._map_ax.title.set_text('Island')
@@ -454,8 +453,10 @@ if __name__ == "__main__":
 
     island = "OOOOO\nOJMJO\nODJJO\nODSJO\nOJMDO\nOOOOO"
     geogr = """\
-               OOOOO
-               OOOOO"""
+               OOOOOOOOOOOOOOO
+               OOOOOOOOOOOOOOO
+               OOOOOOOOOOOOOOO
+               """
     biosim = BioSim(island, ini_pop, 1)
     #print(biosim.animal_distribution)
     #biosim.simulate(15)
