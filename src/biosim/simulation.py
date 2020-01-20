@@ -391,8 +391,7 @@ class BioSim:
                                                  interpolation='nearest',
                                                  vmin=0, vmax=300)
             plt.colorbar(self._img_herb_axis, ax=self._heat_map_herb_ax,
-                         orientation='horizontal')
-        pass
+                         orientation='vertical')
 
     def create_array_carns(self):
         """
@@ -422,7 +421,7 @@ class BioSim:
                                                  interpolation='nearest',
                                                  vmin=0, vmax=100)
             plt.colorbar(self._img_carn_axis, ax=self._heat_map_carn_ax,
-                         orientation='horizontal')
+                         orientation='vertical')
         pass
 
     def save_graphics(self):
@@ -453,7 +452,7 @@ class BioSim:
             try:
                 # Parameters chosen according to http://trac.ffmpeg.org/wiki/Encode/H.264,
                 # section "Compatibility"
-                subprocess.check_call([self._FFMPEG_BINARY,
+                subprocess.check_call([_FFMPEG_BINARY,
                                        '-i',
                                        '{}_%05d.png'.format(self._img_base),
                                        '-y',
