@@ -214,8 +214,9 @@ class BioSim:
             self.num_years_simulated += 1
 
     def create_map_graphics(self):
-
-
+        """
+        Creates a map of the island's geography.
+        """
         #                   R    G    B
         rgb_value = {'O': (0.0, 0.0, 1.0),  # blue
                      'M': (0.5, 0.5, 0.5),  # grey
@@ -237,12 +238,12 @@ class BioSim:
 
         #axlg = fig.add_axes([0.85, 0.1, 0.1, 0.8])  # llx, lly, w, h
         #axlg.axis('off')
-        #for ix, name in enumerate(('Ocean', 'Mountain', 'Jungle',
-        #                           'Savannah', 'Desert')):
-        #    axlg.add_patch(plt.Rectangle((0., ix * 0.2), 0.3, 0.1,
-        #                                 edgecolor='none',
-        #                                 facecolor=rgb_value[name[0]]))
-        #    axlg.text(0.35, ix * 0.2, name, transform=axlg.transAxes)
+        for ix, name in enumerate(('Ocean', 'Mountain', 'Jungle',
+                                   'Savannah', 'Desert')):
+            axim.add_patch(plt.Rectangle((0., ix * 0.2), 0.3, 0.1,
+                                         edgecolor='none',
+                                         facecolor=rgb_value[name[0]]))
+            axim.text(0.35, ix * 0.2, name, transform=axim.transAxes)
 
     def setup_graphics(self):
         """
@@ -252,6 +253,7 @@ class BioSim:
         # Create new figure window
         if self._fig is None:
             self._fig = plt.figure()
+            self._fig.set_tight_layout(True)
 
         # Add left subplot for images created with imshow().
         # We cannot create the actual ImageAxis object before we know
@@ -374,7 +376,7 @@ if __name__ == "__main__":
             ]
         },
         {
-            "loc": (1, 2),
+            "loc": (1, 3),
             "pop": [
                 {"species": "Herbivore", "age": 5, "weight": 20}
                 for _ in range(10)
@@ -384,16 +386,8 @@ if __name__ == "__main__":
 
     island = "OOOOO\nOJMJO\nODJJO\nODSJO\nOJMDO\nOOOOO"
     biosim = BioSim(island, ini_pop, 1)
-    #print(biosim.animal_distribution)
-    #biosim.simulate(15)
-    #print(biosim.animal_distribution)
+    print(biosim.animal_distribution)
+    biosim.simulate(15)
+    print(biosim.animal_distribution)
     biosim.simulate(5, 1, 5)
     plt.show()
-
-
-
-
-
-
-
-
