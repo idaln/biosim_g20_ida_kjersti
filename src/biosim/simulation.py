@@ -15,13 +15,15 @@ __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idaln@hotmail.com & kjkv@nmbu.no"
 
 _DEFAULT_MOVIE_FORMAT = 'mp4'
-# Update these variables to point to your ffmpeg binary
-_FFMPEG_BINARY = 'C:/Program Files/ffmpeg-20200115-0dc0837-win64-static/bin/ffmpeg'
+# Update this variable to point to your ffmpeg binary
+_FFMPEG_BINARY = 'C:/Program Files/' \
+                 'ffmpeg-20200115-0dc0837-win64-static/bin/ffmpeg'
 
 
 class BioSim:
-    #obs
-
+    """
+    Class for simulating a model of the ecosystem of Rossumøya.
+    """
     def __init__(
         self,
         island_map,
@@ -61,9 +63,14 @@ class BioSim:
         """
         numpy.random.seed(seed)
 
-        self.cmax = cmax_animals
         self._img_base = img_base
         self._img_fmt = img_fmt
+
+        if cmax_animals is None:
+            self.cmax = {'Herbivore': 300, 'Carnivore': 100}
+        else:
+            self.cmax = cmax_animals
+
         if ymax_animals is None:
             self.ymax = 15000
         else:
@@ -96,7 +103,8 @@ class BioSim:
                            Ocean, Animal, Herbivore, Carnivore]:
             class_name.reset_params()
 
-    def set_animal_parameters(self, species, params):
+    @staticmethod
+    def set_animal_parameters(species, params):
         """
         Set parameters for animal species.
         All animal parameters shall be positive. However, DeltaPhiMax shall be
@@ -125,7 +133,8 @@ class BioSim:
             else:
                 raise ValueError(f'{param_name} is an invalid parameter name!')
 
-    def set_landscape_parameters(self, landscape, params):
+    @staticmethod
+    def set_landscape_parameters(landscape, params):
         """
         Set parameters for landscape type.
 
@@ -230,65 +239,33 @@ class BioSim:
             self.island_map.run_all_seasons()
             self.num_years_simulated += 1
 
-    def create_map_graphics(self):
-        """
-        Creates a map of the island's geography.
-        """
-        #                   R    G    B
-        rgb_value = {'O': (0.0, 0.0, 1.0),  # blue
-                     'M': (0.5, 0.5, 0.5),  # grey
-                     'J': (0.0, 0.6, 0.0),  # dark green
-                     'S': (0.5, 1.0, 0.5),  # light green
-                     'D': (1.0, 1.0, 0.5)}  # light yellow
-
-        geogr_rgb = [[rgb_value[column] for column in row]
-                     for row in self.island_map.geogr.splitlines()]
-
-        axim = self._map_ax
-
-        axim.imshow(geogr_rgb)
-        axim.set_xticks(range(len(geogr_rgb[0])))
-        axim.set_xticklabels(range(1, 1 + len(geogr_rgb[0])))
-        axim.set_yticks(range(len(geogr_rgb)))
-        axim.set_yticklabels(range(1, 1 + len(geogr_rgb)))
-
-        axlg = self._fig.add_axes([0.4, 0.5, 0.1, 0.5])  # llx, lly, w, h
-        axlg.axis('off')
-        for ix, name in enumerate(('Ocean', 'Mountain', 'Jungle',
-                                   'Savannah', 'Desert')):
-            axlg.add_patch(plt.Rectangle((0., ix * 0.2), 0.3, 0.1,
-                                         edgecolor='none',
-                                         facecolor=rgb_value[name[0]]))
-            axlg.text(0.35, ix * 0.21, name, transform=axlg.transAxes, fontsize=8)
-
     def setup_graphics(self):
         """
         Creates subplots.
-        :param num_years: number of years to simulate
         """
         # Create new figure window
         if self._fig is None:
             self._fig = plt.figure(figsize=(13, 8))
             self._fig.subplots_adjust(hspace=0.2, wspace=0.2)
 
-        # Add left upper subplot for map of island.
+        # Add left upper subplot with features for map of island
         if self._map_ax is None:
             self._map_ax = self._fig.add_subplot(2, 2, 1)
-            self._map_ax.set_position(pos=[0, 0.5, 0.5, 0.4])
+            self._map_ax.set_position(pos=[0, 0.55, 0.4, 0.3])
             self.create_map_graphics()
-
-        self._map_ax.title.set_text('Island')
+            self._map_ax.title.set_text('Island')
 
         # Add upper right subplot for line graph of herbivore and carnivore
         # populations.
         if self._line_graph_ax is None:
             self._line_graph_ax = self._fig.add_subplot(2, 2, 2)
             self._line_graph_ax.set_ylim(0, self.ymax)
+            self._line_graph_ax.set_position(pos=[0.5, 0.55, 0.35, 0.35])
 
         # Needs updating on subsequent calls to simulate()
         self._line_graph_ax.set_xlim(0, self._final_year + 1)
 
-        # Line for herbivores
+        # Line graph for herbivores
         if self._line_graph_line_herb is None:
             line_graph_plot_herb = self._line_graph_ax.plot(
                 numpy.arange(0, self._final_year),
@@ -304,7 +281,7 @@ class BioSim:
                     numpy.hstack((xdata, xnew)), numpy.hstack((ydata, ynew))
                 )
 
-        # Line for carnivores
+        # Line graph for carnivores
         if self._line_graph_line_carn is None:
             line_graph_plot_carn = self._line_graph_ax.plot(
                 numpy.arange(0, self._final_year),
@@ -331,12 +308,57 @@ class BioSim:
         # Add lower left heat map for herbivores
         if self._heat_map_herb_ax is None:
             self._heat_map_herb_ax = self._fig.add_subplot(2, 2, 3)
+            self._heat_map_herb_ax.set_position(pos=[0, 0, 0.4, 0.4])
             self._img_herb_axis = None
+
+        # Features for herbivore heat map
+        self._heat_map_herb_ax.title.set_text('Herbivore population')
+        self._heat_map_herb_ax.set_ylabel('y coordinate')
+        self._heat_map_herb_ax.set_xlabel('x coordinate')
 
         # Add lower right heat map for carnivores
         if self._heat_map_carn_ax is None:
             self._heat_map_carn_ax = self._fig.add_subplot(2, 2, 4)
+            self._heat_map_carn_ax.set_position(pos=[0.5, 0, 0.4, 0.4])
             self._img_carn_axis = None
+
+        # Features for carnivore heat map
+        self._heat_map_carn_ax.title.set_text('Carnivore population')
+        self._heat_map_carn_ax.set_ylabel('y coordinate')
+        self._heat_map_carn_ax.set_xlabel('x coordinate')
+
+    def create_map_graphics(self):
+        """
+        Creates a map of the island's geography.
+        """
+        #                   R    G    B
+        rgb_value = {'O': (0.0, 0.0, 1.0),  # blue
+                     'M': (0.5, 0.5, 0.5),  # grey
+                     'J': (0.0, 0.6, 0.0),  # dark green
+                     'S': (0.5, 1.0, 0.5),  # light green
+                     'D': (1.0, 1.0, 0.5)}  # light yellow
+
+        geogr_rgb = [[rgb_value[column] for column in row]
+                     for row in self.island_map.geogr.splitlines()]
+
+        axim = self._map_ax
+
+        axim.imshow(geogr_rgb)
+        axim.set_xticks(range(len(geogr_rgb[0])))
+        axim.set_xticklabels(range(1, 1 + len(geogr_rgb[0])))
+        axim.set_yticks(range(len(geogr_rgb)))
+        axim.set_yticklabels(range(1, 1 + len(geogr_rgb)))
+
+        axlg = self._fig.add_axes([0.4, 0.55, 0.1, 0.3])  # llx, lly, w, h
+        axlg.axis('off')
+        for ix, name in enumerate(('Ocean', 'Mountain', 'Jungle',
+                                   'Savannah', 'Desert')):
+            axlg.add_patch(plt.Rectangle((0., ix * 0.2), 0.3, 0.1,
+                                         edgecolor='none',
+                                         facecolor=rgb_value[name[0]]))
+            axlg.text(0.35, ix * 0.21, name,
+                      transform=axlg.transAxes,
+                      fontsize=8)
 
     def update_graphics(self):
         """
@@ -345,6 +367,7 @@ class BioSim:
         self.update_line_graph()
         self.update_heat_map_herbs()
         self.update_heat_map_carns()
+        plt.suptitle(f"Simulation of year {self.year}", fontsize=26)
         plt.pause(1e-6)
 
     def update_line_graph(self):
@@ -388,10 +411,13 @@ class BioSim:
         else:
             self._img_herb_axis = self._heat_map_herb_ax.imshow(
                 self.create_array_herbs(),
-                                                 interpolation='nearest',
-                                                 vmin=0, vmax=300)
+                interpolation='nearest',
+                vmin=0,
+                vmax=self.cmax["Herbivore"]
+            )
             plt.colorbar(self._img_herb_axis, ax=self._heat_map_herb_ax,
-                         orientation='vertical')
+                         orientation='vertical'
+                         )
 
     def create_array_carns(self):
         """
@@ -418,11 +444,12 @@ class BioSim:
         else:
             self._img_carn_axis = self._heat_map_carn_ax.imshow(
                 self.create_array_carns(),
-                                                 interpolation='nearest',
-                                                 vmin=0, vmax=100)
+                interpolation='nearest',
+                vmin=0,
+                vmax=self.cmax["Carnivore"]
+            )
             plt.colorbar(self._img_carn_axis, ax=self._heat_map_carn_ax,
                          orientation='vertical')
-        pass
 
     def save_graphics(self):
         """
@@ -435,7 +462,7 @@ class BioSim:
 
         self.img_no += 1
 
-    def make_movie(self, movie_fmt = _DEFAULT_MOVIE_FORMAT):
+    def make_movie(self, movie_fmt=_DEFAULT_MOVIE_FORMAT):
         """
         Creates MPEG4 movie from visualization images saved.
 
@@ -450,7 +477,8 @@ class BioSim:
 
         if movie_fmt == 'mp4':
             try:
-                # Parameters chosen according to http://trac.ffmpeg.org/wiki/Encode/H.264,
+                # Parameters chosen according to
+                # http://trac.ffmpeg.org/wiki/Encode/H.264,
                 # section "Compatibility"
                 subprocess.check_call([_FFMPEG_BINARY,
                                        '-i',
@@ -468,7 +496,7 @@ class BioSim:
 
 
 if __name__ == "__main__":
-    ini_pop = [
+    initial_pop = [
         {
             "loc": (1, 1),
             "pop": [
@@ -486,20 +514,8 @@ if __name__ == "__main__":
     ]
 
     island = "OOOOO\nOJMJO\nODJJO\nODSJO\nOJMDO\nOOOOO"
-    geogr = """\
-               OOOOOOOOOOOOOOO
-               OOOOOOOOOOOOOOO
-               OOOOOOOOOOOOOOO
-               """
-    #C:\Users\Bruker\Documents\Programmering\biosim_g20_ida_kjersti\data
-    img_base = "../../data/img"
-    biosim = BioSim(island, ini_pop, 1, img_base=img_base)
-    #print(biosim.animal_distribution)
-    #biosim.simulate(15)
-    #df = biosim.animal_distribution
-    #print(df["Row"])
 
+    ex_img_base = "../../data/img"
+    biosim = BioSim(island, initial_pop, 1, img_base=ex_img_base)
     biosim.simulate(15, 1, 5)
     plt.show()
-    biosim.make_movie()
-
