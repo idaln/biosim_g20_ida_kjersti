@@ -162,7 +162,7 @@ class Animal:
 
     def prob_of_animal_moving(self):
         """
-        Computes the probability of moving at all, given by :math:`\\mu \\phi`
+        Computes the probability of moving at all, given by :math:`\\mu \\phi`.
 
         :return: Probability of moving
         :rtype: float
@@ -251,7 +251,8 @@ class Animal:
 
         .. math::
 
-            p = \\frac{\\pi_{i \\to j}}{\\Sigma_{j \\in C^{(i)} \\pi_{i \\to j}}}
+            p = \\frac{\\pi_{i \\to j}}{\\Sigma_{j \\in C^{(i)}
+            \\pi_{i \\to j}}}
 
         where :math:`\\pi_{i \\to j}` is the propensity to move from cell i to
         cell j.
@@ -262,7 +263,6 @@ class Animal:
         :return: Locations of each surrounding cell as keys, probabilities for
             the animal to move to each of them as values.
         :rtype: dict
-
         """
         moving_prob_for_each_loc = {}
         sum_prop = 0
@@ -284,8 +284,8 @@ class Animal:
         values to a list of locations and a numpy array of probabilities.
 
         :param moving_prob_for_each_loc: Contains the locations of each
-        surrounding cell as keys, and the probabilities for the animal to move
-        to each of them as values.
+            surrounding cell as keys, and the probabilities for the animal to move
+            to each of them as values.
         :type moving_prob_for_each_loc: dict
         :return: List of locations of neighbouring cells, numpy array of the
             probabilities of moving to each.
@@ -351,7 +351,8 @@ class Animal:
         probability of giving birth is calculated from
         :math:`min(1, \\gamma \\cdot \\phi \\cdot (N-1)`. Probability of
         giving birth is zero if
-        :math:`w < \\zeta (w_{birth} + \\sigma_{birth})`
+        :math:`w < \\zeta  \\cdot (w_{\\text birth } +
+        \\sigma_{\\text birth })`
 
         :param num_animals: Number of animals of same species in cell
         :type num_animals: int
@@ -479,7 +480,9 @@ class Herbivore(Animal):
     def __init__(self, properties):
         """
         Initializes herbivore animal with given properties.
-        :param properties: dict storing age, weight and fitness of herbivore
+
+        :param properties: Contains age, weight and fitness of herbivore
+        :type properties: dict
         """
         super().__init__(properties)
 
