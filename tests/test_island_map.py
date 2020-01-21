@@ -122,7 +122,7 @@ class TestIslandMap:
         assert type(island_map.map[(2, 2)]).__name__ is "Jungle"
 
     def test_add_animals(self, example_ini_pop, example_geogr):
-        island_map = IslandMap(example_geogr, ini_pop=[])
+        island_map = IslandMap(example_geogr, initial_population=[])
         island_map.create_map_dict()
         island_map.add_population(example_ini_pop)
 
@@ -314,7 +314,7 @@ class TestIslandMap:
         :param example_ini_pop: list
                 Initial population of animals saved in one dict per animal.
         :param example_geogr: str
-                Island geography
+                Island island_geography
         :return:
         """
         island_map = IslandMap(example_geogr, example_ini_pop)
@@ -332,7 +332,7 @@ class TestIslandMap:
                 Initial population of animals saved in one dict per animal.
                 All animals have same initial weight.
         :param example_geogr: str
-                Island geography
+                Island island_geography
         :return:
         """
         island_map = IslandMap(example_geogr, example_ini_pop)

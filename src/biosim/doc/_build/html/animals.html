@@ -47,12 +47,11 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>properties</strong> – Contains animal properties species, fitness, age
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>properties</strong> (<em>dict</em>) – Contains animal properties species, fitness, age
 and weight.</td>
 </tr>
 </tbody>
 </table>
-<p>:type dict</p>
 <dl class="classmethod">
 <dt id="biosim.animals.Animal.GET_DEFAULT_PARAMS">
 <em class="property">classmethod </em><code class="descname">GET_DEFAULT_PARAMS</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Animal.GET_DEFAULT_PARAMS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Animal.GET_DEFAULT_PARAMS" title="Permalink to this definition">¶</a></dt>
@@ -73,10 +72,15 @@ and weight.</td>
 <dt id="biosim.animals.Animal.add_eaten_fodder_to_weight">
 <code class="descname">add_eaten_fodder_to_weight</code><span class="sig-paren">(</span><em>fodder</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Animal.add_eaten_fodder_to_weight"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Animal.add_eaten_fodder_to_weight" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds amount of weight to animals total body weight given by
-beta*F. Also resets have_moved_this_year to False.
-:param fodder</p>
-<blockquote>
-<div>Amount of fodder available to the animal</div></blockquote>
+<span class="math notranslate nohighlight">\(\beta \cdot F\)</span>. Also resets have_moved_this_year to False.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fodder</strong> (<em>float</em>) – Amount of fodder available to the animal</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -116,7 +120,14 @@ probabilities of moving to each.</td>
 <dt id="biosim.animals.Animal.find_fitness">
 <code class="descname">find_fitness</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Animal.find_fitness"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Animal.find_fitness" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates fitness.
-Fitness is zero if weight is zero, otherwise given by formula (3).</p>
+Fitness is zero if weight is zero, otherwise given by</p>
+<div class="math notranslate nohighlight">
+\[\]</div>
+<p>q^{+}(a, a_{fraq{1}{2}}, phi_{age}) cdot q^{-}(w, w_{fraq{1}{2}}, phi_{weight}</p>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[\]</div>
+<p>q^{pm}(x, x_{fraq{1}{2}, phi) = fraq{1}{1 + e^{pm phi(x-x_{fraq{1}{2}})}</p>
 </dd></dl>
 
 <dl class="method">
@@ -142,16 +153,20 @@ The location the animal will move to.</td>
 <dl class="method">
 <dt id="biosim.animals.Animal.find_rel_abund_of_fodder">
 <code class="descname">find_rel_abund_of_fodder</code><span class="sig-paren">(</span><em>landscape_cell</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Animal.find_rel_abund_of_fodder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Animal.find_rel_abund_of_fodder" title="Permalink to this definition">¶</a></dt>
-<dd><p>Takes an instance of a landscape class, and returns the relative
-abundance of fodder in that instance.
-:param landscape_cell: dict</p>
-<blockquote>
-<div>Instance of landscape class</div></blockquote>
+<dd><p>Takes an instance of a landscape class and returns the relative
+abundance of fodder in that instance, given by</p>
+<div class="math notranslate nohighlight">
+\[\]</div>
+<p>epsilon = fraq{f_k}{(n_k + 1)F^’}</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">float</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>landscape_cell</strong> (<em>dict</em>) – Instance of landscape class</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Relative abundance of fodder</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
 </tr>
 </tbody>
 </table>
@@ -206,25 +221,35 @@ the animal to move to each of them as values.</td>
 <dt id="biosim.animals.Animal.prob_of_animal_moving">
 <code class="descname">prob_of_animal_moving</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Animal.prob_of_animal_moving"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Animal.prob_of_animal_moving" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the probability of moving at all, which depends on the
-animal’s fitness.
-:return: float</p>
-<blockquote>
-<div>Probability of moving</div></blockquote>
+animal’s fitness.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Probability of moving</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="biosim.animals.Animal.propensity_move_to_each_neighbour">
 <code class="descname">propensity_move_to_each_neighbour</code><span class="sig-paren">(</span><em>neighbours_of_current_cell</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Animal.propensity_move_to_each_neighbour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Animal.propensity_move_to_each_neighbour" title="Permalink to this definition">¶</a></dt>
-<dd><p>Finds the propensity for the animal to move to each of it’s neighbours.
-:param neighbours_of_current_cell: dict</p>
-<blockquote>
-<div>Contains neighbours of current cell.
-Location as keys, instance of landscape class as value</div></blockquote>
+<dd><p>Finds the propensity for the animal to move to each of it’s neighbours.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">loc_to_propensity_dict: dict</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>neighbours_of_current_cell</strong> – Contains neighbours of current cell.
+Location as keys, instance of landscape class as value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">dict</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Maps location to it’s propensity.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
 </tr>
 </tbody>
 </table>
@@ -249,7 +274,7 @@ new coordinates.
 <code class="descname">weight_loss</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Animal.weight_loss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Animal.weight_loss" title="Permalink to this definition">¶</a></dt>
 <dd><p>Substracts given amount of weight from the animals
 total weight after each cycle, given by
-<span class="math notranslate nohighlight">\(\eta \cdot weight\)</span></p>
+<span class="math notranslate nohighlight">\(\eta \cdot weight\)</span>.</p>
 </dd></dl>
 
 <dl class="method">
@@ -262,11 +287,18 @@ total weight after each cycle, given by
 <dl class="method">
 <dt id="biosim.animals.Animal.will_animal_move">
 <code class="descname">will_animal_move</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Animal.will_animal_move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Animal.will_animal_move" title="Permalink to this definition">¶</a></dt>
-<dd><p>Uses the probability of the animal moving to decide whether it should
-move or not.
-:return: bool</p>
-<blockquote>
-<div>True if animal will move, False if not.</div></blockquote>
+<dd><p>Compared probability of animal moving and a random number to decide
+whether the animal should move.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if animal will move, False if not.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">

@@ -287,7 +287,7 @@ class TestSavannah:
         """
         savannah = Savannah(example_pop_herb)
         savannah.regrowth()
-        assert savannah.fodder_amount == 90
+        assert savannah.fodder_amount == 300
 
     def test_constructor(self, example_pop_herb):
         """

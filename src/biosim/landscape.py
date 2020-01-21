@@ -12,7 +12,9 @@ from biosim.animals import Herbivore, Carnivore
 
 class Landscape:
     """
-    Parent class for all landscape types.
+    Parent class for all landscape types. Landscape cell stores the instances
+    of all animals in the cell, and has methods for running all animal methods
+    for each animal.
     """
     _DEFAULT_PARAMS = {
         "f_max": 800,
@@ -92,7 +94,7 @@ class Landscape:
     def available_fodder_herbivore(self):
         """
         Returns amount of fodder available to an herbivore. If plenty of fodder
-        is available in the cell, enough fodder will be returned to fullfill
+        is available in the cell, enough fodder will be returned to fulfill
         it's appetite F. If not, what's left will be returned.
 
         :return: Amount of fodder available to an herbivore.
@@ -111,7 +113,7 @@ class Landscape:
 
     def available_fodder_carnivore(self):
         """
-        Returns amount of fodder available to carnivore. That is, the total
+        Returns amount of fodder available to a carnivore. That is, the total
         weight of the herbivores in the cell.
 
         :return: Amount of fodder available to a carnivore.
@@ -124,8 +126,9 @@ class Landscape:
 
     def feed_all_herbivores(self):
         """
-        Iterates over the population of herbivores and feeds all animals,
-        utilizing the eating method inherent to the animal instance.
+        Updates fodder amount of the cell and sorts the herbivore population.
+        Then, iterates over the population of herbivores and feeds all,
+        utilizing the eating method.
         """
         self.regrowth()
         self.sort_herb_population_by_fitness()
@@ -135,7 +138,7 @@ class Landscape:
     def feed_all_carnivores(self):
         """
         Sorts carnivore population in the cell. Then, iterates over the
-        carnivores and feeds them all, using their inherent eating method.
+        carnivores and feeds them all, using their eating method.
         """
         self.sort_carn_population_by_fitness()
         for carn in self.pop_carn:
@@ -157,10 +160,11 @@ class Landscape:
 
     def add_newborn_animals(self):
         """
-        Iterates over both population lists in turn, and makes all animals
-        procreate utilizing their inherent birth process method.
-        Adds a new class instance to population lists for each animal
-        that is born.
+        Iterates over both population lists of grown animals, in turn, and
+        makes all animals procreate using the animal's birth_process_method.
+        If birth_process returns a weight, a new animal will be born.
+        Thus, a new class instance is added to the
+        correct population list.
         """
         initial_num_herbs = len(self.pop_herb)
         for animal in self.pop_herb[:initial_num_herbs]:
@@ -186,23 +190,21 @@ class Landscape:
 
     def make_all_animals_older(self):
         """
-        Iterates over population lists and ages all animals one year
-        utilizing their inherent aging method.
+        Iterates over population lists and ages all animals one year.
         """
         for animal in (self.pop_herb + self.pop_carn):
             animal.make_animal_one_year_older()
 
     def make_all_animals_lose_weight(self):
         """
-        Iterates over population lists and makes all animals lose weight
-        utilizing their inherent weight loss method.
+        Iterates over population lists and makes all animals lose weight.
         """
         for animal in (self.pop_herb + self.pop_carn):
             animal.weight_loss()
 
     def remove_all_dead_animals(self):
         """
-        Iterates over population lists and runs inherent death method on all
+        Iterates over population lists and runs the death method of all the
         animals. Updates the population lists to only contain living animals.
         """
         self.pop_herb = [herb for herb in self.pop_herb
@@ -213,7 +215,8 @@ class Landscape:
 
 class Jungle(Landscape):
     """
-    Class for Jungle landscape type.
+    Represents savannah cells on the island. All animals can stay in this
+    landscape type, and there is food for herbivores.
     """
     _DEFAULT_PARAMS = {
         "f_max": 800,
@@ -225,14 +228,19 @@ class Jungle(Landscape):
 
     def __init__(self, population):
         """
-        Initializes class.
+        Initializes class as subclass of Landscape.
+
+        :param population: Contains dictionaries with
+            information about each animal.
+        :type population: list
         """
         super().__init__(population)
 
 
 class Savannah(Landscape):
     """
-    Class for Savannah landscape type.
+    Represents savannah cells on the island. All animals can stay in this
+    landscape type, and there is food for herbivores.
     """
     _DEFAULT_PARAMS = {
         "f_max": 300,
@@ -246,11 +254,14 @@ class Savannah(Landscape):
 
     def __init__(self, population):
         """
-        Initializes class.
-        :param population: list of dicts
-                 List of properties of the initial population of animals
+        Initializes class as subclass of Landscape.
+
+        :param population: Contains dictionaries with
+            information about each animal.
+        :type population: list
         """
         super().__init__(population)
+        self.fodder_amount = self.params["f_max"]
 
     def regrowth(self):
         """
@@ -262,7 +273,8 @@ class Savannah(Landscape):
 
 class Desert(Landscape):
     """
-    Class for Desert landscape type.
+    Represents desert cells on the island. All animals can stay in this
+    landscape type, but there is no food for herbivores.
     """
     _DEFAULT_PARAMS = {
         "f_max": 0
@@ -274,16 +286,19 @@ class Desert(Landscape):
 
     def __init__(self, population):
         """
-        Initializes class.
-        :param population: list of dicts
-                 List of properties of the initial population of animals
+        Initializes class as subclass of Landscape.
+
+        :param population: Contains dictionaries with
+            information about each animal.
+        :type population: list
         """
         super().__init__(population)
 
 
 class Mountain(Landscape):
     """
-    Class for Mountain landscape type.
+    Represents mountain cells on the island. This is a passive cell
+    where animals cannot stay, so inherited methods should not be used.
     """
     _DEFAULT_PARAMS = {
         "f_max": 0
@@ -295,17 +310,19 @@ class Mountain(Landscape):
 
     def __init__(self, population):
         """
-        Initializes class.
-        :param population: list of dicts
-                 List of properties of the initial population of animals.
-                 Should be empty.
+        Initializes class as subclass of Landscape.
+
+        :param population: Contains dictionaries with
+            information about each animal. Should be empty.
+        :type population: list
         """
         super().__init__(population)
 
 
 class Ocean(Landscape):
     """
-    Class for Ocean landscape type.
+    Represents ocean cells around the island. This is a passive cell
+    where animals cannot stay, so inherited methods should not be used.
     """
     _DEFAULT_PARAMS = {
         "f_max": 0
@@ -317,9 +334,10 @@ class Ocean(Landscape):
 
     def __init__(self, population):
         """
-        Initializes class.
-        :param population: list of dicts
-                 List of properties of the initial population of animals.
-                 Should be empty.
+        Initializes class as subclass of Landscape.
+
+        :param population: Contains dictionaries with
+            information about each animal. Should be empty.
+        :type population: list
         """
         super().__init__(population)

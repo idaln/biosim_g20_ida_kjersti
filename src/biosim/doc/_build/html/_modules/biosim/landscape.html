@@ -47,7 +47,7 @@
 
 <div class="viewcode-block" id="Landscape"><a class="viewcode-back" href="../../landscape.html#biosim.landscape.Landscape">[docs]</a><span class="k">class</span> <span class="nc">Landscape</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Parent class for all landscape types.</span>
+<span class="sd">    Parent class for all landscape types. Has methods to</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_DEFAULT_PARAMS</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;f_max&quot;</span><span class="p">:</span> <span class="mi">800</span><span class="p">,</span>
@@ -127,7 +127,7 @@
 <div class="viewcode-block" id="Landscape.available_fodder_herbivore"><a class="viewcode-back" href="../../landscape.html#biosim.landscape.Landscape.available_fodder_herbivore">[docs]</a>    <span class="k">def</span> <span class="nf">available_fodder_herbivore</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns amount of fodder available to an herbivore. If plenty of fodder</span>
-<span class="sd">        is available in the cell, enough fodder will be returned to fullfill</span>
+<span class="sd">        is available in the cell, enough fodder will be returned to fulfill</span>
 <span class="sd">        it&#39;s appetite F. If not, what&#39;s left will be returned.</span>
 
 <span class="sd">        :return: Amount of fodder available to an herbivore.</span>
@@ -146,7 +146,7 @@
 
 <div class="viewcode-block" id="Landscape.available_fodder_carnivore"><a class="viewcode-back" href="../../landscape.html#biosim.landscape.Landscape.available_fodder_carnivore">[docs]</a>    <span class="k">def</span> <span class="nf">available_fodder_carnivore</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns amount of fodder available to carnivore. That is, the total</span>
+<span class="sd">        Returns amount of fodder available to a carnivore. That is, the total</span>
 <span class="sd">        weight of the herbivores in the cell.</span>
 
 <span class="sd">        :return: Amount of fodder available to a carnivore.</span>
@@ -159,8 +159,9 @@
 
 <div class="viewcode-block" id="Landscape.feed_all_herbivores"><a class="viewcode-back" href="../../landscape.html#biosim.landscape.Landscape.feed_all_herbivores">[docs]</a>    <span class="k">def</span> <span class="nf">feed_all_herbivores</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Iterates over the population of herbivores and feeds all animals,</span>
-<span class="sd">        utilizing the eating method inherent to the animal instance.</span>
+<span class="sd">        Updates fodder amount of the cell and sorts the herbivore population.</span>
+<span class="sd">        Then, iterates over the population of herbivores and feeds all,</span>
+<span class="sd">        utilizing the eating method.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">regrowth</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sort_herb_population_by_fitness</span><span class="p">()</span>
@@ -170,7 +171,7 @@
 <div class="viewcode-block" id="Landscape.feed_all_carnivores"><a class="viewcode-back" href="../../landscape.html#biosim.landscape.Landscape.feed_all_carnivores">[docs]</a>    <span class="k">def</span> <span class="nf">feed_all_carnivores</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sorts carnivore population in the cell. Then, iterates over the</span>
-<span class="sd">        carnivores and feeds them all, using their inherent eating method.</span>
+<span class="sd">        carnivores and feeds them all, using their eating method.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sort_carn_population_by_fitness</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">carn</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pop_carn</span><span class="p">:</span>
@@ -192,10 +193,11 @@
 
 <div class="viewcode-block" id="Landscape.add_newborn_animals"><a class="viewcode-back" href="../../landscape.html#biosim.landscape.Landscape.add_newborn_animals">[docs]</a>    <span class="k">def</span> <span class="nf">add_newborn_animals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Iterates over both population lists in turn, and makes all animals</span>
-<span class="sd">        procreate utilizing their inherent birth process method.</span>
-<span class="sd">        Adds a new class instance to population lists for each animal</span>
-<span class="sd">        that is born.</span>
+<span class="sd">        Iterates over both population lists of grown animals, in turn, and</span>
+<span class="sd">        makes all animals procreate using the animal&#39;s birth_process_method.</span>
+<span class="sd">        If birth_process returns a weight, a new animal will be born.</span>
+<span class="sd">        Thus, a new class instance is added to the</span>
+<span class="sd">        correct population list.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">initial_num_herbs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pop_herb</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">animal</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pop_herb</span><span class="p">[:</span><span class="n">initial_num_herbs</span><span class="p">]:</span>
@@ -221,23 +223,21 @@
 
 <div class="viewcode-block" id="Landscape.make_all_animals_older"><a class="viewcode-back" href="../../landscape.html#biosim.landscape.Landscape.make_all_animals_older">[docs]</a>    <span class="k">def</span> <span class="nf">make_all_animals_older</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Iterates over population lists and ages all animals one year</span>
-<span class="sd">        utilizing their inherent aging method.</span>
+<span class="sd">        Iterates over population lists and ages all animals one year.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">animal</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pop_herb</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">pop_carn</span><span class="p">):</span>
             <span class="n">animal</span><span class="o">.</span><span class="n">make_animal_one_year_older</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Landscape.make_all_animals_lose_weight"><a class="viewcode-back" href="../../landscape.html#biosim.landscape.Landscape.make_all_animals_lose_weight">[docs]</a>    <span class="k">def</span> <span class="nf">make_all_animals_lose_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Iterates over population lists and makes all animals lose weight</span>
-<span class="sd">        utilizing their inherent weight loss method.</span>
+<span class="sd">        Iterates over population lists and makes all animals lose weight.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">animal</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pop_herb</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">pop_carn</span><span class="p">):</span>
             <span class="n">animal</span><span class="o">.</span><span class="n">weight_loss</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Landscape.remove_all_dead_animals"><a class="viewcode-back" href="../../landscape.html#biosim.landscape.Landscape.remove_all_dead_animals">[docs]</a>    <span class="k">def</span> <span class="nf">remove_all_dead_animals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Iterates over population lists and runs inherent death method on all</span>
+<span class="sd">        Iterates over population lists and runs the death method of all the</span>
 <span class="sd">        animals. Updates the population lists to only contain living animals.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pop_herb</span> <span class="o">=</span> <span class="p">[</span><span class="n">herb</span> <span class="k">for</span> <span class="n">herb</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pop_herb</span>
@@ -248,7 +248,8 @@
 
 <div class="viewcode-block" id="Jungle"><a class="viewcode-back" href="../../landscape.html#biosim.landscape.Jungle">[docs]</a><span class="k">class</span> <span class="nc">Jungle</span><span class="p">(</span><span class="n">Landscape</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Class for Jungle landscape type.</span>
+<span class="sd">    Represents savannah cells on the island. All animals can stay in this</span>
+<span class="sd">    landscape type, and there is food for herbivores.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_DEFAULT_PARAMS</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;f_max&quot;</span><span class="p">:</span> <span class="mi">800</span><span class="p">,</span>
@@ -260,14 +261,19 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">population</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initializes class.</span>
+<span class="sd">        Initializes class as subclass of Landscape.</span>
+
+<span class="sd">        :param population: Contains dictionaries with</span>
+<span class="sd">            information about each animal.</span>
+<span class="sd">        :type population: list</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">population</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Savannah"><a class="viewcode-back" href="../../landscape.html#biosim.landscape.Savannah">[docs]</a><span class="k">class</span> <span class="nc">Savannah</span><span class="p">(</span><span class="n">Landscape</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Class for Savannah landscape type.</span>
+<span class="sd">    Represents savannah cells on the island. All animals can stay in this</span>
+<span class="sd">    landscape type, and there is food for herbivores.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_DEFAULT_PARAMS</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;f_max&quot;</span><span class="p">:</span> <span class="mi">300</span><span class="p">,</span>
@@ -281,11 +287,14 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">population</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initializes class.</span>
-<span class="sd">        :param population: list of dicts</span>
-<span class="sd">                 List of properties of the initial population of animals</span>
+<span class="sd">        Initializes class as subclass of Landscape.</span>
+
+<span class="sd">        :param population: Contains dictionaries with</span>
+<span class="sd">            information about each animal.</span>
+<span class="sd">        :type population: list</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">population</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fodder_amount</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;f_max&quot;</span><span class="p">]</span>
 
 <div class="viewcode-block" id="Savannah.regrowth"><a class="viewcode-back" href="../../landscape.html#biosim.landscape.Savannah.regrowth">[docs]</a>    <span class="k">def</span> <span class="nf">regrowth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -297,7 +306,8 @@
 
 <div class="viewcode-block" id="Desert"><a class="viewcode-back" href="../../landscape.html#biosim.landscape.Desert">[docs]</a><span class="k">class</span> <span class="nc">Desert</span><span class="p">(</span><span class="n">Landscape</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Class for Desert landscape type.</span>
+<span class="sd">    Represents desert cells on the island. All animals can stay in this</span>
+<span class="sd">    landscape type, but there is no food for herbivores.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_DEFAULT_PARAMS</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;f_max&quot;</span><span class="p">:</span> <span class="mi">0</span>
@@ -309,16 +319,19 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">population</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initializes class.</span>
-<span class="sd">        :param population: list of dicts</span>
-<span class="sd">                 List of properties of the initial population of animals</span>
+<span class="sd">        Initializes class as subclass of Landscape.</span>
+
+<span class="sd">        :param population: Contains dictionaries with</span>
+<span class="sd">            information about each animal.</span>
+<span class="sd">        :type population: list</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">population</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Mountain"><a class="viewcode-back" href="../../landscape.html#biosim.landscape.Mountain">[docs]</a><span class="k">class</span> <span class="nc">Mountain</span><span class="p">(</span><span class="n">Landscape</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Class for Mountain landscape type.</span>
+<span class="sd">    Represents mountain cells on the island. This is a passive cell</span>
+<span class="sd">    where animals cannot stay, so inherited methods should not be used.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_DEFAULT_PARAMS</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;f_max&quot;</span><span class="p">:</span> <span class="mi">0</span>
@@ -330,17 +343,19 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">population</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initializes class.</span>
-<span class="sd">        :param population: list of dicts</span>
-<span class="sd">                 List of properties of the initial population of animals.</span>
-<span class="sd">                 Should be empty.</span>
+<span class="sd">        Initializes class as subclass of Landscape.</span>
+
+<span class="sd">        :param population: Contains dictionaries with</span>
+<span class="sd">            information about each animal. Should be empty.</span>
+<span class="sd">        :type population: list</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">population</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Ocean"><a class="viewcode-back" href="../../landscape.html#biosim.landscape.Ocean">[docs]</a><span class="k">class</span> <span class="nc">Ocean</span><span class="p">(</span><span class="n">Landscape</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Class for Ocean landscape type.</span>
+<span class="sd">    Represents ocean cells around the island. This is a passive cell</span>
+<span class="sd">    where animals cannot stay, so inherited methods should not be used.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_DEFAULT_PARAMS</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;f_max&quot;</span><span class="p">:</span> <span class="mi">0</span>
@@ -352,10 +367,11 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">population</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initializes class.</span>
-<span class="sd">        :param population: list of dicts</span>
-<span class="sd">                 List of properties of the initial population of animals.</span>
-<span class="sd">                 Should be empty.</span>
+<span class="sd">        Initializes class as subclass of Landscape.</span>
+
+<span class="sd">        :param population: Contains dictionaries with</span>
+<span class="sd">            information about each animal. Should be empty.</span>
+<span class="sd">        :type population: list</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">population</span><span class="p">)</span></div>
 </pre></div>

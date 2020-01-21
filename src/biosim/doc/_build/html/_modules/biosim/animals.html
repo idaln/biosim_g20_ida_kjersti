@@ -112,7 +112,7 @@
 
 <span class="sd">        :param properties: Contains animal properties species, fitness, age</span>
 <span class="sd">            and weight.</span>
-<span class="sd">        :type dict</span>
+<span class="sd">        :type properties: dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">has_moved_this_year</span> <span class="o">=</span> <span class="kc">False</span>
@@ -144,7 +144,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Substracts given amount of weight from the animals</span>
 <span class="sd">        total weight after each cycle, given by</span>
-<span class="sd">        :math:`\\eta \\cdot weight`</span>
+<span class="sd">        :math:`\\eta \\cdot weight`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">new_weight</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;eta&#39;</span><span class="p">])</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">new_weight</span>
@@ -153,9 +153,11 @@
 <div class="viewcode-block" id="Animal.add_eaten_fodder_to_weight"><a class="viewcode-back" href="../../animals.html#biosim.animals.Animal.add_eaten_fodder_to_weight">[docs]</a>    <span class="k">def</span> <span class="nf">add_eaten_fodder_to_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fodder</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Adds amount of weight to animals total body weight given by</span>
-<span class="sd">        beta*F. Also resets have_moved_this_year to False.</span>
-<span class="sd">        :param fodder</span>
-<span class="sd">               Amount of fodder available to the animal</span>
+<span class="sd">        :math:`\\beta \\cdot F`. Also resets have_moved_this_year to False.</span>
+
+<span class="sd">        :param fodder: Amount of fodder available to the animal</span>
+<span class="sd">        :type fodder: float</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">fodder</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fitness_must_be_updated</span> <span class="o">=</span> <span class="kc">True</span>
@@ -164,8 +166,20 @@
 <div class="viewcode-block" id="Animal.find_fitness"><a class="viewcode-back" href="../../animals.html#biosim.animals.Animal.find_fitness">[docs]</a>    <span class="k">def</span> <span class="nf">find_fitness</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Updates fitness.</span>
-<span class="sd">        Fitness is zero if weight is zero, otherwise given by formula (3).</span>
+<span class="sd">        Fitness is zero if weight is zero, otherwise given by</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">        q\\^{+}(a, a_{\\fraq{1}{2}}, \\phi_{age}) \\cdot q\\^{-}(w, w_{\\fraq{1}{2}}, \\phi_{weight}</span>
+
+<span class="sd">        where</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">        q\\^{\\pm}(x, x_{\\fraq{1}{2}, \\phi) = \\fraq{1}{1 + e\\^{\\pm \\phi(x-x_{\\fraq{1}{2}})}</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">q_plus</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;phi_age&quot;</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;a_half&quot;</span><span class="p">])</span>
         <span class="p">))</span>
@@ -184,8 +198,9 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes the probability of moving at all, which depends on the</span>
 <span class="sd">        animal&#39;s fitness.</span>
-<span class="sd">        :return: float</span>
-<span class="sd">            Probability of moving</span>
+
+<span class="sd">        :return: Probability of moving</span>
+<span class="sd">        :rtype: float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitness_must_be_updated</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">find_fitness</span><span class="p">()</span>
@@ -194,10 +209,11 @@
 
 <div class="viewcode-block" id="Animal.will_animal_move"><a class="viewcode-back" href="../../animals.html#biosim.animals.Animal.will_animal_move">[docs]</a>    <span class="k">def</span> <span class="nf">will_animal_move</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Uses the probability of the animal moving to decide whether it should</span>
-<span class="sd">        move or not.</span>
-<span class="sd">        :return: bool</span>
-<span class="sd">            True if animal will move, False if not.</span>
+<span class="sd">        Compared probability of animal moving and a random number to decide</span>
+<span class="sd">        whether the animal should move.</span>
+
+<span class="sd">        :return: True if animal will move, False if not.</span>
+<span class="sd">        :rtype: bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_of_animal_moving</span><span class="p">()</span>
         <span class="n">random_number</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
@@ -208,11 +224,17 @@
 
 <div class="viewcode-block" id="Animal.find_rel_abund_of_fodder"><a class="viewcode-back" href="../../animals.html#biosim.animals.Animal.find_rel_abund_of_fodder">[docs]</a>    <span class="k">def</span> <span class="nf">find_rel_abund_of_fodder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landscape_cell</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Takes an instance of a landscape class, and returns the relative</span>
-<span class="sd">        abundance of fodder in that instance.</span>
-<span class="sd">        :param landscape_cell: dict</span>
-<span class="sd">            Instance of landscape class</span>
-<span class="sd">        :return: float</span>
+<span class="sd">        Takes an instance of a landscape class and returns the relative</span>
+<span class="sd">        abundance of fodder in that instance, given by</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">        </span>
+<span class="sd">        \\epsilon = \\fraq{f_k}{(n_k + 1)F^&#39;}</span>
+
+<span class="sd">        :param landscape_cell: Instance of landscape class</span>
+<span class="sd">        :type landscape_cell: dict</span>
+<span class="sd">        :return: Relative abundance of fodder</span>
+<span class="sd">        :rtype: float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">fodder_animal</span> <span class="o">=</span> <span class="n">landscape_cell</span><span class="o">.</span><span class="n">fodder_amount</span>
         <span class="n">num_animals</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">landscape_cell</span><span class="o">.</span><span class="n">population</span><span class="p">)</span>
@@ -223,10 +245,12 @@
 <div class="viewcode-block" id="Animal.propensity_move_to_each_neighbour"><a class="viewcode-back" href="../../animals.html#biosim.animals.Animal.propensity_move_to_each_neighbour">[docs]</a>    <span class="k">def</span> <span class="nf">propensity_move_to_each_neighbour</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">neighbours_of_current_cell</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Finds the propensity for the animal to move to each of it&#39;s neighbours.</span>
-<span class="sd">        :param neighbours_of_current_cell: dict</span>
-<span class="sd">            Contains neighbours of current cell.</span>
+
+<span class="sd">        :param neighbours_of_current_cell: Contains neighbours of current cell.</span>
 <span class="sd">            Location as keys, instance of landscape class as value</span>
-<span class="sd">        :return: loc_to_propensity_dict: dict</span>
+<span class="sd">        :type: dict</span>
+<span class="sd">        :return: Maps location to it&#39;s propensity.</span>
+<span class="sd">        :rtype: dict</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">loc_to_propensity_dict</span> <span class="o">=</span> <span class="p">{}</span>
