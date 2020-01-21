@@ -31,7 +31,7 @@ class BioSim:
     """
     def __init__(
         self,
-        island_map,
+        island_geography,
         initial_population,
         seed,
         ymax_animals=None,
@@ -40,8 +40,10 @@ class BioSim:
         img_fmt="png",
     ):
         """
-        :param island_map: Multi-line string specifying island geography
-        :param initial_population: List of dictionaries specifying initial population
+        :param island_geography: Multi-line string specifying island
+            geography
+        :param initial_population: List of dictionaries specifying
+            initial population
         :param seed: Integer used as random number seed
         :param ymax_animals: Number specifying y-axis limit for graph showing
             animal numbers
@@ -77,7 +79,7 @@ class BioSim:
         else:
             self.cmax = cmax_animals
 
-        self.island_map = IslandMap(island_map, initial_population)
+        self.island_map = IslandMap(island_geography, initial_population)
         self.island_map.create_map_dict()
         self.num_years_simulated = 0
         self.final_year = None
@@ -337,7 +339,7 @@ class BioSim:
 
     def create_map_graphics(self):
         """
-        Creates graphic of the map of the island's geography.
+        Creates graphic of the map of the island's island_geography.
         """
         #                   R    G    B
         rgb_value = {'O': (0.0, 0.0, 1.0),  # blue
