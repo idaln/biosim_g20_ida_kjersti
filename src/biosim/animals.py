@@ -576,16 +576,16 @@ class Carnivore(Animal):
             \\Biggl
             \\lbrace
             {
-            0, \\text{ if } \\phi_{\\text { carn } } \\leq \\ \\phi_{\\text
-            { herb } }
-            \\substack
-            \\frac{\\phi_{\\text { carn }} - \\phi_{\\text { herb }}}
-            {{\\Delta \\phi}_{\\text { max }},
-            \\text{ if } 0 < \\phi_{\\text { carn }} -
-            \\phi_{\\text { herb }} < {\\Delta \\phi}_{\\text { max }}
-            \\substack
+            0, \\text{ if } {\\phi_{\\text { carn } } \\leq \\phi_{\\text
+            { herb } } }
+            \\atop
+            {\\frac{\\phi_{\\text { carn }} - \\phi_{\\text { herb } } }
+            {{\\Delta \\phi}_{\\text { max } } },
+            \\text{ if } { 0 < \\phi_{\\text { carn }} -
+            \\phi_{\\text { herb }} < {\\Delta \\phi}_{\\text { max } } }
+            \\atop
             1, \\text{ otherwise }
-            }
+            }}
 
         :param fitness_herb: Fitness of herbivore
         :type fitness_herb: float
