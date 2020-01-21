@@ -305,24 +305,29 @@ class TestIslandMap:
         assert final_num_animals == 0
         # length of population is zero when all animals have moved
 
-    def test_no_animals_move(self, mocker, example_ini_pop, example_geogr):
+    def test_no_animals_move_when_rand_num_higher_than_prob_of_moving(
+            self, mocker, example_ini_pop, example_geogr
+    ):
         """
         Tests move_all_animals_in_cell.
-        Asserts that no animals move out of a cell when mocking the random
-        number makes sure they will not.
+        Asserts that no animals move out of a cell when the random number
+        is higher than the animal's probability to move.
         """
         mocker.patch('numpy.random.random', return_value=1)
         island_map = IslandMap(example_geogr, [example_ini_pop[0]])
         island_map.create_map_dict()
         initial_num_animals = len(island_map.map[(1, 2)].pop_herb) + \
-                            len(island_map.map[(1, 2)].pop_carn)
+            len(island_map.map[(1, 2)].pop_carn)
         island_map.move_all_animals_in_cell((1, 2), island_map.map[(1, 2)])
         final_num_animals = len(island_map.map[(1, 2)].pop_herb) + \
-                            len(island_map.map[(1, 2)].pop_carn)
+            len(island_map.map[(1, 2)].pop_carn)
         assert final_num_animals == initial_num_animals
 
-    def test_all_animals_migrate(self, mocker, example_ini_pop, example_geogr):
+    def test_all_animals_migrate_during_migration_season(
+            self, mocker, example_ini_pop, example_geogr
+    ):
         """
+        Test for migration_season method.
         Asserts that all animals have moved after the migration season,
         by checking their has_moved_this_year attribute.
         """
@@ -334,14 +339,12 @@ class TestIslandMap:
             for animal in cell.pop_herb+cell.pop_carn:
                 assert animal.has_moved_this_year is True
 
-    def test_all_animals_aged(self, example_ini_pop, example_geogr):
+    def test_all_animals_age_during_aging_season(
+            self, example_ini_pop, example_geogr
+    ):
         """
-        Asserts that all animals on the island on the island have aged.
-        :param example_ini_pop: list
-                Initial population of animals saved in one dict per animal.
-        :param example_geogr: str
-                Island island_geography
-        :return:
+        Test for aging_season method.
+        Asserts that all animals on the island have aged.
         """
         island_map = IslandMap(example_geogr, example_ini_pop)
         island_map.create_map_dict()
@@ -351,15 +354,12 @@ class TestIslandMap:
             for animal in cell.pop_herb+cell.pop_carn:
                 assert animal.age > initial_age_animal
 
-    def test_all_animals_lost_weight(self, example_ini_pop, example_geogr):
+    def test_all_animals_lost_weight_during_weight_loss_season(
+            self, example_ini_pop, example_geogr
+    ):
         """
-        Asserts that all animals on the island on the island has lost weight.
-        :param example_ini_pop: list
-                Initial population of animals saved in one dict per animal.
-                All animals have same initial weight.
-        :param example_geogr: str
-                Island island_geography
-        :return:
+        Asserts that all animals on the island on the island has lost weight
+        after weight_loss_season.
         """
         island_map = IslandMap(example_geogr, example_ini_pop)
         island_map.create_map_dict()
@@ -369,15 +369,13 @@ class TestIslandMap:
             for animal in cell.pop_herb+cell.pop_carn:
                 assert animal.weight < initial_weight_animal
 
-    def test_all_animals_die(self, mocker, example_ini_pop, example_geogr):
+    def test_all_animals_die_after_dying_season(
+            self, mocker, example_ini_pop, example_geogr
+    ):
         """
+        Test for dying_season.
         Asserts that all animals on island die, when the random number that
-        decides has been mocked to ensure all animals die.
-        :param example_ini_pop: list
-                Initial population
-        :param example_geogr: str
-                Map
-        :return:
+        decides is larger than their probability to live.
         """
         mocker.patch("numpy.random.random", return_value=1)
         island_map = IslandMap(example_geogr, example_ini_pop)
