@@ -12,7 +12,7 @@ from biosim.animals import Herbivore, Carnivore
 
 class Landscape:
     """
-    Parent class for all landscape types.
+    Parent class for all landscape types. Has methods to
     """
     _DEFAULT_PARAMS = {
         "f_max": 800,
@@ -213,8 +213,8 @@ class Landscape:
 
 class Jungle(Landscape):
     """
-    Class for Jungle landscape type. All animals can stay in this landscape
-    type, and there is food for herbivores.
+    Represents savannah cells on the island. All animals can stay in this
+    landscape type, and there is food for herbivores.
     """
     _DEFAULT_PARAMS = {
         "f_max": 800,
@@ -226,7 +226,7 @@ class Jungle(Landscape):
 
     def __init__(self, population):
         """
-        Initializes class.
+        Initializes class as subclass of Landscape.
 
         :param population: Contains dictionaries with
             information about each animal.
@@ -237,8 +237,8 @@ class Jungle(Landscape):
 
 class Savannah(Landscape):
     """
-    Class for Savannah landscape type. All animals can stay in this landscape
-    type, and there is food for herbivores.
+    Represents savannah cells on the island. All animals can stay in this
+    landscape type, and there is food for herbivores.
     """
     _DEFAULT_PARAMS = {
         "f_max": 300,
@@ -252,7 +252,7 @@ class Savannah(Landscape):
 
     def __init__(self, population):
         """
-        Initializes class.
+        Initializes class as subclass of Landscape.
 
         :param population: Contains dictionaries with
             information about each animal.
@@ -270,7 +270,7 @@ class Savannah(Landscape):
 
 class Desert(Landscape):
     """
-    Class for Desert landscape type. All animals can stay in this
+    Represents desert cells on the island. All animals can stay in this
     landscape type, but there is no food for herbivores.
     """
     _DEFAULT_PARAMS = {
@@ -283,7 +283,7 @@ class Desert(Landscape):
 
     def __init__(self, population):
         """
-        Initializes class.
+        Initializes class as subclass of Landscape.
 
         :param population: Contains dictionaries with
             information about each animal.
@@ -294,8 +294,8 @@ class Desert(Landscape):
 
 class Mountain(Landscape):
     """
-    Class for Mountain landscape type.  This is a passive class where animals
-    cannot stay, so no inherited methods should be used.
+    Represents mountain cells on the island. This is a passive cell
+    where animals cannot stay, so inherited methods should not be used.
     """
     _DEFAULT_PARAMS = {
         "f_max": 0
@@ -307,7 +307,7 @@ class Mountain(Landscape):
 
     def __init__(self, population):
         """
-        Initializes class.
+        Initializes class as subclass of Landscape.
 
         :param population: Contains dictionaries with
             information about each animal. Should be empty.
@@ -318,8 +318,8 @@ class Mountain(Landscape):
 
 class Ocean(Landscape):
     """
-    Class for Ocean landscape type. This is a passive class where animals
-    cannot stay, so no inherited methods should be used.
+    Represents ocean cells around the island. This is a passive cell
+    where animals cannot stay, so inherited methods should not be used.
     """
     _DEFAULT_PARAMS = {
         "f_max": 0
@@ -331,7 +331,7 @@ class Ocean(Landscape):
 
     def __init__(self, population):
         """
-        Initializes class.
+        Initializes class as subclass of Landscape.
 
         :param population: Contains dictionaries with
             information about each animal. Should be empty.

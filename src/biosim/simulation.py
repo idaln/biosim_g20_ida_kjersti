@@ -483,7 +483,7 @@ class BioSim:
 
         :param movie_fmt: str
             format for movie (default='mp4')
-        :note: Requires ffmpeg
+        :note: Requires ffmpeg in file path
 
         The movie is stored as img_base + movie_fmt.
 
