@@ -109,7 +109,7 @@ class Animal:
         """
         Substracts given amount of weight from the animals
         total weight after each cycle, given by
-        :math: '\\eta*weight\\'
+        :math: '\\eta*weight'
         """
         new_weight = (1 - self.params['eta']) * self.weight
         self.weight = new_weight
