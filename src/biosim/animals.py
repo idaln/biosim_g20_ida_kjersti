@@ -221,7 +221,7 @@ class Animal:
             {
             0,\\text{ if j is Mountain or Ocean }
             \\atop
-            e^{\\lamdba \\epsilon j}, \\text{ otherwise }
+            e^{\\lambda \\epsilon j}, \\text{ otherwise }
             }
 
         :param neighbours_of_current_cell: Contains neighbours of current cell.
