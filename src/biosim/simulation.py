@@ -98,7 +98,7 @@ class BioSim:
     @staticmethod
     def reset_params():
         """
-        Resets parameters of all classes.
+        Resets parameters of all landscape and animal classes.
         """
         for class_name in [Landscape, Jungle, Savannah, Desert, Mountain,
                            Ocean, Animal, Herbivore, Carnivore]:
