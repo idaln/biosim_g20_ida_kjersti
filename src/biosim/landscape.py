@@ -215,7 +215,7 @@ class Landscape:
 
 class Jungle(Landscape):
     """
-    Represents savannah cells on the island. All animals can stay in this
+    Represents jungle cells on the island. All animals can stay in this
     landscape type, and there is food for herbivores.
     """
     _DEFAULT_PARAMS = {
@@ -265,7 +265,12 @@ class Savannah(Landscape):
 
     def regrowth(self):
         """
-        Sets amount of fodder for herbivores to the value given by formula (1).
+        Sets amount of fodder for herbivores to the value given by
+
+        .. math::
+
+            f_{ij} \\leftarrow f_{ij} + \\alpha \\cdot (f^{Sav max} - f_{ij})
+
         """
         self.fodder_amount = ((1 - self.params["alpha"]) * self.fodder_amount)\
             + (self.params["alpha"] * self.params["f_max"])
