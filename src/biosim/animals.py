@@ -196,8 +196,8 @@ class Animal:
 
             \\epsilon = \\frac{f_k}{(n_k + 1)F^{'}}
 
-        where :math:`f_k` is the amount of relevant fodder and `n_k` is the
-        number of animals of same species in cell k. 
+        where :math:`f_k` is the amount of relevant fodder and :math:`n_k` is
+        the number of animals of same species in cell k.
 
         :param landscape_cell: Instance of landscape class
         :type landscape_cell: dict
@@ -350,8 +350,8 @@ class Animal:
         Checks that weight of animal is more than given limit. If so,
         probability of giving birth is calculated from
         :math:`min(1, \\gamma \\cdot \\phi \\cdot (N-1)`. Probability of
-        giving birth is zero if :math:`w < \\zeta (w_{birth} + \\sigma_{birth})
-        `
+        giving birth is zero if
+        :math:`w < \\zeta (w_{birth} + \\sigma_{birth})`
 
         :param num_animals: Number of animals of same species in cell
         :type num_animals: int
@@ -492,8 +492,8 @@ class Herbivore(Animal):
 
             \\epsilon = \\frac{f_k}{(n_k + 1)F^{'}}
 
-        where :math:`f_k` is the amount of relevant fodder and `n_k` is the
-        number of animals of same species in cell k.
+        where :math:`f_k` is the amount of relevant fodder and :math:`n_k` is
+        the number of animals of same species in cell k.
 
         :param landscape_cell: Instance of landscape class
         :type landscape_cell: dict
@@ -622,8 +622,8 @@ class Carnivore(Animal):
 
             \\epsilon = \\frac{f_k}{(n_k + 1)F^{'}}
 
-        where :math:`f_k` is the amount of relevant fodder and `n_k` is the
-        number of animals of same species in cell k.
+        where :math:`f_k` is the amount of relevant fodder and :math:`n_k` is
+        the number of animals of same species in cell k.
 
         :param landscape_cell: Instance of landscape class
         :type landscape_cell: dict
