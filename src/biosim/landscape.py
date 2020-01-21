@@ -12,7 +12,9 @@ from biosim.animals import Herbivore, Carnivore
 
 class Landscape:
     """
-    Parent class for all landscape types. Has methods to
+    Parent class for all landscape types. Landscape cell stores the instances
+    of all animals in the cell, and has methods for running all animal methods
+    for each animal.
     """
     _DEFAULT_PARAMS = {
         "f_max": 800,
