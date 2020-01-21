@@ -33,9 +33,10 @@ class Landscape:
         cls.params = cls.GET_DEFAULT_PARAMS()
 
     def __init__(self, population):
-        """
-        Initializes class with given population.
-        :param population: list of dictionaries
+        """Initializes class with given population.
+        :param population: A list containing dictionaries containing
+        information about each animal
+        :type population: list
         """
         self.fodder_amount = 0
         self.pop_carn = []
