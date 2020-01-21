@@ -187,8 +187,7 @@ class IslandMap:
 
         :param current_coordinates: Location of current cell
         :type current_coordinates: tuple
-
-        :return: locations as keys and landscape class instance as values
+        :return: Locations as keys and landscape class instance as values
         :rtype: dict
         """
         neighbours_of_current_cell = {}
@@ -213,9 +212,9 @@ class IslandMap:
 
         :param current_coordinates: x coordinate, y coordinate
         :type current_coordinates: tuple
-        :param single_animal: animal that tries to move, either herbivore or
-            carnivore
-        :type single_animal: class instance
+        :param single_animal: animal that tries to move
+        :type single_animal: class '__main__.Herbivore' or
+            class '__main__.Carnivore'
 
         :return: True if animal has moved, False if not
         :rtype: bool
@@ -243,7 +242,8 @@ class IslandMap:
         :param current_coordinates: x coordinate, y coordinate
         :type current_coordinates: tuple
         :param current_landscape: Landscape type of current cell
-        :type current_landscape: class instance
+        :type current_landscape: class '__main__.Jungle',
+            class '__main__.Desert', class '__main__.Savannah'
         """
         current_landscape.pop_herb = [
             animal for animal in current_landscape.pop_herb
