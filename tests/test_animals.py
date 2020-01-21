@@ -557,15 +557,14 @@ class TestCarnivore:
         ]
 
     @pytest.fixture
-    def setup_class(self):
+    def teardown_carnivore_tests(self):
         """
         This class is for use in several tests, where we need to change the
-        DeltaPhiMax parameter. After a test is run, we tear it down
-        and set the parameter back to it's initial value.
+        DeltaPhiMax parameter. After a test is run, we reset all parameters
+        to default values.
         """
-        default_params = Carnivore.params.copy()
         yield None
-        Carnivore.params = default_params
+        Carnivore.reset_params()
 
     def test_constructor_carnivore(self, example_properties):
         """
@@ -575,7 +574,8 @@ class TestCarnivore:
         assert carnivore.age == example_properties["age"]
         assert carnivore.weight == example_properties["weight"]
 
-    def test_correct_prob_of_killing(self, example_properties, setup_class):
+    def test_correct_prob_of_killing(self, example_properties,
+                                     teardown_carnivore_tests):
         """
         Asserts that prob_kill returns correct probability.
         """
@@ -587,7 +587,7 @@ class TestCarnivore:
         assert prob == approx(0.04983411986)
 
     def test_true_when_prob__of_killing_is_one(
-            self, setup_class, example_properties
+            self, teardown_carnivore_tests, example_properties
     ):
         """
         Asserts that kill method returns True when prob_kill is one.
@@ -621,7 +621,7 @@ class TestCarnivore:
         assert carnivore.weight == old_weight
 
     def test_carn_gained_weight_after_eating(
-            self, example_properties, setup_class
+            self, example_properties, teardown_carnivore_tests
     ):
         """
         Assert that carnivore has gained weight after eat method
@@ -636,7 +636,8 @@ class TestCarnivore:
         carnivore.eat([herb])
         assert old_weight < carnivore.weight
 
-    def test_list_of_herbs_returned(self, example_properties, setup_class):
+    def test_list_of_herbs_returned(self, example_properties,
+                                    teardown_carnivore_tests):
         """
         Asserts that eat method returns a list of herbivore class instances
         when the carnivore has eaten a herbivore.
