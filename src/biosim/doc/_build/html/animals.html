@@ -344,7 +344,7 @@ total weight after each cycle, given by
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True is animal lives</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if animal lives</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
 </tr>
@@ -512,12 +512,13 @@ Probability is given by</p>
 \Biggl
 \lbrace
 {
-0,\text{ if } \phi_{carn} \leq \ \phi_{herb}
-\atop
-\frac{\phi_{carn} - \phi_{herb}}{{\Delta \phi}_{max},
-\text{ if } 0 &lt; \phi_{carn} - \phi_{herb} &lt;
-{\Delta \phi}_{max}
-\atop
+0,\text{ if } \phi_{\text carn } \leq \ \phi_{\text herb }
+\substack
+\frac{\phi_{\text carn } - \phi_{\text herb }}
+{{\Delta \phi}_{\text max },
+\text{ if } 0 &lt; \phi_{\text carn } - \phi_{\text herb } &lt;
+{\Delta \phi}_{\text max }
+\substack
 1, \text{ otherwise }
 }\]</div>
 <table class="docutils field-list" frame="void" rules="none">

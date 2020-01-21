@@ -460,7 +460,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Checks the probability of death. Returns True if the animal lives.</span>
 
-<span class="sd">        :return: True is animal lives</span>
+<span class="sd">        :return: True if animal lives</span>
 <span class="sd">        :rtype: bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_death</span><span class="p">()</span>
@@ -606,12 +606,13 @@
 <span class="sd">            \\Biggl</span>
 <span class="sd">            \\lbrace</span>
 <span class="sd">            {</span>
-<span class="sd">            0,\\text{ if } \\phi_{carn} \\leq \\ \\phi_{herb}</span>
-<span class="sd">            \\atop</span>
-<span class="sd">            \\frac{\\phi_{carn} - \\phi_{herb}}{{\\Delta \\phi}_{max},</span>
-<span class="sd">            \\text{ if } 0 &lt; \\phi_{carn} - \\phi_{herb} &lt;</span>
-<span class="sd">            {\\Delta \\phi}_{max}</span>
-<span class="sd">            \\atop</span>
+<span class="sd">            0,\\text{ if } \\phi_{\\text carn } \\leq \\ \\phi_{\\text herb }</span>
+<span class="sd">            \\substack</span>
+<span class="sd">            \\frac{\\phi_{\\text carn } - \\phi_{\\text herb }}</span>
+<span class="sd">            {{\\Delta \\phi}_{\\text max },</span>
+<span class="sd">            \\text{ if } 0 &lt; \\phi_{\\text carn } - \\phi_{\\text herb } &lt;</span>
+<span class="sd">            {\\Delta \\phi}_{\\text max }</span>
+<span class="sd">            \\substack</span>
 <span class="sd">            1, \\text{ otherwise }</span>
 <span class="sd">            }</span>
 
