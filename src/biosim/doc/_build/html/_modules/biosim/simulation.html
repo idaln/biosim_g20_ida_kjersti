@@ -47,24 +47,25 @@
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">random</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Ida Lunde Naalsund &amp; Kjersti Rustad Kvisberg&quot;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s2">&quot;idaln@hotmail.com &amp; kjkv@nmbu.no&quot;</span>
 
 <span class="n">_DEFAULT_MOVIE_FORMAT</span> <span class="o">=</span> <span class="s1">&#39;mp4&#39;</span>
 <span class="c1"># Update this variable to point to your ffmpeg binary</span>
-<span class="n">_FFMPEG_BINARY</span> <span class="o">=</span> <span class="s1">&#39;C:/Program Files/&#39;</span> \
+<span class="n">FFMPEG_BINARY</span> <span class="o">=</span> <span class="s1">&#39;C:/Program Files/&#39;</span> \
                  <span class="s1">&#39;ffmpeg-20200115-0dc0837-win64-static/bin/ffmpeg&#39;</span>
 
 
 <div class="viewcode-block" id="BioSim"><a class="viewcode-back" href="../../simulation.html#biosim.simulation.BioSim">[docs]</a><span class="k">class</span> <span class="nc">BioSim</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Class for simulating a model of the ecosystem of Rossumøya.</span>
+<span class="sd">    Class for simulating the model of an ecosystem.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">island_map</span><span class="p">,</span>
-        <span class="n">ini_pop</span><span class="p">,</span>
+        <span class="n">initial_population</span><span class="p">,</span>
         <span class="n">seed</span><span class="p">,</span>
         <span class="n">ymax_animals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">cmax_animals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -98,21 +99,21 @@
 <span class="sd">        where img_no are consecutive image numbers starting from 0.</span>
 <span class="sd">        img_base should contain a path and beginning of a file name.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_img_base</span> <span class="o">=</span> <span class="n">img_base</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_img_fmt</span> <span class="o">=</span> <span class="n">img_fmt</span>
+        <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">img_base</span> <span class="o">=</span> <span class="n">img_base</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">img_fmt</span> <span class="o">=</span> <span class="n">img_fmt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">img_no</span> <span class="o">=</span> <span class="mi">0</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">ymax</span> <span class="o">=</span> <span class="n">ymax_animals</span>
         <span class="k">if</span> <span class="n">cmax_animals</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cmax</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Herbivore&#39;</span><span class="p">:</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">&#39;Carnivore&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">}</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cmax</span> <span class="o">=</span> <span class="n">cmax_animals</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">ymax</span> <span class="o">=</span> <span class="n">ymax_animals</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">island_map</span> <span class="o">=</span> <span class="n">IslandMap</span><span class="p">(</span><span class="n">island_map</span><span class="p">,</span> <span class="n">ini_pop</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">island_map</span> <span class="o">=</span> <span class="n">IslandMap</span><span class="p">(</span><span class="n">island_map</span><span class="p">,</span> <span class="n">initial_population</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">island_map</span><span class="o">.</span><span class="n">create_map_dict</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">num_years_simulated</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_final_year</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">img_no</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">final_year</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="c1"># The following will be initialized by setup_graphics</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span> <span class="o">=</span> <span class="kc">None</span>
@@ -139,11 +140,12 @@
     <span class="k">def</span> <span class="nf">set_animal_parameters</span><span class="p">(</span><span class="n">species</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set parameters for animal species.</span>
-<span class="sd">        All animal parameters shall be positive. However, DeltaPhiMax shall be</span>
-<span class="sd">        strictly positive and eta shall lie between zero and one.</span>
+<span class="sd">        All animal parameters shall be positive. However, DeltaPhiMax and</span>
+<span class="sd">        F shall be strictly positive and eta shall lie between zero and one.</span>
 
 <span class="sd">        :param species: String, name of animal species</span>
 <span class="sd">        :param params: Dict with valid parameter specification for species</span>
+<span class="sd">        :raise ValueError: if parameter has invalid value or name</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">class_names</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Herbivore&quot;</span><span class="p">:</span> <span class="n">Herbivore</span><span class="p">,</span>
                        <span class="s2">&quot;Carnivore&quot;</span><span class="p">:</span> <span class="n">Carnivore</span><span class="p">}</span>
@@ -153,12 +155,15 @@
                         <span class="ow">and</span> <span class="n">param_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="s2">&quot;eta&quot;</span> <span class="ow">and</span> <span class="n">param_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="s2">&quot;F&quot;</span><span class="p">:</span>
                     <span class="n">class_names</span><span class="p">[</span><span class="n">species</span><span class="p">]</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="n">param_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span>
                         <span class="n">param_name</span><span class="p">]</span>
+                <span class="c1"># checks special criteria for eta</span>
                 <span class="k">elif</span> <span class="n">param_name</span> <span class="ow">is</span> <span class="s2">&quot;eta&quot;</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">params</span><span class="p">[</span><span class="n">param_name</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
                     <span class="n">class_names</span><span class="p">[</span><span class="n">species</span><span class="p">]</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="n">param_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span>
                         <span class="n">param_name</span><span class="p">]</span>
+                <span class="c1"># checks special criteria for F</span>
                 <span class="k">elif</span> <span class="n">param_name</span> <span class="ow">is</span> <span class="s2">&quot;F&quot;</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">params</span><span class="p">[</span><span class="n">param_name</span><span class="p">]:</span>
                     <span class="n">class_names</span><span class="p">[</span><span class="n">species</span><span class="p">]</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="n">param_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span>
                         <span class="n">param_name</span><span class="p">]</span>
+                <span class="c1"># checks special criteria for DeltaPhiMax</span>
                 <span class="k">elif</span> <span class="n">param_name</span> <span class="ow">is</span> <span class="s2">&quot;DeltaPhiMax&quot;</span> <span class="ow">and</span> <span class="n">params</span><span class="p">[</span><span class="n">param_name</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="n">class_names</span><span class="p">[</span><span class="n">species</span><span class="p">]</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="n">param_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span>
                         <span class="n">param_name</span><span class="p">]</span>
@@ -172,10 +177,11 @@
 <div class="viewcode-block" id="BioSim.set_landscape_parameters"><a class="viewcode-back" href="../../simulation.html#biosim.simulation.BioSim.set_landscape_parameters">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">set_landscape_parameters</span><span class="p">(</span><span class="n">landscape</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set parameters for landscape type.</span>
+<span class="sd">        Set parameters for landscape type. f_max must be positive.</span>
 
 <span class="sd">        :param landscape: String, code letter for landscape</span>
 <span class="sd">        :param params: Dict with valid parameter specification for landscape</span>
+<span class="sd">        :raise ValueError: if parameter name or value is invalid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">class_names</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;J&#39;</span><span class="p">:</span> <span class="n">Jungle</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="n">Savannah</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="n">Desert</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="n">Mountain</span><span class="p">,</span>
                        <span class="s1">&#39;O&#39;</span><span class="p">:</span> <span class="n">Ocean</span><span class="p">}</span>
@@ -195,7 +201,7 @@
 
 <div class="viewcode-block" id="BioSim.add_population"><a class="viewcode-back" href="../../simulation.html#biosim.simulation.BioSim.add_population">[docs]</a>    <span class="k">def</span> <span class="nf">add_population</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">population</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Add a population to the island</span>
+<span class="sd">        Add a population to the island during simulation.</span>
 
 <span class="sd">        :param population: List of dictionaries specifying population</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -261,10 +267,10 @@
         <span class="k">if</span> <span class="n">img_years</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">img_years</span> <span class="o">=</span> <span class="n">vis_years</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_final_year</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">+</span> <span class="n">num_years</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">final_year</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">+</span> <span class="n">num_years</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setup_graphics</span><span class="p">()</span>
 
-        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_final_year</span><span class="p">:</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_year</span><span class="p">:</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">%</span> <span class="n">vis_years</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">update_graphics</span><span class="p">()</span>
@@ -298,18 +304,18 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_line_graph_ax</span><span class="o">.</span><span class="n">set_position</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.55</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">])</span>
 
         <span class="c1"># Needs updating on subsequent calls to simulate()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_line_graph_ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_final_year</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_line_graph_ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_year</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 
         <span class="c1"># Line graph for herbivores</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_line_graph_line_herb</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">line_graph_plot_herb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_line_graph_ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-                <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_final_year</span><span class="p">),</span>
-                <span class="n">numpy</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_final_year</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+                <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_year</span><span class="p">),</span>
+                <span class="n">numpy</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">final_year</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_line_graph_line_herb</span> <span class="o">=</span> <span class="n">line_graph_plot_herb</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">xdata</span><span class="p">,</span> <span class="n">ydata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_line_graph_line_herb</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
-            <span class="n">xnew</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">xdata</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_final_year</span><span class="p">)</span>
+            <span class="n">xnew</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">xdata</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_year</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xnew</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">ynew</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">xnew</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_line_graph_line_herb</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span>
@@ -319,13 +325,13 @@
         <span class="c1"># Line graph for carnivores</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_line_graph_line_carn</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">line_graph_plot_carn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_line_graph_ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-                <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_final_year</span><span class="p">),</span>
-                <span class="n">numpy</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_final_year</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+                <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_year</span><span class="p">),</span>
+                <span class="n">numpy</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">final_year</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_line_graph_line_carn</span> <span class="o">=</span> <span class="n">line_graph_plot_carn</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">xdata</span><span class="p">,</span> <span class="n">ydata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_line_graph_line_carn</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
-            <span class="n">xnew</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">xdata</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_final_year</span><span class="p">)</span>
+            <span class="n">xnew</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">xdata</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_year</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xnew</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">ynew</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">xnew</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_line_graph_line_carn</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span>
@@ -364,7 +370,7 @@
 
 <div class="viewcode-block" id="BioSim.create_map_graphics"><a class="viewcode-back" href="../../simulation.html#biosim.simulation.BioSim.create_map_graphics">[docs]</a>    <span class="k">def</span> <span class="nf">create_map_graphics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates a map of the island&#39;s geography.</span>
+<span class="sd">        Creates graphic of the map of the island&#39;s geography.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1">#                   R    G    B</span>
         <span class="n">rgb_value</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;O&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>  <span class="c1"># blue</span>
@@ -377,7 +383,6 @@
                      <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">island_map</span><span class="o">.</span><span class="n">geogr</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()]</span>
 
         <span class="n">axim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map_ax</span>
-
         <span class="n">axim</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">geogr_rgb</span><span class="p">)</span>
         <span class="n">axim</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">geogr_rgb</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
         <span class="n">axim</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">geogr_rgb</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
@@ -397,19 +402,9 @@
                       <span class="n">transform</span><span class="o">=</span><span class="n">axlg</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
                       <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="BioSim.update_graphics"><a class="viewcode-back" href="../../simulation.html#biosim.simulation.BioSim.update_graphics">[docs]</a>    <span class="k">def</span> <span class="nf">update_graphics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Updates all graphics with current data.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update_line_graph</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update_heat_map_herbs</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update_heat_map_carns</span><span class="p">()</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Simulation of year </span><span class="si">{self.year}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">26</span><span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">pause</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">)</span></div>
-
 <div class="viewcode-block" id="BioSim.update_line_graph"><a class="viewcode-back" href="../../simulation.html#biosim.simulation.BioSim.update_line_graph">[docs]</a>    <span class="k">def</span> <span class="nf">update_line_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Updates line graph. Line graph has one line for each species.</span>
+<span class="sd">        Updates line graph for both species.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># for herbivores</span>
         <span class="n">ydata_herb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_line_graph_line_herb</span><span class="o">.</span><span class="n">get_ydata</span><span class="p">()</span>
@@ -423,10 +418,11 @@
             <span class="s2">&quot;Carnivore&quot;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_line_graph_line_carn</span><span class="o">.</span><span class="n">set_ydata</span><span class="p">(</span><span class="n">ydata_carn</span><span class="p">)</span>
 
+        <span class="c1"># rescales y axis</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ymax</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_line_graph_ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ymax</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_line_graph_ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_animals</span><span class="o">*</span><span class="mf">1.3</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_line_graph_ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_animals</span> <span class="o">*</span> <span class="mf">1.3</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="BioSim.create_array_herbs"><a class="viewcode-back" href="../../simulation.html#biosim.simulation.BioSim.create_array_herbs">[docs]</a>    <span class="k">def</span> <span class="nf">create_array_herbs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -493,14 +489,24 @@
             <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_img_carn_axis</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_heat_map_carn_ax</span><span class="p">,</span>
                          <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;vertical&#39;</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="BioSim.update_graphics"><a class="viewcode-back" href="../../simulation.html#biosim.simulation.BioSim.update_graphics">[docs]</a>    <span class="k">def</span> <span class="nf">update_graphics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates all graphics with current data and title.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_line_graph</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_heat_map_herbs</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_heat_map_carns</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Simulation of year </span><span class="si">{self.year}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">26</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">pause</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="BioSim.save_graphics"><a class="viewcode-back" href="../../simulation.html#biosim.simulation.BioSim.save_graphics">[docs]</a>    <span class="k">def</span> <span class="nf">save_graphics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Saves graphics to file, if file name is given.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_img_base</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">img_base</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
 
-        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{self._img_base}</span><span class="s2">_</span><span class="si">{self.img_no:05d}</span><span class="s2">.</span><span class="si">{self._img_fmt}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{self.img_base}</span><span class="s2">_</span><span class="si">{self.img_no:05d}</span><span class="s2">.</span><span class="si">{self.img_fmt}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">img_no</span> <span class="o">+=</span> <span class="mi">1</span></div>
 
@@ -508,13 +514,17 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Creates MPEG4 movie from visualization images saved.</span>
 
-<span class="sd">        .. :note:</span>
-<span class="sd">            Requires ffmpeg</span>
+<span class="sd">        :param movie_fmt: str</span>
+<span class="sd">            format for movie (default=&#39;mp4&#39;)</span>
+<span class="sd">        :note: Requires ffmpeg</span>
 
-<span class="sd">        The movie is stored as img_base + movie_fmt</span>
+<span class="sd">        The movie is stored as img_base + movie_fmt.</span>
+
+<span class="sd">        :raise RuntimeError: if img_base not defined or ffmpeg fails</span>
+<span class="sd">        :raise ValueError: if movie format is unknown</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_img_base</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">img_base</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;No filename defined.&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">movie_fmt</span> <span class="o">==</span> <span class="s1">&#39;mp4&#39;</span><span class="p">:</span>
@@ -522,14 +532,14 @@
                 <span class="c1"># Parameters chosen according to</span>
                 <span class="c1"># http://trac.ffmpeg.org/wiki/Encode/H.264,</span>
                 <span class="c1"># section &quot;Compatibility&quot;</span>
-                <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">([</span><span class="n">_FFMPEG_BINARY</span><span class="p">,</span>
+                <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">([</span><span class="n">FFMPEG_BINARY</span><span class="p">,</span>
                                        <span class="s1">&#39;-i&#39;</span><span class="p">,</span>
-                                       <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">_</span><span class="si">%05d</span><span class="s1">.png&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_img_base</span><span class="p">),</span>
+                                       <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">_</span><span class="si">%05d</span><span class="s1">.png&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">img_base</span><span class="p">),</span>
                                        <span class="s1">&#39;-y&#39;</span><span class="p">,</span>
                                        <span class="s1">&#39;-profile:v&#39;</span><span class="p">,</span> <span class="s1">&#39;baseline&#39;</span><span class="p">,</span>
                                        <span class="s1">&#39;-level&#39;</span><span class="p">,</span> <span class="s1">&#39;3.0&#39;</span><span class="p">,</span>
                                        <span class="s1">&#39;-pix_fmt&#39;</span><span class="p">,</span> <span class="s1">&#39;yuv420p&#39;</span><span class="p">,</span>
-                                       <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_img_base</span><span class="p">,</span>
+                                       <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">img_base</span><span class="p">,</span>
                                                       <span class="n">movie_fmt</span><span class="p">)])</span>
             <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;ERROR: ffmpeg failed with: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">err</span><span class="p">))</span>
@@ -538,7 +548,7 @@
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">initial_pop</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">ini_pop</span> <span class="o">=</span> <span class="p">[</span>
         <span class="p">{</span>
             <span class="s2">&quot;loc&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
             <span class="s2">&quot;pop&quot;</span><span class="p">:</span> <span class="p">[</span>
@@ -558,7 +568,7 @@
     <span class="n">island</span> <span class="o">=</span> <span class="s2">&quot;OOOOO</span><span class="se">\n</span><span class="s2">OJMJO</span><span class="se">\n</span><span class="s2">ODJJO</span><span class="se">\n</span><span class="s2">ODSJO</span><span class="se">\n</span><span class="s2">OJMDO</span><span class="se">\n</span><span class="s2">OOOOO&quot;</span>
 
     <span class="n">ex_img_base</span> <span class="o">=</span> <span class="s2">&quot;../../data/img&quot;</span>
-    <span class="n">biosim</span> <span class="o">=</span> <span class="n">BioSim</span><span class="p">(</span><span class="n">island</span><span class="p">,</span> <span class="n">initial_pop</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_base</span><span class="o">=</span><span class="n">ex_img_base</span><span class="p">)</span>
+    <span class="n">biosim</span> <span class="o">=</span> <span class="n">BioSim</span><span class="p">(</span><span class="n">island</span><span class="p">,</span> <span class="n">ini_pop</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_base</span><span class="o">=</span><span class="n">ex_img_base</span><span class="p">)</span>
     <span class="n">biosim</span><span class="o">.</span><span class="n">set_animal_parameters</span><span class="p">(</span><span class="s2">&quot;Herbivore&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;F&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">})</span>
     <span class="n">biosim</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="mi">160</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>

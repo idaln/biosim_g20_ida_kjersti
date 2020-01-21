@@ -35,8 +35,241 @@
             
   <div class="section" id="simulation">
 <h1>Simulation<a class="headerlink" href="#simulation" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="the-simulation-module">
-<h2>The simulation module<a class="headerlink" href="#the-simulation-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-biosim.simulation">
+<span id="the-simulation-module"></span><h2>The simulation module<a class="headerlink" href="#module-biosim.simulation" title="Permalink to this headline">¶</a></h2>
+<p>This module provides classes organizing entire simulation, including
+visualization and saving graphics.</p>
+<dl class="class">
+<dt id="biosim.simulation.BioSim">
+<em class="property">class </em><code class="descclassname">biosim.simulation.</code><code class="descname">BioSim</code><span class="sig-paren">(</span><em>island_map</em>, <em>initial_population</em>, <em>seed</em>, <em>ymax_animals=None</em>, <em>cmax_animals=None</em>, <em>img_base=None</em>, <em>img_fmt='png'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/simulation.html#BioSim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.simulation.BioSim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for simulating the model of an ecosystem.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>island_map</strong> – Multi-line string specifying island geography</li>
+<li><strong>ini_pop</strong> – List of dictionaries specifying initial population</li>
+<li><strong>seed</strong> – Integer used as random number seed</li>
+<li><strong>ymax_animals</strong> – Number specifying y-axis limit for graph showing
+animal numbers</li>
+<li><strong>cmax_animals</strong> – Dict specifying color-code limits for animal
+densities</li>
+<li><strong>img_base</strong> – String with beginning of file name for figures,
+including path</li>
+<li><strong>img_fmt</strong> – String with file type for figures, e.g. ‘png’</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If ymax_animals is None, the y-axis limit should be adjusted
+automatically.</p>
+<p>If cmax_animals is None, sensible, fixed default values should be used.
+cmax_animals is a dict mapping species names to numbers, e.g.,</p>
+<blockquote>
+<div>{‘Herbivore’: 50, ‘Carnivore’: 20}</div></blockquote>
+<p>If img_base is None, no figures are written to file.
+Filenames are formed as</p>
+<blockquote>
+<div>‘{}_{:05d}.{}’.format(img_base, img_no, img_fmt)</div></blockquote>
+<p>where img_no are consecutive image numbers starting from 0.
+img_base should contain a path and beginning of a file name.</p>
+<dl class="method">
+<dt id="biosim.simulation.BioSim.add_population">
+<code class="descname">add_population</code><span class="sig-paren">(</span><em>population</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/simulation.html#BioSim.add_population"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.simulation.BioSim.add_population" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a population to the island during simulation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>population</strong> – List of dictionaries specifying population</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="biosim.simulation.BioSim.animal_distribution">
+<code class="descname">animal_distribution</code><a class="headerlink" href="#biosim.simulation.BioSim.animal_distribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pandas DataFrame with animal count per species for each cell on island.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.simulation.BioSim.create_array_carns">
+<code class="descname">create_array_carns</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/simulation.html#BioSim.create_array_carns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.simulation.BioSim.create_array_carns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates arrays used to create heat map of carnivore population.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.simulation.BioSim.create_array_herbs">
+<code class="descname">create_array_herbs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/simulation.html#BioSim.create_array_herbs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.simulation.BioSim.create_array_herbs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates array used to create heat map of herbivore population.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.simulation.BioSim.create_map_graphics">
+<code class="descname">create_map_graphics</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/simulation.html#BioSim.create_map_graphics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.simulation.BioSim.create_map_graphics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates graphic of the map of the island’s geography.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.simulation.BioSim.make_movie">
+<code class="descname">make_movie</code><span class="sig-paren">(</span><em>movie_fmt='mp4'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/simulation.html#BioSim.make_movie"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.simulation.BioSim.make_movie" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates MPEG4 movie from visualization images saved.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>movie_fmt</strong> – str
+format for movie (default=’mp4’)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Note:</th><td class="field-body">Requires ffmpeg</td>
+</tr>
+</tbody>
+</table>
+<p>The movie is stored as img_base + movie_fmt.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RuntimeError</strong> – if img_base not defined or ffmpeg fails</li>
+<li><strong>ValueError</strong> – if movie format is unknown</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="biosim.simulation.BioSim.num_animals">
+<code class="descname">num_animals</code><a class="headerlink" href="#biosim.simulation.BioSim.num_animals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Total number of animals on island.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="biosim.simulation.BioSim.num_animals_per_species">
+<code class="descname">num_animals_per_species</code><a class="headerlink" href="#biosim.simulation.BioSim.num_animals_per_species" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of animals per species in island, as dictionary.</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="biosim.simulation.BioSim.reset_params">
+<em class="property">static </em><code class="descname">reset_params</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/simulation.html#BioSim.reset_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.simulation.BioSim.reset_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets parameters of all classes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.simulation.BioSim.save_graphics">
+<code class="descname">save_graphics</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/simulation.html#BioSim.save_graphics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.simulation.BioSim.save_graphics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves graphics to file, if file name is given.</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="biosim.simulation.BioSim.set_animal_parameters">
+<em class="property">static </em><code class="descname">set_animal_parameters</code><span class="sig-paren">(</span><em>species</em>, <em>params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/simulation.html#BioSim.set_animal_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.simulation.BioSim.set_animal_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set parameters for animal species.
+All animal parameters shall be positive. However, DeltaPhiMax and
+F shall be strictly positive and eta shall lie between zero and one.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>species</strong> – String, name of animal species</li>
+<li><strong>params</strong> – Dict with valid parameter specification for species</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><strong>ValueError</strong> – if parameter has invalid value or name</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="biosim.simulation.BioSim.set_landscape_parameters">
+<em class="property">static </em><code class="descname">set_landscape_parameters</code><span class="sig-paren">(</span><em>landscape</em>, <em>params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/simulation.html#BioSim.set_landscape_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.simulation.BioSim.set_landscape_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set parameters for landscape type. f_max must be positive.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>landscape</strong> – String, code letter for landscape</li>
+<li><strong>params</strong> – Dict with valid parameter specification for landscape</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><strong>ValueError</strong> – if parameter name or value is invalid</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.simulation.BioSim.setup_graphics">
+<code class="descname">setup_graphics</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/simulation.html#BioSim.setup_graphics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.simulation.BioSim.setup_graphics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates subplots.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.simulation.BioSim.simulate">
+<code class="descname">simulate</code><span class="sig-paren">(</span><em>num_years</em>, <em>vis_years=1</em>, <em>img_years=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/simulation.html#BioSim.simulate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.simulation.BioSim.simulate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run simulation while visualizing the result.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>num_years</strong> – number of years to simulate</li>
+<li><strong>vis_years</strong> – years between visualization updates</li>
+<li><strong>img_years</strong> – years between visualizations saved to files</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>(default: vis_years)</p>
+<p>Image files will be numbered consecutively.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.simulation.BioSim.update_graphics">
+<code class="descname">update_graphics</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/simulation.html#BioSim.update_graphics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.simulation.BioSim.update_graphics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates all graphics with current data and title.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.simulation.BioSim.update_heat_map_carns">
+<code class="descname">update_heat_map_carns</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/simulation.html#BioSim.update_heat_map_carns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.simulation.BioSim.update_heat_map_carns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update visualization of heat map for carnivores.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.simulation.BioSim.update_heat_map_herbs">
+<code class="descname">update_heat_map_herbs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/simulation.html#BioSim.update_heat_map_herbs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.simulation.BioSim.update_heat_map_herbs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update visualization of heat map for herbivores.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.simulation.BioSim.update_line_graph">
+<code class="descname">update_line_graph</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/simulation.html#BioSim.update_line_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.simulation.BioSim.update_line_graph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates line graph for both species.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="biosim.simulation.BioSim.year">
+<code class="descname">year</code><a class="headerlink" href="#biosim.simulation.BioSim.year" title="Permalink to this definition">¶</a></dt>
+<dd><p>Last year simulated.</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 </div>
 
@@ -60,7 +293,7 @@
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Simulation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#the-simulation-module">The simulation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-biosim.simulation">The simulation module</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="island_map.html">Island Map</a></li>
