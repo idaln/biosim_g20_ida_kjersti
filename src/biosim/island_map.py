@@ -213,7 +213,8 @@ class IslandMap:
 
         :param current_coordinates: x coordinate, y coordinate
         :type current_coordinates: tuple
-        :param single_animal: Either herbivore or carnivore that tries to move
+        :param single_animal: animal that tries to move, either herbivore or
+            carnivore
         :type single_animal: class instance
 
         :return: True if animal has moved, False if not
