@@ -8,7 +8,7 @@ __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idna@nmbu.no & kjkv@nmbu.no"
 
 from biosim.landscape import Jungle, Savannah, Desert, Mountain, Ocean
-from biosim.animals import Animal, Herbivore, Carnivore
+from biosim.animals import Herbivore, Carnivore
 import textwrap
 
 
@@ -119,12 +119,12 @@ class IslandMap:
         for pop_info in population:
             new_population[pop_info["loc"]] = pop_info["pop"]
 
-        for loc, population in new_population.items():
+        for location, population in new_population.items():
             for animal_info in population:
                 if animal_info["species"] == "Carnivore":
-                    self.map[loc].pop_carn.append(Carnivore(animal_info))
+                    self.map[location].pop_carn.append(Carnivore(animal_info))
                 else:
-                    self.map[loc].pop_herb.append(Herbivore(animal_info))
+                    self.map[location].pop_herb.append(Herbivore(animal_info))
 
     def create_map_dict(self):
         """
@@ -139,26 +139,26 @@ class IslandMap:
         self.create_geography_dict()
         self.create_population_dict()
 
-        for loc, landscape_type in self.geography.items():
+        for location, landscape_type in self.geography.items():
             if landscape_type is "J":
-                if loc in self.population.keys():
-                    self.map[loc] = Jungle(self.population[loc])
+                if location in self.population.keys():
+                    self.map[location] = Jungle(self.population[location])
                 else:
-                    self.map[loc] = Jungle([])
+                    self.map[location] = Jungle([])
             elif landscape_type is "S":
-                if loc in self.population.keys():
-                    self.map[loc] = Savannah(self.population[loc])
+                if location in self.population.keys():
+                    self.map[location] = Savannah(self.population[location])
                 else:
-                    self.map[loc] = Savannah([])
+                    self.map[location] = Savannah([])
             elif landscape_type is "D":
-                if loc in self.population.keys():
-                    self.map[loc] = Desert(self.population[loc])
+                if location in self.population.keys():
+                    self.map[location] = Desert(self.population[location])
                 else:
-                    self.map[loc] = Desert([])
+                    self.map[location] = Desert([])
             elif landscape_type is "O":
-                self.map[loc] = Ocean([])
+                self.map[location] = Ocean([])
             elif landscape_type is "M":
-                self.map[loc] = Mountain([])
+                self.map[location] = Mountain([])
             else:
                 raise ValueError(f"Invalid landscape type {landscape_type}")
 
@@ -182,7 +182,7 @@ class IslandMap:
     def neighbours_of_current_cell(self, current_coordinates):
         """
         Finds all neighbouring coordinates of a given cell. Checks the
-        landscape type of each coordinate. The coordinates of neighbours
+        landscape type of each coordinate. The neighbours
         with landscape types an animal can move to, are returned.
 
         :param current_coordinates: Location of current cell
@@ -194,25 +194,30 @@ class IslandMap:
         neighbours_of_current_cell = {}
         n, m = current_coordinates[0], current_coordinates[1]
         neighbours = [(n-1, m), (n, m-1), (n, m+1), (n+1, m)]
-        for neighbour in neighbours:
-            if neighbour in self.map.keys():
-                landscape_type = type(self.map[neighbour]).__name__
+        for neighbour_cell in neighbours:
+            if neighbour_cell in self.map.keys():
+                landscape_type = type(self.map[neighbour_cell]).__name__
                 if landscape_type is not "Mountain":
                     if landscape_type is not "Ocean":
-                        neighbours_of_current_cell[neighbour] = \
-                            self.map[neighbour]
+                        neighbours_of_current_cell[neighbour_cell] = \
+                            self.map[neighbour_cell]
         return neighbours_of_current_cell
 
     def move_single_animal(self, current_coordinates, single_animal):
         """
-        Moves an animal to the chosen neighbouring cell. New cell get
-        updated population lists.
-        :param current_coordinates: tuple
-                Contains x coordinate, y coordinate
-        :param single_animal: class instance
-                Either herbivore and carnivore
-        :returns: bool
-                True if animal has moved
+        If the animal has not moved so far this year, it's neighbours are
+        found. Then, the new coordinates of the animal is chosen.
+        If they are None, the animal does not move.
+        If they are a tuple, the animal is moved to the chosen cell.
+        The new cell gets updated population lists.
+
+        :param current_coordinates: x coordinate, y coordinate
+        :type current_coordinates: tuple
+        :param single_animal: Either herbivore or carnivore that tries to move
+        :type single_animal: class instance
+
+        :return: True if animal has moved, False if not
+        :rtype: bool
         """
         if single_animal.has_moved_this_year is False:
             neighbours_of_current_cell = self.neighbours_of_current_cell(
@@ -231,12 +236,13 @@ class IslandMap:
 
     def move_all_animals_in_cell(self, current_coordinates, current_landscape):
         """
-        Iterates through the population of a cell. Attempt to move all animals,
-        and updates animal population lists if an animal moved.
-        :param current_coordinates: tuple
-                Contains x coordinate, y coordinate
-        :param current_landscape: class instance
-                Either herbivore and carnivore
+        Iterates through the population lists of a cell. Attempts to move all
+        animals, and updates animal population lists if an animal moved.
+
+        :param current_coordinates: x coordinate, y coordinate
+        :type current_coordinates: tuple
+        :param current_landscape: Landscape type of current cell
+        :type current_landscape: class instance
         """
         current_landscape.pop_herb = [
             animal for animal in current_landscape.pop_herb
