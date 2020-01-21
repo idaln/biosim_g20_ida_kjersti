@@ -135,13 +135,15 @@ class Animal:
 
         .. math::
 
-        q\\^{+}(a, a_{\\fraq{1}{2}}, \\phi_{age}) \\cdot q\\^{-}(w, w_{\\fraq{1}{2}}, \\phi_{weight}
+            q\\^{+}(a, a_{\\frac{1}{2}}, \\phi_{age}) \\cdot q\\^{-}
+            (w, w_{\\frac{1}{2}}, \\phi_{weight}
 
         where
 
         .. math::
 
-        q\\^{\\pm}(x, x_{\\fraq{1}{2}, \\phi) = \\fraq{1}{1 + e\\^{\\pm \\phi(x-x_{\\fraq{1}{2}})}
+            q\\^{\\pm}(x, x_{\\frac{1}{2}, \\phi) = \\frac{1}{1 + e\\^
+            {\\pm \\phi(x-x_{\\frac{1}{2}})}
 
         """
 
@@ -192,9 +194,7 @@ class Animal:
         Takes an instance of a landscape class and returns the relative
         abundance of fodder in that instance, given by
 
-        .. math::
-
-        \\epsilon = \\fraq{f_k}{(n_k + 1)F^'}
+        .. math:: \\epsilon = \\frac{f_k}{(n_k + 1)F^'}
 
         :param landscape_cell: Instance of landscape class
         :type landscape_cell: dict
@@ -463,9 +463,7 @@ class Herbivore(Animal):
         Takes an instance of a landscape class, and returns the relative
         abundance of fodder for herbivores in that instance, given by
 
-        .. math::
-
-        \\epsilon = \\fraq{f_k}{(n_k + 1)F^'}
+        .. math:: \\epsilon = \\frac{f_k}{(n_k + 1)F^'}
 
         :param landscape_cell: Instance of landscape class
         :type landscape_cell: dict
@@ -589,10 +587,8 @@ class Carnivore(Animal):
         """
         Takes an instance of a landscape class, and returns the relative
         abundance of fodder in that instance, given by
-        
-        .. math::
 
-        \\epsilon = \\fraq{f_k}{(n_k + 1)F^'}
+        .. math:: \\epsilon = \\frac{f_k}{(n_k + 1)F^'}
 
         :param landscape_cell: Instance of landscape class
         :type: dict
