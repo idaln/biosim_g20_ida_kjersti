@@ -215,16 +215,11 @@ class Animal:
         .. math::
 
             \\phi =
-            \lbrace
+            \\lbrace
             {
-            0,\text{ if }
-            {
-            l(\underline{x}) =
-            \frac { p(\underline{x}|M ) } { p(\underline{x}|U) }
-            \geq
-            \frac { p(U) }{ p(M) } }
-            \atop
-            U, \text{ otherwise }
+            0,\\text{ if j is Mountain or Ocean }
+            \\atop
+            e^{\\lamba \\epsilon j}, \\text{ otherwise }
             }
 
         :param neighbours_of_current_cell: Contains neighbours of current cell.
