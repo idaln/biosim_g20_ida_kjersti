@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-.. role:: raw-math(raw)
-    :format: latex html
+
 """
 This module provides classes implementing the animals on the Island.
 """
@@ -115,7 +114,7 @@ class Animal:
     def add_eaten_fodder_to_weight(self, fodder):
         """
         Adds amount of weight to animals total body weight given by
-        beta*F. Also reserts have_moved_this_year to False.
+        beta*F. Also resets have_moved_this_year to False.
         :param fodder
                Amount of fodder available to the animal
         """
@@ -147,7 +146,7 @@ class Animal:
         Computes the probability of moving at all, which depends on the
         animal's fitness.
         :return: float
-                Probability of moving
+            Probability of moving
         """
         if self.fitness_must_be_updated is True:
             self.find_fitness()
@@ -159,7 +158,7 @@ class Animal:
         Uses the probability of the animal moving to decide whether it should
         move or not.
         :return: bool
-                True if animal will move, False if not.
+            True if animal will move, False if not.
         """
         prob = self.prob_of_animal_moving()
         random_number = np.random.random()
@@ -173,7 +172,7 @@ class Animal:
         Takes an instance of a landscape class, and returns the relative
         abundance of fodder in that instance.
         :param landscape_cell: dict
-                Instance of landscape class
+            Instance of landscape class
         :return: float
         """
         fodder_animal = landscape_cell.fodder_amount
@@ -186,8 +185,8 @@ class Animal:
         """
         Finds the propensity for the animal to move to each of it's neighbours.
         :param neighbours_of_current_cell: dict
-                Contains neighbours of current cell.
-                Location as keys, instance of landscape class as value
+            Contains neighbours of current cell.
+            Location as keys, instance of landscape class as value
         :return: loc_to_propensity_dict: dict
         """
 
@@ -206,11 +205,11 @@ class Animal:
         the probability of moving to each of the neighbouring cells. Returns
         a dict mapping cell locations to the probability of moving there.
         :param neighbours_of_current_cell: dict
-                Neighbours of current cell. Locations as keys,
-                instance of landscape class as value.
+            Neighbours of current cell. Locations as keys, instance of
+            landscape class as value.
         :returns: dict
-                Locations of each surrounding cell as keys, probabilities for
-                the animal to move to each of them as values.
+            Locations of each surrounding cell as keys, probabilities for
+            the animal to move to each of them as values.
         """
         moving_prob_for_each_loc = {}
         sum_prop = 0
@@ -231,12 +230,12 @@ class Animal:
         Converts dictionary with locations as keys and probabilities as
         values to a list of locations and a numpy array of probabilities.
         :param moving_prob_for_each_loc: dict
-                Contains the locations of each surrounding cell as keys, and
-                the probabilities for the animal to move to each of them as
-                values.
+            Contains the locations of each surrounding cell as keys, and
+            the probabilities for the animal to move to each of them as
+            values.
         :returns: list, array
-                List of locations of neighbouring cells, numpy array of the
-                probabilities of moving to each.
+            List of locations of neighbouring cells, numpy array of the
+            probabilities of moving to each.
         """
         locs = []
         probs = np.array([])
@@ -250,10 +249,10 @@ class Animal:
         Uses cumulative probability to decide which of the neighbouring cells
         the animal will move to. Returns the coordinates of that cell.
         :param neighbours_of_current_cell: dict
-                Neighbours of current cell. Locations as keys,
-                instance of landscape class as value.
+            Neighbours of current cell. Locations as keys,
+            instance of landscape class as value.
         :returns: tuple
-                The location the animal will move to.
+            The location the animal will move to.
         """
         moving_prob_for_each_loc = self.prob_move_to_each_neighbour(
                 neighbours_of_current_cell
