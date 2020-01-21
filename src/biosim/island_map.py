@@ -15,40 +15,50 @@ import textwrap
 class IslandMap:
     """
     Implements the island map. Map has one cell per location, represented by
-    instances of landscape types.
+    instances of landscape types. There are several seasons for the animals
+    on the island, e.g. for feeding and procreating, and all seasons run
+    from the Island Map class.
     """
-    def __init__(self, geogr, ini_pop):
+    def __init__(self, island_geography, initial_population):
         """
         Initialize map class with given island geography and initial population
         of the various cells.
-        :param geogr: string
-        :param ini_pop: list of dictionaries
+
+        :param island_geography: Specifies island geography
+        :type island_geography: multiline str
+        :param initial_population: Specifies initial population of each cell
+        :type initial_population: list of dicts
         """
         self.geography = {}
         self.population = {}
         self.map = {}
-        self.geogr = textwrap.dedent(geogr)
-        self.ini_pop = ini_pop
+        self.geogr = textwrap.dedent(island_geography)
+        self.ini_pop = initial_population
 
     def check_boundaries_are_ocean(self):
         """
         Checks that all boundary cells for the map are Ocean.
-        :raise ValueError:
+
+        :raise ValueError: if a boundary cell is other landscape type than
+            Ocean
         """
         map_lines = []
         for line in self.geogr.splitlines():
             map_lines.append(line)
 
         for line_num in range(len(map_lines)):
+            # checks all cells in first line of geography str
             if line_num == 0:
                 for landscape_type in map_lines[line_num]:
                     if landscape_type is not "O":
                         raise ValueError("Map boundary has to be only 'O'")
+            # checks left- and rightmost cell in middle lines of geography str
             elif 0 < line_num < (len(map_lines) - 1):
                 if map_lines[line_num][0] is not "O":
                     raise ValueError("Map boundary has to be only 'O'")
                 elif map_lines[line_num][-1] is not "O":
                     raise ValueError("Map boundary has to be only 'O'")
+            # checks all cells in last line of geography str
             else:
                 for landscape_type in map_lines[line_num]:
                     if landscape_type is not "O":
@@ -56,8 +66,10 @@ class IslandMap:
 
     def check_map_lines_have_equal_length(self):
         """
-        Checks that all lines in the map geography are of equal length.
-        :raise ValueError:
+        Checks that all lines in the map's geography string are of equal
+        length.
+
+        :raise ValueError: if lines in map str are more than one length
         """
         line_lengths = []
         for line in self.geogr.splitlines():
@@ -68,11 +80,13 @@ class IslandMap:
 
     def create_geography_dict(self):
         """
-        Converts string map to a dictionary with coordinates as keys and
-        the landscape types as values.
+        Converts geography string to a dictionary with coordinates as keys and
+        the landscape types as values. Coordinates are a tuple of x and y
+        coordinates.
         """
         self.check_boundaries_are_ocean()
         self.check_map_lines_have_equal_length()
+
         x_coord = 0
         for line in self.geogr.splitlines():
             y_coord = 0
@@ -94,13 +108,19 @@ class IslandMap:
 
     def add_population(self, population):
         """
-        Adds a new population to the already existing population
-        :param population: list
-                List of dictionaries containing the new population
+        Adds a new population to the already existing population of the island.
+        First converts list of dictionaries to a dictionary with coordinates
+        as keys and lists of the properties of the animals at this location as
+        values.
+
+        :param population: Specifies the new population of one or more cells
+        :type population: list
+
         """
         new_pop = {}
         for pop_info in population:
             new_pop[pop_info["loc"]] = pop_info["pop"]
+
         for loc, pop in new_pop.items():
             for individual in pop:
                 if individual["species"] == "Carnivore":
