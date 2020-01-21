@@ -113,6 +113,7 @@ class Landscape:
         """
         Returns amount of fodder available to carnivore. That is, the total
         weight of the herbivores in the cell.
+
         :return: Amount of fodder available to a carnivore.
         :rtype: float
         """
@@ -146,6 +147,7 @@ class Landscape:
         """
         Removes herbivores that have been eaten from the
         herbivore population of the cell.
+
         :param eaten_herbivores: Herbivore instances that have been eaten
             during feeding of a carnivore.
         :type eaten_herbivores: list
