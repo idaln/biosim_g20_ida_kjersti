@@ -198,6 +198,11 @@ class Animal:
 
         where :math:`f_k` is the amount of relevant fodder and :math:`n_k` is
         the number of animals of same species in cell k.
+        This method cannot be called upon by an instance of the Animal class,
+        since there is no population for animals. This method will be
+        overwritten by Herbivore and Carnivore classes, and can only be called
+        upon from instances of herbivores and carnivores, as be have pop_herb
+        and pop_carn in the landscape cells.
 
         :param landscape_cell: Instance of landscape class
         :type landscape_cell: dict
@@ -571,12 +576,13 @@ class Carnivore(Animal):
             \\Biggl
             \\lbrace
             {
-            0,\\text{ if } \\phi_{\\text carn } \\leq \\ \\phi_{\\text herb }
+            0, \\text{ if } \\phi_{\\text { carn } } \\leq \\ \\phi_{\\text
+            { herb } }
             \\substack
-            \\frac{\\phi_{\\text carn } - \\phi_{\\text herb }}
-            {{\\Delta \\phi}_{\\text max },
-            \\text{ if } 0 < \\phi_{\\text carn } - \\phi_{\\text herb } <
-            {\\Delta \\phi}_{\\text max }
+            \\frac{\\phi_{\\text { carn }} - \\phi_{\\text { herb }}}
+            {{\\Delta \\phi}_{\\text { max }},
+            \\text{ if } 0 < \\phi_{\\text { carn }} -
+            \\phi_{\\text { herb }} < {\\Delta \\phi}_{\\text { max }}
             \\substack
             1, \\text{ otherwise }
             }
