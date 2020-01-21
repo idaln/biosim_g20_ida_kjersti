@@ -108,34 +108,37 @@ class IslandMap:
 
     def add_population(self, population):
         """
-        Adds a new population to the already existing population of the island.
-        First converts list of dictionaries to a dictionary with coordinates
-        as keys and lists of the properties of the animals at this location as
-        values.
+        Adds a new population to the already existing population of the island,
+        in a manner similar to create_population_dict.
 
         :param population: Specifies the new population of one or more cells
-        :type population: list
+        :type population: list of dicts
 
         """
-        new_pop = {}
+        new_population = {}
         for pop_info in population:
-            new_pop[pop_info["loc"]] = pop_info["pop"]
+            new_population[pop_info["loc"]] = pop_info["pop"]
 
-        for loc, pop in new_pop.items():
-            for individual in pop:
-                if individual["species"] == "Carnivore":
-                    self.map[loc].pop_carn.append(Carnivore(individual))
+        for loc, population in new_population.items():
+            for animal_info in population:
+                if animal_info["species"] == "Carnivore":
+                    self.map[loc].pop_carn.append(Carnivore(animal_info))
                 else:
-                    self.map[loc].pop_herb.append(Herbivore(individual))
+                    self.map[loc].pop_herb.append(Herbivore(animal_info))
 
     def create_map_dict(self):
         """
-        Creates dictionary of the entire map, with coordinates as keys and
-        instances of landscape classes as values. The instances have the
-        population of the coordinate as input.
+        Iterates through geography dictionary and creates a new dictionary of
+        the entire map. This dict has coordinates as keys and
+        instances of landscape classes as values. Each landscape instance has
+        the population list of it's coordinate as input.
+
+        :raise ValueError: if invalid landscape type is given in geography
+            string
         """
         self.create_geography_dict()
         self.create_population_dict()
+
         for loc, landscape_type in self.geography.items():
             if landscape_type is "J":
                 if loc in self.population.keys():
@@ -162,7 +165,7 @@ class IslandMap:
     def feeding_season(self):
         """
         Iterates through all landscape cells on the map,
-        and feeds all herbivores in each cell.
+        and feeds all herbivores and carnivores in each cell.
         """
         for landscape in self.map.values():
             landscape.feed_all_herbivores()
@@ -178,12 +181,15 @@ class IslandMap:
 
     def neighbours_of_current_cell(self, current_coordinates):
         """
-        Finds all neighbours of a given cell, and those an animal can
-        move to are returned.
-        :param current_coordinates: tuple
-                Location of current cell
-        :returns: dict
-                Has locations as keys and landscape class instance as values.
+        Finds all neighbouring coordinates of a given cell. Checks the
+        landscape type of each coordinate. The coordinates of neighbours
+        with landscape types an animal can move to, are returned.
+
+        :param current_coordinates: Location of current cell
+        :type current_coordinates: tuple
+
+        :return: locations as keys and landscape class instance as values
+        :rtype: dict
         """
         neighbours_of_current_cell = {}
         n, m = current_coordinates[0], current_coordinates[1]
