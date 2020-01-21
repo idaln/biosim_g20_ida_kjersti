@@ -41,17 +41,17 @@ def setup_teardown_all_params():
 
 def test_empty_island():
     """Empty island can be created"""
-    BioSim(island_map="OO\nOO", ini_pop=[], seed=1)
+    BioSim(island_map="OO\nOO", initial_population=[], seed=1)
 
 
 def test_minimal_island():
     """Island of single jungle cell"""
-    BioSim(island_map="OOO\nOJO\nOOO", ini_pop=[], seed=1)
+    BioSim(island_map="OOO\nOJO\nOOO", initial_population=[], seed=1)
 
 
 def test_all_types():
     """All types of landscape can be created"""
-    BioSim(island_map="OOOO\nOJSO\nOMDO\nOOOO", ini_pop=[], seed=1)
+    BioSim(island_map="OOOO\nOJSO\nOMDO\nOOOO", initial_population=[], seed=1)
 
 
 @pytest.mark.parametrize("bad_boundary", ["J", "S", "M", "D"])
@@ -60,7 +60,7 @@ def test_invalid_boundary(bad_boundary):
     with pytest.raises(ValueError):
         BioSim(
             island_map="{}OO\nOJO\nOOO".format(bad_boundary),
-            ini_pop=[],
+            initial_population=[],
             seed=1,
         )
 
@@ -68,13 +68,13 @@ def test_invalid_boundary(bad_boundary):
 def test_invalid_landscape():
     """Invalid landscape type must raise error"""
     with pytest.raises(ValueError):
-        BioSim(island_map="OOO\nORO\nOOO", ini_pop=[], seed=1)
+        BioSim(island_map="OOO\nORO\nOOO", initial_population=[], seed=1)
 
 
 def test_inconsistent_length():
     """Inconsistent line length must raise error"""
     with pytest.raises(ValueError):
-        BioSim(island_map="OOO\nOJJO\nOOO", ini_pop=[], seed=1)
+        BioSim(island_map="OOO\nOJJO\nOOO", initial_population=[], seed=1)
 
 
 @pytest.mark.parametrize(
@@ -101,9 +101,8 @@ def test_set_param_animals(species, extra):
     }
     params.update(extra)
 
-    BioSim(island_map="O", ini_pop=[], seed=1).set_animal_parameters(
-        species, params
-    )
+    BioSim(island_map="O", initial_population=[], seed=1
+           ).set_animal_parameters(species, params)
 
 
 @pytest.mark.parametrize(
@@ -113,9 +112,8 @@ def test_set_param_animals(species, extra):
 def test_set_param_landscape(lscape, params):
     """Parameters can be set on landscape classes"""
 
-    BioSim(island_map="O", ini_pop=[], seed=1).set_landscape_parameters(
-        lscape, params
-    )
+    BioSim(island_map="O", initial_population=[], seed=1
+           ).set_landscape_parameters(lscape, params)
 
 
 def test_initial_population():
@@ -123,7 +121,7 @@ def test_initial_population():
 
     BioSim(
         island_map="OOOO\nOJSO\nOOOO",
-        ini_pop=[
+        initial_population=[
             {
                 "loc": (2, 2),
                 "pop": [
@@ -146,7 +144,7 @@ def test_initial_population():
 @pytest.fixture
 def plain_sim():
     """Return a simple island for used in various tests below"""
-    return BioSim(island_map="OOOO\nOJSO\nOOOO", ini_pop=[], seed=1)
+    return BioSim(island_map="OOOO\nOJSO\nOOOO", initial_population=[], seed=1)
 
 
 def test_add_population(plain_sim):
@@ -250,7 +248,7 @@ def test_set_plot_limits():
     """Test that y-axis and color limits for plots can be set."""
     BioSim(
         island_map="O",
-        ini_pop=[],
+        initial_population=[],
         seed=1,
         ymax_animals=20,
         cmax_animals={"Herbivore": 10, "Carnivore": 20},
@@ -274,7 +272,7 @@ def test_figure_saved(figfile_root):
 
     sim = BioSim(
         island_map="OOOO\nOJSO\nOOOO",
-        ini_pop=[],
+        initial_population=[],
         seed=1,
         img_base=figfile_root,
         img_fmt="png",
