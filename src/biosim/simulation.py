@@ -251,7 +251,8 @@ class BioSim:
 
     def setup_graphics(self):
         """
-        Creates subplots.
+        Creates four subplots for visualization of geography, number of
+        animals per species and distribution of each species.
         """
         # Create new figure window
         if self._fig is None:
@@ -470,6 +471,8 @@ class BioSim:
     def save_graphics(self):
         """
         Saves graphics to file, if file name is given.
+
+        The image is stored as img_base + img_no + img_fmt
         """
         if self.img_base is None:
             return
