@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-
+.. role:: raw-math(raw)
+    :format: latex html
 """
 This module provides classes implementing the animals on the Island.
 """
@@ -9,6 +10,7 @@ __email__ = "idna@nmbu.no & kjkv@nmbu.no"
 
 import numpy as np
 import math
+
 
 
 class Animal:
@@ -55,16 +57,26 @@ class Animal:
 
     @classmethod
     def GET_DEFAULT_PARAMS(cls):
+        """
+        Returns a copy of the default animal parameters.
+        :return: Copy of default animal parameters
+        """
         return cls._DEFAULT_PARAMS.copy()
 
     @classmethod
     def reset_params(cls):
+        """
+        Sets the animal parameters equal to default.
+        """
         cls.params = cls.GET_DEFAULT_PARAMS()
 
     def __init__(self, properties):
         """
-        Initializing class by unpacking all parameters given as input.
+        Initializing Animal class by asserting property values are valid.
+        :param properties: dict
+            Contains animal properties species, fitness, age and weight.
         """
+
         self.has_moved_this_year = False
         self.fitness_must_be_updated = True
 
@@ -93,7 +105,8 @@ class Animal:
     def weight_loss(self):
         """
         Substracts given amount of weight from the animals
-        total weight after each cycle, given by eta*weight
+        total weight after each cycle, given by
+        $\\eta*weight\\$
         """
         new_weight = (1 - self.params['eta']) * self.weight
         self.weight = new_weight
