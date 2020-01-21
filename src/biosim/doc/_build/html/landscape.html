@@ -1,0 +1,271 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Landscape &#8212; BioSim G20  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Animals" href="animals.html" />
+    <link rel="prev" title="Island Map" href="island_map.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="landscape">
+<h1>Landscape<a class="headerlink" href="#landscape" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-biosim.landscape">
+<span id="the-landscape-module"></span><h2>The landscape module<a class="headerlink" href="#module-biosim.landscape" title="Permalink to this headline">¶</a></h2>
+<p>This module provides classes implementing landscape types for the Island.</p>
+<dl class="class">
+<dt id="biosim.landscape.Landscape">
+<em class="property">class </em><code class="descclassname">biosim.landscape.</code><code class="descname">Landscape</code><span class="sig-paren">(</span><em>population</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/landscape.html#Landscape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.landscape.Landscape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parent class for all landscape types.</p>
+<p>Initializes class with given population.
+:param population: list of dictionaries</p>
+<dl class="method">
+<dt id="biosim.landscape.Landscape.add_newborn_animals">
+<code class="descname">add_newborn_animals</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/landscape.html#Landscape.add_newborn_animals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.landscape.Landscape.add_newborn_animals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterates over both population lists in turn,
+and makes all animal procreate utilizing their
+inherent birth process method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.landscape.Landscape.available_fodder_carnivore">
+<code class="descname">available_fodder_carnivore</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/landscape.html#Landscape.available_fodder_carnivore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.landscape.Landscape.available_fodder_carnivore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns amount of fodder available to carnivore. That is, the total
+weight of the herbivores in the cell.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.landscape.Landscape.available_fodder_herbivore">
+<code class="descname">available_fodder_herbivore</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/landscape.html#Landscape.available_fodder_herbivore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.landscape.Landscape.available_fodder_herbivore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns amount of fodder available to the herbivore.
+:return available_fodder: float</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.landscape.Landscape.feed_all_carnivores">
+<code class="descname">feed_all_carnivores</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/landscape.html#Landscape.feed_all_carnivores"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.landscape.Landscape.feed_all_carnivores" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterates over the population of carnivores in the cell, and feeds all
+carnivores using their inherent eating method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.landscape.Landscape.feed_all_herbivores">
+<code class="descname">feed_all_herbivores</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/landscape.html#Landscape.feed_all_herbivores"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.landscape.Landscape.feed_all_herbivores" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterates over the population of herbivores and feeds all animals,
+utilizing the eating method inherent to the animal instance.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.landscape.Landscape.make_all_animals_lose_weight">
+<code class="descname">make_all_animals_lose_weight</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/landscape.html#Landscape.make_all_animals_lose_weight"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.landscape.Landscape.make_all_animals_lose_weight" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterates over population lists and makes all animals lose weight
+utilizing their inherent weight loss method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.landscape.Landscape.make_all_animals_older">
+<code class="descname">make_all_animals_older</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/landscape.html#Landscape.make_all_animals_older"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.landscape.Landscape.make_all_animals_older" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterates over population lists and ages all animals one year
+utilizing their inherent aging method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.landscape.Landscape.regrowth">
+<code class="descname">regrowth</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/landscape.html#Landscape.regrowth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.landscape.Landscape.regrowth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets amount of fodder for herbivores to maximum at the beginning of
+each year.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.landscape.Landscape.remove_all_dead_animals">
+<code class="descname">remove_all_dead_animals</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/landscape.html#Landscape.remove_all_dead_animals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.landscape.Landscape.remove_all_dead_animals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterates over population lists and runs inherent death method on all
+animals. Updates the population to only contain living animals.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.landscape.Landscape.remove_all_eaten_herbivores">
+<code class="descname">remove_all_eaten_herbivores</code><span class="sig-paren">(</span><em>eaten_herbivores</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/landscape.html#Landscape.remove_all_eaten_herbivores"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.landscape.Landscape.remove_all_eaten_herbivores" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removed herbivores that have been eaten from pop_herb
+:param eaten_herbivores: list</p>
+<blockquote>
+<div>List of herbivores that have been eaten</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.landscape.Landscape.sort_carn_population_by_fitness">
+<code class="descname">sort_carn_population_by_fitness</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/landscape.html#Landscape.sort_carn_population_by_fitness"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.landscape.Landscape.sort_carn_population_by_fitness" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sorts carnivore population by fitness, from highest to
+lowest. Uses lambda sorting.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.landscape.Landscape.sort_herb_population_by_fitness">
+<code class="descname">sort_herb_population_by_fitness</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/landscape.html#Landscape.sort_herb_population_by_fitness"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.landscape.Landscape.sort_herb_population_by_fitness" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sorts herbivore populations by fitness, from highest to
+lowest. Uses lambda sorting.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="biosim.landscape.Jungle">
+<em class="property">class </em><code class="descclassname">biosim.landscape.</code><code class="descname">Jungle</code><span class="sig-paren">(</span><em>population</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/landscape.html#Jungle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.landscape.Jungle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for Jungle landscape type.</p>
+<p>Initializes class.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="biosim.landscape.Savannah">
+<em class="property">class </em><code class="descclassname">biosim.landscape.</code><code class="descname">Savannah</code><span class="sig-paren">(</span><em>population</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/landscape.html#Savannah"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.landscape.Savannah" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for Savannah landscape type.</p>
+<p>Initializes class.
+:param population: list of dicts</p>
+<blockquote>
+<div>List of properties of the initial population of animals</div></blockquote>
+<dl class="method">
+<dt id="biosim.landscape.Savannah.regrowth">
+<code class="descname">regrowth</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/landscape.html#Savannah.regrowth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.landscape.Savannah.regrowth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets amount of fodder for herbivores to the value given by formula (1).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="biosim.landscape.Desert">
+<em class="property">class </em><code class="descclassname">biosim.landscape.</code><code class="descname">Desert</code><span class="sig-paren">(</span><em>population</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/landscape.html#Desert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.landscape.Desert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for Desert landscape type.</p>
+<p>Initializes class.
+:param population: list of dicts</p>
+<blockquote>
+<div>List of properties of the initial population of animals</div></blockquote>
+</dd></dl>
+
+<dl class="class">
+<dt id="biosim.landscape.Ocean">
+<em class="property">class </em><code class="descclassname">biosim.landscape.</code><code class="descname">Ocean</code><span class="sig-paren">(</span><em>population</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/landscape.html#Ocean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.landscape.Ocean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for Ocean landscape type.</p>
+<p>Initializes class.
+:param population: list of dicts</p>
+<blockquote>
+<div>List of properties of the initial population of animals.
+Should be empty.</div></blockquote>
+</dd></dl>
+
+<dl class="class">
+<dt id="biosim.landscape.Mountain">
+<em class="property">class </em><code class="descclassname">biosim.landscape.</code><code class="descname">Mountain</code><span class="sig-paren">(</span><em>population</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/landscape.html#Mountain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.landscape.Mountain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for Mountain landscape type.</p>
+<p>Initializes class.
+:param population: list of dicts</p>
+<blockquote>
+<div>List of properties of the initial population of animals.
+Should be empty.</div></blockquote>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">BioSim G20</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="simulation.html">Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="island_map.html">Island Map</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Landscape</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-biosim.landscape">The landscape module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="animals.html">Animals</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="island_map.html" title="previous chapter">Island Map</a></li>
+      <li>Next: <a href="animals.html" title="next chapter">Animals</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Ida Lunde Naalsund & Kjersti Rustad Kvisberg.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/landscape.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
