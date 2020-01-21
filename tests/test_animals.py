@@ -312,48 +312,54 @@ class TestAnimal:
 
     def test_correct_prob_death(self, example_properties_w_20):
         """
-        Asserts that prob_death calculates the probability of dying correctly.
+        Asserts that prob_death calculates the correct probability of dying.
         """
         animal = Animal(example_properties_w_20)
         animal.find_fitness()
         assert animal.prob_death() == approx(0.0014929212599999687)
 
-    def test_false_death_prob_is_one(self, example_properties_w_20):
+    def test_not_true_if_death_prob_is_one(self, example_properties_w_20):
         """
-        Assert that False is returned if probability of dying is one.
+        Assert that will_animal_live does not return True if probability of
+        dying is one.
         """
-        a = Animal(example_properties_w_20)
-        a.weight = 0
-        a.find_fitness()
-        assert a.will_animal_live() is not True
+        animal = Animal(example_properties_w_20)
+        animal.weight = 0
+        animal.find_fitness()
+        assert animal.will_animal_live() is not True
 
-    def test_false_death_prob_is_zero(self, example_properties_w_40):
+    def test_true_if_death_prob_is_zero(self, example_properties_w_40):
         """
-        Assert that True is returned if probability of dying is zero.
+        Assert that will_animal_live returns True if probability of dying
+        is zero because of high fitness.
         """
         numpy.random.seed(1)
-        a = Animal(example_properties_w_40)
-        assert a.will_animal_live() is True
+        animal = Animal(example_properties_w_40)
+        assert animal.will_animal_live() is True
 
-    def test_num_less_than_death_prob(self, example_properties_w_20, mocker):
+    def test_not_true_if_rand_num_less_than_death_prob(
+            self, example_properties_w_20, mocker
+    ):
         """
-        Asserts that True is not returned if the random number is less than
-        the death probability.
+        Asserts that will_animal_live does not return True
+        if the random number is less than the death probability.
         """
         mocker.patch('numpy.random.random', return_value=0.0005)
-        a = Animal(example_properties_w_20)
-        a.find_fitness()
-        assert a.will_animal_live() is not True
+        animal = Animal(example_properties_w_20)
+        animal.find_fitness()
+        assert animal.will_animal_live() is not True
 
-    def test_num_more_than_death_prob(self, example_properties_w_20, mocker):
+    def test_true_if_rand_num_more_than_death_prob(
+            self, example_properties_w_20, mocker
+    ):
         """
-        Asserts that True is returned if the random number is larger than
-        the death probability.
+        Asserts that will_animal_live returns True if the random number is
+        larger than the death probability.
         """
         mocker.patch('numpy.random.random', return_value=0.5)
-        a = Animal(example_properties_w_20)
-        a.find_fitness()
-        assert a.will_animal_live() is True
+        animal = Animal(example_properties_w_20)
+        animal.find_fitness()
+        assert animal.will_animal_live() is True
 
 
 class TestHerbivore:
