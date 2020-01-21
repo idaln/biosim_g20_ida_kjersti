@@ -141,8 +141,8 @@ class Animal:
 
         .. math::
 
-            q^{\\pm}(x, x_{\\frac{1}{2}}, \\phi) = \\frac{1}{1 + e^
-            {\\pm \\phi(x-x_{\\frac{1}{2}})}
+            q^{\\pm}(x, x_{\\frac{1}{2}}, \\phi) = \\frac{1}{1 + e^{\\pm
+            \\phi(x-x_{\\frac{1}{2}})}}
 
         """
 
@@ -194,8 +194,8 @@ class Animal:
         abundance of fodder in that instance, given by
 
         .. math::
-        
-            \\epsilon = \\frac{f_k}{(n_k + 1)F^'}
+
+            \\epsilon = \\frac{f_k}{(n_k + 1)F^{'}}
 
         :param landscape_cell: Instance of landscape class
         :type landscape_cell: dict
@@ -216,11 +216,12 @@ class Animal:
         .. math::
 
             \\phi =
+            \\Biggl
             \\lbrace
             {
             0,\\text{ if j is Mountain or Ocean }
             \\atop
-            e^{\\lamba \\epsilon j}, \\text{ otherwise }
+            e^{\\lamdba \\epsilon j}, \\text{ otherwise }
             }
 
         :param neighbours_of_current_cell: Contains neighbours of current cell.
@@ -339,7 +340,8 @@ class Animal:
         Checks that weight of animal is more than given limit. If so,
         probability of giving birth is calculated from
         :math:`min(1, \\gamma \\cdot \\phi \\cdot (N-1)`. Probability of
-        giving birth is zero if :math:`w < \\zeta (w_{birth} + \\sigma_{birth}`
+        giving birth is zero if :math:`w < \\zeta (w_{birth} + \\sigma_{birth})
+        `
 
         :param num_animals: Number of animals of same species in cell
         :type num_animals: int
@@ -478,7 +480,7 @@ class Herbivore(Animal):
 
         .. math::
 
-            \\epsilon = \\frac{f_k}{(n_k + 1)F^'}
+            \\epsilon = \\frac{f_k}{(n_k + 1)F^{'}}
 
         :param landscape_cell: Instance of landscape class
         :type landscape_cell: dict
@@ -605,10 +607,10 @@ class Carnivore(Animal):
 
         .. math::
 
-            \\epsilon = \\frac{f_k}{(n_k + 1)F^'}
+            \\epsilon = \\frac{f_k}{(n_k + 1)F^{'}}
 
         :param landscape_cell: Instance of landscape class
-        :type: dict
+        :type landscape_cell: dict
         :return: Relative abundance of fodder for the carnivore
         :rtype: float
         """
