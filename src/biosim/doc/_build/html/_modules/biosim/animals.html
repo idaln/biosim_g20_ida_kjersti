@@ -176,8 +176,8 @@
 
 <span class="sd">        .. math::</span>
 
-<span class="sd">            q^{\\pm}(x, x_{\\frac{1}{2}}, \\phi) = \\frac{1}{1 + e^</span>
-<span class="sd">            {\\pm \\phi(x-x_{\\frac{1}{2}})}</span>
+<span class="sd">            q^{\\pm}(x, x_{\\frac{1}{2}}, \\phi) = \\frac{1}{1 + e^{\\pm</span>
+<span class="sd">            \\phi(x-x_{\\frac{1}{2}})}}</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -229,7 +229,8 @@
 <span class="sd">        abundance of fodder in that instance, given by</span>
 
 <span class="sd">        .. math::</span>
-<span class="sd">            \\epsilon = \\frac{f_k}{(n_k + 1)F^&#39;}</span>
+
+<span class="sd">            \\epsilon = \\frac{f_k}{(n_k + 1)F^{&#39;}}</span>
 
 <span class="sd">        :param landscape_cell: Instance of landscape class</span>
 <span class="sd">        :type landscape_cell: dict</span>
@@ -244,7 +245,19 @@
 
 <div class="viewcode-block" id="Animal.propensity_move_to_each_neighbour"><a class="viewcode-back" href="../../animals.html#biosim.animals.Animal.propensity_move_to_each_neighbour">[docs]</a>    <span class="k">def</span> <span class="nf">propensity_move_to_each_neighbour</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">neighbours_of_current_cell</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Finds the propensity for the animal to move to each of it&#39;s neighbours.</span>
+<span class="sd">        Finds the propensity for the animal to move to each of it&#39;s neighbours,</span>
+<span class="sd">        given by</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            \\phi =</span>
+<span class="sd">            \\Biggl</span>
+<span class="sd">            \\lbrace</span>
+<span class="sd">            {</span>
+<span class="sd">            0,\\text{ if j is Mountain or Ocean }</span>
+<span class="sd">            \\atop</span>
+<span class="sd">            e^{\\lambda \\epsilon j}, \\text{ otherwise }</span>
+<span class="sd">            }</span>
 
 <span class="sd">        :param neighbours_of_current_cell: Contains neighbours of current cell.</span>
 <span class="sd">            Location as keys, instance of landscape class as value</span>
@@ -361,7 +374,9 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Checks that weight of animal is more than given limit. If so,</span>
 <span class="sd">        probability of giving birth is calculated from</span>
-<span class="sd">        :math:`min(1, \\gamma \\cdot \\phi \\cdot (N-1)`</span>
+<span class="sd">        :math:`min(1, \\gamma \\cdot \\phi \\cdot (N-1)`. Probability of</span>
+<span class="sd">        giving birth is zero if :math:`w &lt; \\zeta (w_{birth} + \\sigma_{birth})</span>
+<span class="sd">        `</span>
 
 <span class="sd">        :param num_animals: Number of animals of same species in cell</span>
 <span class="sd">        :type num_animals: int</span>
@@ -398,7 +413,7 @@
 <div class="viewcode-block" id="Animal.birth_process"><a class="viewcode-back" href="../../animals.html#biosim.animals.Animal.birth_process">[docs]</a>    <span class="k">def</span> <span class="nf">birth_process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_animals</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        If birth takes place, a birth weight is returned and weight of mother</span>
-<span class="sd">        is reduced according to given formula.</span>
+<span class="sd">        is reduced by :math:`\\xi \\cdot birth weight`</span>
 
 <span class="sd">        :return: Returns weight of the baby that is born, or None if no baby</span>
 <span class="sd">                is born.</span>
@@ -500,7 +515,7 @@
 
 <span class="sd">        .. math::</span>
 
-<span class="sd">            \\epsilon = \\frac{f_k}{(n_k + 1)F^&#39;}</span>
+<span class="sd">            \\epsilon = \\frac{f_k}{(n_k + 1)F^{&#39;}}</span>
 
 <span class="sd">        :param landscape_cell: Instance of landscape class</span>
 <span class="sd">        :type landscape_cell: dict</span>
@@ -627,10 +642,10 @@
 
 <span class="sd">        .. math::</span>
 
-<span class="sd">            \\epsilon = \\frac{f_k}{(n_k + 1)F^&#39;}</span>
+<span class="sd">            \\epsilon = \\frac{f_k}{(n_k + 1)F^{&#39;}}</span>
 
 <span class="sd">        :param landscape_cell: Instance of landscape class</span>
-<span class="sd">        :type: dict</span>
+<span class="sd">        :type landscape_cell: dict</span>
 <span class="sd">        :return: Relative abundance of fodder for the carnivore</span>
 <span class="sd">        :rtype: float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
