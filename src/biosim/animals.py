@@ -131,25 +131,12 @@ class Animal:
     def find_fitness(self):
         """
         Updates fitness.
-        Fitness is zero if weight is zero, otherwise given by formula (3).
-        .. math::
-           :nowrap:
-
-           \[
-           x =
-           \left\{
-           \begin{array}{
-           @{}% no padding
-           l@{\quad}% some padding
-           r@{}% no padding
-           >{{}}r@{}% no padding
-           >{{}}l@{}% no padding
-        }
-           0,&         &     weight \\leq 0 \\
-           q^{+}(a, a_{\\fraq{1}{2}}, \\phi_{\\fraq{age}) \\cdot q^{-}(w, w_{\\fraq{1}{2}}, \\phi_{\\fraq{weight}) \\
-          \end{array}
-          \right.
-          \]
+        Fitness is zero if weight is zero, otherwise given by
+        . . math: :
+            `q^{+}(a, a_{\\fraq{1}{2}}, \\phi_{age}) \\cdot q^{-1}(w, w_{\\fraq{1}{2}}, phi_{weight}`
+        where
+        . . math: :
+            `q^{\\pm}(x, x_{\\fraq{1}{2}, \\phi) = \\fraq{1}{1 + e^{\\pm phi(x-x_{\\fraq{1}{2}})}`
         """
         q_plus = 1/(1 + math.exp(
             self.params["phi_age"]*(self.age - self.params["a_half"])
