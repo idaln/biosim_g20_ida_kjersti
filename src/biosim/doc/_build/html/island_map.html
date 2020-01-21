@@ -1,0 +1,285 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Island Map &#8212; BioSim G20  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Landscape" href="landscape.html" />
+    <link rel="prev" title="Simulation" href="simulation.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="island-map">
+<h1>Island Map<a class="headerlink" href="#island-map" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-biosim.island_map">
+<span id="the-island-map-module"></span><h2>The island_map module<a class="headerlink" href="#module-biosim.island_map" title="Permalink to this headline">¶</a></h2>
+<p>This module provides the class for implementing the island.</p>
+<dl class="class">
+<dt id="biosim.island_map.IslandMap">
+<em class="property">class </em><code class="descclassname">biosim.island_map.</code><code class="descname">IslandMap</code><span class="sig-paren">(</span><em>geogr</em>, <em>ini_pop</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/island_map.html#IslandMap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.island_map.IslandMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements the island map. Map has one cell per location, represented by
+instances of landscape types.</p>
+<p>Initialize map class with given island geography and initial population
+of the various cells.
+:param geogr: string
+:param ini_pop: list of dictionaries</p>
+<dl class="method">
+<dt id="biosim.island_map.IslandMap.add_population">
+<code class="descname">add_population</code><span class="sig-paren">(</span><em>population</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/island_map.html#IslandMap.add_population"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.island_map.IslandMap.add_population" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a new population to the already existing population
+:param population: list</p>
+<blockquote>
+<div>List of dictionaries containing the new population</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.island_map.IslandMap.aging_season">
+<code class="descname">aging_season</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/island_map.html#IslandMap.aging_season"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.island_map.IslandMap.aging_season" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterates through all landscape cells on the map,
+and makes all animals in each cell older.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.island_map.IslandMap.check_boundaries_are_ocean">
+<code class="descname">check_boundaries_are_ocean</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/island_map.html#IslandMap.check_boundaries_are_ocean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.island_map.IslandMap.check_boundaries_are_ocean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that all boundary cells for the map are Ocean.
+:raise ValueError:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.island_map.IslandMap.check_map_lines_have_equal_length">
+<code class="descname">check_map_lines_have_equal_length</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/island_map.html#IslandMap.check_map_lines_have_equal_length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.island_map.IslandMap.check_map_lines_have_equal_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that all lines in the map geography are of equal length.
+:raise ValueError:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.island_map.IslandMap.create_geography_dict">
+<code class="descname">create_geography_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/island_map.html#IslandMap.create_geography_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.island_map.IslandMap.create_geography_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts string map to a dictionary with coordinates as keys and
+the landscape types as values.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.island_map.IslandMap.create_map_dict">
+<code class="descname">create_map_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/island_map.html#IslandMap.create_map_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.island_map.IslandMap.create_map_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates dictionary of the entire map, with coordinates as keys and
+instances of landscape classes as values. The instances have the
+population of the coordinate as input.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.island_map.IslandMap.create_population_dict">
+<code class="descname">create_population_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/island_map.html#IslandMap.create_population_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.island_map.IslandMap.create_population_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts list of populations to a dictionary with coordinates as keys
+and lists of the properties of the animals at this location as values.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.island_map.IslandMap.dying_season">
+<code class="descname">dying_season</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/island_map.html#IslandMap.dying_season"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.island_map.IslandMap.dying_season" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterates through all landscape cells on the map,
+and removes all dead animals in each cell.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.island_map.IslandMap.feeding_season">
+<code class="descname">feeding_season</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/island_map.html#IslandMap.feeding_season"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.island_map.IslandMap.feeding_season" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterates through all landscape cells on the map,
+and feeds all herbivores in each cell.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.island_map.IslandMap.migration_season">
+<code class="descname">migration_season</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/island_map.html#IslandMap.migration_season"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.island_map.IslandMap.migration_season" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterates through all landscape cells on the map,
+and moves all animals in each cell.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.island_map.IslandMap.move_all_animals_in_cell">
+<code class="descname">move_all_animals_in_cell</code><span class="sig-paren">(</span><em>current_coordinates</em>, <em>current_landscape</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/island_map.html#IslandMap.move_all_animals_in_cell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.island_map.IslandMap.move_all_animals_in_cell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterates through the population of a cell. Attempt to move all animals,
+and updates animal population lists if an animal moved.
+:param current_coordinates: tuple</p>
+<blockquote>
+<div>Contains x coordinate, y coordinate</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>current_landscape</strong> – class instance
+Either herbivore and carnivore</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.island_map.IslandMap.move_single_animal">
+<code class="descname">move_single_animal</code><span class="sig-paren">(</span><em>current_coordinates</em>, <em>single_animal</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/island_map.html#IslandMap.move_single_animal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.island_map.IslandMap.move_single_animal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Moves an animal to the chosen neighbouring cell. New cell get
+updated population lists.
+:param current_coordinates: tuple</p>
+<blockquote>
+<div>Contains x coordinate, y coordinate</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>single_animal</strong> – class instance
+Either herbivore and carnivore</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">bool
+True if animal has moved</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.island_map.IslandMap.neighbours_of_current_cell">
+<code class="descname">neighbours_of_current_cell</code><span class="sig-paren">(</span><em>current_coordinates</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/island_map.html#IslandMap.neighbours_of_current_cell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.island_map.IslandMap.neighbours_of_current_cell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds all neighbours of a given cell, and those an animal can
+move to are returned.
+:param current_coordinates: tuple</p>
+<blockquote>
+<div>Location of current cell</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">dict
+Has locations as keys and landscape class instance as values.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.island_map.IslandMap.procreation_season">
+<code class="descname">procreation_season</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/island_map.html#IslandMap.procreation_season"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.island_map.IslandMap.procreation_season" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterates through all landscape cells on the map,
+and tries to procreate with all animals in each cell.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.island_map.IslandMap.run_all_seasons">
+<code class="descname">run_all_seasons</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/island_map.html#IslandMap.run_all_seasons"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.island_map.IslandMap.run_all_seasons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs all seasons for all landscape cells on the map.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.island_map.IslandMap.weight_loss_season">
+<code class="descname">weight_loss_season</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/island_map.html#IslandMap.weight_loss_season"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.island_map.IslandMap.weight_loss_season" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterates through all landscape cells on the map,
+and makes all animals in each cell lose weight.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">BioSim G20</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="simulation.html">Simulation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Island Map</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-biosim.island_map">The island_map module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="landscape.html">Landscape</a></li>
+<li class="toctree-l1"><a class="reference internal" href="animals.html">Animals</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="simulation.html" title="previous chapter">Simulation</a></li>
+      <li>Next: <a href="landscape.html" title="next chapter">Landscape</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Ida Lunde Naalsund & Kjersti Rustad Kvisberg.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/island_map.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
