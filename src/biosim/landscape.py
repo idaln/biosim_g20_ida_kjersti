@@ -259,6 +259,7 @@ class Savannah(Landscape):
         :type population: list
         """
         super().__init__(population)
+        self.fodder_amount = self.params["f_max"]
 
     def regrowth(self):
         """
