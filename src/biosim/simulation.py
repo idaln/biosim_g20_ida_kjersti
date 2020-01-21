@@ -13,24 +13,25 @@ import pandas
 import numpy
 import matplotlib.pyplot as plt
 import subprocess
+import random
 
 __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idaln@hotmail.com & kjkv@nmbu.no"
 
 _DEFAULT_MOVIE_FORMAT = 'mp4'
 # Update this variable to point to your ffmpeg binary
-_FFMPEG_BINARY = 'C:/Program Files/' \
+FFMPEG_BINARY = 'C:/Program Files/' \
                  'ffmpeg-20200115-0dc0837-win64-static/bin/ffmpeg'
 
 
 class BioSim:
     """
-    Class for simulating a model of the ecosystem of Rossumøya.
+    Class for simulating the model of an ecosystem.
     """
     def __init__(
         self,
         island_map,
-        ini_pop,
+        initial_population,
         seed,
         ymax_animals=None,
         cmax_animals=None,
@@ -42,11 +43,11 @@ class BioSim:
         :param ini_pop: List of dictionaries specifying initial population
         :param seed: Integer used as random number seed
         :param ymax_animals: Number specifying y-axis limit for graph showing
-        animal numbers
+            animal numbers
         :param cmax_animals: Dict specifying color-code limits for animal
-        densities
+            densities
         :param img_base: String with beginning of file name for figures,
-        including path
+            including path
         :param img_fmt: String with file type for figures, e.g. 'png'
 
         If ymax_animals is None, the y-axis limit should be adjusted
@@ -64,23 +65,21 @@ class BioSim:
         where img_no are consecutive image numbers starting from 0.
         img_base should contain a path and beginning of a file name.
         """
-        numpy.random.seed(seed)
+        random.seed(seed)
+        self.img_base = img_base
+        self.img_fmt = img_fmt
+        self.img_no = 0
 
-        self._img_base = img_base
-        self._img_fmt = img_fmt
-
+        self.ymax = ymax_animals
         if cmax_animals is None:
             self.cmax = {'Herbivore': 300, 'Carnivore': 100}
         else:
             self.cmax = cmax_animals
 
-        self.ymax = ymax_animals
-
-        self.island_map = IslandMap(island_map, ini_pop)
+        self.island_map = IslandMap(island_map, initial_population)
         self.island_map.create_map_dict()
         self.num_years_simulated = 0
-        self._final_year = None
-        self.img_no = 0
+        self.final_year = None
 
         # The following will be initialized by setup_graphics
         self._fig = None
@@ -107,11 +106,12 @@ class BioSim:
     def set_animal_parameters(species, params):
         """
         Set parameters for animal species.
-        All animal parameters shall be positive. However, DeltaPhiMax shall be
-        strictly positive and eta shall lie between zero and one.
+        All animal parameters shall be positive. However, DeltaPhiMax and
+        F shall be strictly positive and eta shall lie between zero and one.
 
         :param species: String, name of animal species
         :param params: Dict with valid parameter specification for species
+        :raise ValueError: if parameter has invalid value or name
         """
         class_names = {"Herbivore": Herbivore,
                        "Carnivore": Carnivore}
@@ -121,12 +121,15 @@ class BioSim:
                         and param_name is not "eta" and param_name is not "F":
                     class_names[species].params[param_name] = params[
                         param_name]
+                # checks special criteria for eta
                 elif param_name is "eta" and 0 <= params[param_name] <= 1:
                     class_names[species].params[param_name] = params[
                         param_name]
+                # checks special criteria for F
                 elif param_name is "F" and 0 < params[param_name]:
                     class_names[species].params[param_name] = params[
                         param_name]
+                # checks special criteria for DeltaPhiMax
                 elif param_name is "DeltaPhiMax" and params[param_name] > 0:
                     class_names[species].params[param_name] = params[
                         param_name]
@@ -140,10 +143,11 @@ class BioSim:
     @staticmethod
     def set_landscape_parameters(landscape, params):
         """
-        Set parameters for landscape type.
+        Set parameters for landscape type. f_max must be positive.
 
         :param landscape: String, code letter for landscape
         :param params: Dict with valid parameter specification for landscape
+        :raise ValueError: if parameter name or value is invalid
         """
         class_names = {'J': Jungle, 'S': Savannah, 'D': Desert, 'M': Mountain,
                        'O': Ocean}
@@ -163,7 +167,7 @@ class BioSim:
 
     def add_population(self, population):
         """
-        Add a population to the island
+        Add a population to the island during simulation.
 
         :param population: List of dictionaries specifying population
         """
@@ -229,10 +233,10 @@ class BioSim:
         if img_years is None:
             img_years = vis_years
 
-        self._final_year = self.year + num_years
+        self.final_year = self.year + num_years
         self.setup_graphics()
 
-        while self.year < self._final_year:
+        while self.year < self.final_year:
 
             if self.year % vis_years == 0:
                 self.update_graphics()
@@ -266,18 +270,18 @@ class BioSim:
             self._line_graph_ax.set_position(pos=[0.5, 0.55, 0.35, 0.35])
 
         # Needs updating on subsequent calls to simulate()
-        self._line_graph_ax.set_xlim(0, self._final_year + 1)
+        self._line_graph_ax.set_xlim(0, self.final_year + 1)
 
         # Line graph for herbivores
         if self._line_graph_line_herb is None:
             line_graph_plot_herb = self._line_graph_ax.plot(
-                numpy.arange(0, self._final_year),
-                numpy.full(self._final_year, numpy.nan)
+                numpy.arange(0, self.final_year),
+                numpy.full(self.final_year, numpy.nan)
             )
             self._line_graph_line_herb = line_graph_plot_herb[0]
         else:
             xdata, ydata = self._line_graph_line_herb.get_data()
-            xnew = numpy.arange(xdata[-1] + 1, self._final_year)
+            xnew = numpy.arange(xdata[-1] + 1, self.final_year)
             if len(xnew) > 0:
                 ynew = numpy.full(xnew.shape, numpy.nan)
                 self._line_graph_line_herb.set_data(
@@ -287,13 +291,13 @@ class BioSim:
         # Line graph for carnivores
         if self._line_graph_line_carn is None:
             line_graph_plot_carn = self._line_graph_ax.plot(
-                numpy.arange(0, self._final_year),
-                numpy.full(self._final_year, numpy.nan)
+                numpy.arange(0, self.final_year),
+                numpy.full(self.final_year, numpy.nan)
             )
             self._line_graph_line_carn = line_graph_plot_carn[0]
         else:
             xdata, ydata = self._line_graph_line_carn.get_data()
-            xnew = numpy.arange(xdata[-1] + 1, self._final_year)
+            xnew = numpy.arange(xdata[-1] + 1, self.final_year)
             if len(xnew) > 0:
                 ynew = numpy.full(xnew.shape, numpy.nan)
                 self._line_graph_line_carn.set_data(
@@ -332,7 +336,7 @@ class BioSim:
 
     def create_map_graphics(self):
         """
-        Creates a map of the island's geography.
+        Creates graphic of the map of the island's geography.
         """
         #                   R    G    B
         rgb_value = {'O': (0.0, 0.0, 1.0),  # blue
@@ -345,7 +349,6 @@ class BioSim:
                      for row in self.island_map.geogr.splitlines()]
 
         axim = self._map_ax
-
         axim.imshow(geogr_rgb)
         axim.set_xticks(range(len(geogr_rgb[0])))
         axim.set_xticklabels(range(1, 1 + len(geogr_rgb[0])))
@@ -365,19 +368,9 @@ class BioSim:
                       transform=axlg.transAxes,
                       fontsize=8)
 
-    def update_graphics(self):
-        """
-        Updates all graphics with current data.
-        """
-        self.update_line_graph()
-        self.update_heat_map_herbs()
-        self.update_heat_map_carns()
-        plt.suptitle(f"Simulation of year {self.year}", fontsize=26)
-        plt.pause(1e-6)
-
     def update_line_graph(self):
         """
-        Updates line graph. Line graph has one line for each species.
+        Updates line graph for both species.
         """
         # for herbivores
         ydata_herb = self._line_graph_line_herb.get_ydata()
@@ -391,10 +384,11 @@ class BioSim:
             "Carnivore"]
         self._line_graph_line_carn.set_ydata(ydata_carn)
 
+        # rescales y axis
         if self.ymax:
             self._line_graph_ax.set_ylim(0, self.ymax)
         else:
-            self._line_graph_ax.set_ylim(0, self.num_animals*1.3)
+            self._line_graph_ax.set_ylim(0, self.num_animals * 1.3)
 
     def create_array_herbs(self):
         """
@@ -461,14 +455,24 @@ class BioSim:
             plt.colorbar(self._img_carn_axis, ax=self._heat_map_carn_ax,
                          orientation='vertical')
 
+    def update_graphics(self):
+        """
+        Updates all graphics with current data and title.
+        """
+        self.update_line_graph()
+        self.update_heat_map_herbs()
+        self.update_heat_map_carns()
+        plt.suptitle(f"Simulation of year {self.year}", fontsize=26)
+        plt.pause(1e-6)
+
     def save_graphics(self):
         """
         Saves graphics to file, if file name is given.
         """
-        if self._img_base is None:
+        if self.img_base is None:
             return
 
-        plt.savefig(f"{self._img_base}_{self.img_no:05d}.{self._img_fmt}")
+        plt.savefig(f"{self.img_base}_{self.img_no:05d}.{self.img_fmt}")
 
         self.img_no += 1
 
@@ -476,13 +480,17 @@ class BioSim:
         """
         Creates MPEG4 movie from visualization images saved.
 
-        .. :note:
-            Requires ffmpeg
+        :param movie_fmt: str
+            format for movie (default='mp4')
+        :note: Requires ffmpeg
 
-        The movie is stored as img_base + movie_fmt
+        The movie is stored as img_base + movie_fmt.
+
+        :raise RuntimeError: if img_base not defined or ffmpeg fails
+        :raise ValueError: if movie format is unknown
         """
 
-        if self._img_base is None:
+        if self.img_base is None:
             raise RuntimeError("No filename defined.")
 
         if movie_fmt == 'mp4':
@@ -490,14 +498,14 @@ class BioSim:
                 # Parameters chosen according to
                 # http://trac.ffmpeg.org/wiki/Encode/H.264,
                 # section "Compatibility"
-                subprocess.check_call([_FFMPEG_BINARY,
+                subprocess.check_call([FFMPEG_BINARY,
                                        '-i',
-                                       '{}_%05d.png'.format(self._img_base),
+                                       '{}_%05d.png'.format(self.img_base),
                                        '-y',
                                        '-profile:v', 'baseline',
                                        '-level', '3.0',
                                        '-pix_fmt', 'yuv420p',
-                                       '{}.{}'.format(self._img_base,
+                                       '{}.{}'.format(self.img_base,
                                                       movie_fmt)])
             except subprocess.CalledProcessError as err:
                 raise RuntimeError('ERROR: ffmpeg failed with: {}'.format(err))
@@ -506,7 +514,7 @@ class BioSim:
 
 
 if __name__ == "__main__":
-    initial_pop = [
+    ini_pop = [
         {
             "loc": (1, 1),
             "pop": [
@@ -526,7 +534,7 @@ if __name__ == "__main__":
     island = "OOOOO\nOJMJO\nODJJO\nODSJO\nOJMDO\nOOOOO"
 
     ex_img_base = "../../data/img"
-    biosim = BioSim(island, initial_pop, 1, img_base=ex_img_base)
+    biosim = BioSim(island, ini_pop, 1, img_base=ex_img_base)
     biosim.set_animal_parameters("Herbivore", {"F": 60})
     biosim.simulate(160, 1, 5)
     plt.show()
