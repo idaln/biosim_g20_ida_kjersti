@@ -77,7 +77,7 @@ class Animal:
 
         :param properties: Contains animal properties species, fitness, age
             and weight.
-        :type dict
+        :type properties: dict
 
         """
         self.has_moved_this_year = False
@@ -109,7 +109,7 @@ class Animal:
         """
         Substracts given amount of weight from the animals
         total weight after each cycle, given by
-        :math:`\\eta \\cdot weight`
+        :math:`\\eta \\cdot weight`.
         """
         new_weight = (1 - self.params['eta']) * self.weight
         self.weight = new_weight
@@ -118,9 +118,11 @@ class Animal:
     def add_eaten_fodder_to_weight(self, fodder):
         """
         Adds amount of weight to animals total body weight given by
-        beta*F. Also resets have_moved_this_year to False.
-        :param fodder
-               Amount of fodder available to the animal
+        :math:`\\beta \\cdot F`. Also resets have_moved_this_year to False.
+
+        :param fodder: Amount of fodder available to the animal
+        :type fodder: float
+
         """
         self.weight += self.params['beta'] * fodder
         self.fitness_must_be_updated = True
@@ -130,6 +132,24 @@ class Animal:
         """
         Updates fitness.
         Fitness is zero if weight is zero, otherwise given by formula (3).
+        .. math::
+           :nowrap:
+
+           \[
+           x =
+           \left\{
+           \begin{array}{
+           @{}% no padding
+           l@{\quad}% some padding
+           r@{}% no padding
+           >{{}}r@{}% no padding
+           >{{}}l@{}% no padding
+        }
+           0,&         &     weight \\leq 0 \\
+           q^{+}(a, a_{\\fraq{1}{2}}, \\phi_{\\fraq{age}) \\cdot q^{-}(w, w_{\\fraq{1}{2}}, \\phi_{\\fraq{weight}) \\
+          \end{array}
+          \right.
+          \]
         """
         q_plus = 1/(1 + math.exp(
             self.params["phi_age"]*(self.age - self.params["a_half"])
