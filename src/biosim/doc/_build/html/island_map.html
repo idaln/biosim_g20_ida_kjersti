@@ -169,17 +169,17 @@ and moves all animals in each cell.</p>
 <dl class="method">
 <dt id="biosim.island_map.IslandMap.move_all_animals_in_cell">
 <code class="descname">move_all_animals_in_cell</code><span class="sig-paren">(</span><em>current_coordinates</em>, <em>current_landscape</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/island_map.html#IslandMap.move_all_animals_in_cell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.island_map.IslandMap.move_all_animals_in_cell" title="Permalink to this definition">¶</a></dt>
-<dd><p>Iterates through the population of a cell. Attempt to move all animals,
-and updates animal population lists if an animal moved.
-:param current_coordinates: tuple</p>
-<blockquote>
-<div>Contains x coordinate, y coordinate</div></blockquote>
+<dd><p>Iterates through the population lists of a cell. Attempts to move all
+animals, and updates animal population lists if an animal moved.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>current_landscape</strong> – class instance
-Either herbivore and carnivore</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>current_coordinates</strong> (<em>tuple</em>) – x coordinate, y coordinate</li>
+<li><strong>current_landscape</strong> (<em>class instance</em>) – Landscape type of current cell</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -188,20 +188,26 @@ Either herbivore and carnivore</td>
 <dl class="method">
 <dt id="biosim.island_map.IslandMap.move_single_animal">
 <code class="descname">move_single_animal</code><span class="sig-paren">(</span><em>current_coordinates</em>, <em>single_animal</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/island_map.html#IslandMap.move_single_animal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.island_map.IslandMap.move_single_animal" title="Permalink to this definition">¶</a></dt>
-<dd><p>Moves an animal to the chosen neighbouring cell. New cell get
-updated population lists.
-:param current_coordinates: tuple</p>
-<blockquote>
-<div>Contains x coordinate, y coordinate</div></blockquote>
+<dd><p>If the animal has not moved so far this year, it’s neighbours are
+found. Then, the new coordinates of the animal is chosen.
+If they are None, the animal does not move.
+If they are a tuple, the animal is moved to the chosen cell.
+The new cell gets updated population lists.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>single_animal</strong> – class instance
-Either herbivore and carnivore</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>current_coordinates</strong> (<em>tuple</em>) – x coordinate, y coordinate</li>
+<li><strong>single_animal</strong> (<em>class instance</em>) – Either herbivore or carnivore that tries to move</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">bool
-True if animal has moved</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if animal has moved, False if not</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -211,7 +217,7 @@ True if animal has moved</td>
 <dt id="biosim.island_map.IslandMap.neighbours_of_current_cell">
 <code class="descname">neighbours_of_current_cell</code><span class="sig-paren">(</span><em>current_coordinates</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/island_map.html#IslandMap.neighbours_of_current_cell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.island_map.IslandMap.neighbours_of_current_cell" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds all neighbouring coordinates of a given cell. Checks the
-landscape type of each coordinate. The coordinates of neighbours
+landscape type of each coordinate. The neighbours
 with landscape types an animal can move to, are returned.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

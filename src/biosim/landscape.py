@@ -192,14 +192,14 @@ class Landscape:
         """
         Iterates over population lists and ages all animals one year.
         """
-        for animal in (self.pop_herb + self.pop_carn):
+        for animal in self.pop_herb + self.pop_carn:
             animal.make_animal_one_year_older()
 
     def make_all_animals_lose_weight(self):
         """
         Iterates over population lists and makes all animals lose weight.
         """
-        for animal in (self.pop_herb + self.pop_carn):
+        for animal in self.pop_herb + self.pop_carn:
             animal.weight_loss()
 
     def remove_all_dead_animals(self):
