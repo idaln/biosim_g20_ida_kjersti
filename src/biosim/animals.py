@@ -134,11 +134,13 @@ class Animal:
         Fitness is zero if weight is zero, otherwise given by
 
         .. math::
+
         q\\^{+}(a, a_{\\fraq{1}{2}}, \\phi_{age}) \\cdot q\\^{-}(w, w_{\\fraq{1}{2}}, \\phi_{weight}
 
         where
 
         .. math::
+
         q\\^{\\pm}(x, x_{\\fraq{1}{2}, \\phi) = \\fraq{1}{1 + e\\^{\\pm \\phi(x-x_{\\fraq{1}{2}})}
 
         """
@@ -189,8 +191,9 @@ class Animal:
         """
         Takes an instance of a landscape class and returns the relative
         abundance of fodder in that instance, given by
-        
+
         .. math::
+        
         \\epsilon = \\fraq{f_k}{(n_k + 1)F^'}
 
         :param landscape_cell: Instance of landscape class
