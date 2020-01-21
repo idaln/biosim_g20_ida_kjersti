@@ -162,7 +162,8 @@ class Animal:
 
     def prob_of_animal_moving(self):
         """
-        Computes the probability of moving at all, given by :math:`\\mu \\phi`.
+        Computes the probability of moving at all,
+        given by :math:`\\mu \\cdot \\phi`.
 
         :return: Probability of moving
         :rtype: float
@@ -177,7 +178,7 @@ class Animal:
         Compared probability of animal moving and a random number to decide
         whether the animal should move.
 
-        :return: True if animal will move, False if not.
+        :return: True if animal will move, False if not
         :rtype: bool
         """
         prob = self.prob_of_animal_moving()
@@ -199,10 +200,10 @@ class Animal:
         where :math:`f_k` is the amount of relevant fodder and :math:`n_k` is
         the number of animals of same species in cell k.
         This method cannot be called upon by an instance of the Animal class,
-        since there is no population for animals. This method will be
-        overwritten by Herbivore and Carnivore classes, and can only be called
-        upon from instances of herbivores and carnivores, as be have pop_herb
-        and pop_carn in the landscape cells.
+        since there is no population for animals.
+        This method will be overwritten by Herbivore and Carnivore classes,
+        and can only be called upon from instances of herbivores and
+        carnivores, as we have pop_herb and pop_carn in the landscape cells.
 
         :param landscape_cell: Instance of landscape class
         :type landscape_cell: dict
@@ -256,8 +257,8 @@ class Animal:
 
         .. math::
 
-            p = \\frac{\\pi_{i \\to j}}{\\Sigma_{j \\in C^{(i)}
-            \\pi_{i \\to j}}}
+            p = \\frac{\\pi_{i \\to j}}{\\Sigma_{j \\in C^{(i)}}
+            \\pi_{i \\to j}}
 
         where :math:`\\pi_{i \\to j}` is the propensity to move from cell i to
         cell j.
