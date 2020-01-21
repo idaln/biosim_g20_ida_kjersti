@@ -425,7 +425,7 @@ class Animal:
         """
         Checks the probability of death. Returns True if the animal lives.
 
-        :return: True is animal lives
+        :return: True if animal lives
         :rtype: bool
         """
         prob = self.prob_death()
@@ -571,12 +571,13 @@ class Carnivore(Animal):
             \\Biggl
             \\lbrace
             {
-            0,\\text{ if } \\phi_{carn} \\leq \\ \\phi_{herb}
-            \\atop
-            \\frac{\\phi_{carn} - \\phi_{herb}}{{\\Delta \\phi}_{max},
-            \\text{ if } 0 < \\phi_{carn} - \\phi_{herb} <
-            {\\Delta \\phi}_{max}
-            \\atop
+            0,\\text{ if } \\phi_{\\text carn } \\leq \\ \\phi_{\\text herb }
+            \\substack
+            \\frac{\\phi_{\\text carn } - \\phi_{\\text herb }}
+            {{\\Delta \\phi}_{\\text max },
+            \\text{ if } 0 < \\phi_{\\text carn } - \\phi_{\\text herb } <
+            {\\Delta \\phi}_{\\text max }
+            \\substack
             1, \\text{ otherwise }
             }
 
