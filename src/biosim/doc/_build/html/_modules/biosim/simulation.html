@@ -48,7 +48,6 @@
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
-<span class="kn">import</span> <span class="nn">random</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Ida Lunde Naalsund &amp; Kjersti Rustad Kvisberg&quot;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s2">&quot;idaln@hotmail.com &amp; kjkv@nmbu.no&quot;</span>
@@ -103,7 +102,7 @@
 <span class="sd">        where img_no are consecutive image numbers starting from 0.</span>
 <span class="sd">        img_base should contain a path and beginning of a file name.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+        <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">img_base</span> <span class="o">=</span> <span class="n">img_base</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">img_fmt</span> <span class="o">=</span> <span class="n">img_fmt</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">img_no</span> <span class="o">=</span> <span class="mi">0</span>

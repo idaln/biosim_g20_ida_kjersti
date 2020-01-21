@@ -250,7 +250,7 @@
 
 <div class="viewcode-block" id="Jungle"><a class="viewcode-back" href="../../landscape.html#biosim.landscape.Jungle">[docs]</a><span class="k">class</span> <span class="nc">Jungle</span><span class="p">(</span><span class="n">Landscape</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Represents savannah cells on the island. All animals can stay in this</span>
+<span class="sd">    Represents jungle cells on the island. All animals can stay in this</span>
 <span class="sd">    landscape type, and there is food for herbivores.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_DEFAULT_PARAMS</span> <span class="o">=</span> <span class="p">{</span>
@@ -300,7 +300,12 @@
 
 <div class="viewcode-block" id="Savannah.regrowth"><a class="viewcode-back" href="../../landscape.html#biosim.landscape.Savannah.regrowth">[docs]</a>    <span class="k">def</span> <span class="nf">regrowth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Sets amount of fodder for herbivores to the value given by formula (1).</span>
+<span class="sd">        Sets amount of fodder for herbivores to the value given by</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            f_{ij} \\leftarrow f_{ij} + \\alpha \\cdot (f^{Sav max} - f_{ij})</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fodder_amount</span> <span class="o">=</span> <span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;alpha&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">fodder_amount</span><span class="p">)</span>\
             <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;alpha&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;f_max&quot;</span><span class="p">])</span></div></div>

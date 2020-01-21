@@ -88,15 +88,14 @@ and weight.</td>
 <code class="descname">birth_process</code><span class="sig-paren">(</span><em>num_animals</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Animal.birth_process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Animal.birth_process" title="Permalink to this definition">¶</a></dt>
 <dd><p>If birth takes place, a birth weight is returned and weight of mother
 is reduced according to given formula.</p>
-<dl class="docutils">
-<dt>:returns Returns weight of the baby that is born, or None if no baby</dt>
-<dd>is born.</dd>
-</dl>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float, None</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Returns weight of the baby that is born, or None if no baby
+is born.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float, None</td>
 </tr>
 </tbody>
 </table>
@@ -118,7 +117,7 @@ values to a list of locations and a numpy array of probabilities.</p>
 <p>surrounding cell as keys, and the probabilities for the animal to move
 to each of them as values.
 :type: dict
-:returns: List of locations of neighbouring cells, numpy array of the</p>
+:return: List of locations of neighbouring cells, numpy array of the</p>
 <blockquote>
 <div>probabilities of moving to each.</div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
@@ -141,7 +140,7 @@ Fitness is zero if weight is zero, otherwise given by</p>
 (w, w_{\frac{1}{2}}, \phi_{weight})\]</div>
 <p>where</p>
 <div class="math notranslate nohighlight">
-\[q^{\pm}(x, x_{\frac{1}{2}, \phi) = \frac{1}{1 + e^
+\[q^{\pm}(x, x_{\frac{1}{2}}, \phi) = \frac{1}{1 + e^
 {\pm \phi(x-x_{\frac{1}{2}})}\]</div>
 </dd></dl>
 
@@ -328,8 +327,16 @@ total weight after each cycle, given by
 <dt id="biosim.animals.Animal.will_animal_live">
 <code class="descname">will_animal_live</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Animal.will_animal_live"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Animal.will_animal_live" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks the probability of death. Returns True if the animal lives.</p>
-<p>:return True is animal lives
-:rtype bool</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True is animal lives</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -354,8 +361,16 @@ whether the animal should move.</p>
 <code class="descname">will_birth_take_place</code><span class="sig-paren">(</span><em>num_animals</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Animal.will_birth_take_place"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Animal.will_birth_take_place" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks probability of giving birth and returns True if a baby is to be
 born.</p>
-<p>:returns True if animal shall give birth
-:rtype bool</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if animal shall give birth</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -415,10 +430,12 @@ has tried to kill all herbivores without luck.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pop_herb</strong> (<em>list</em>) – Herbivores available to the carnivore sorted by
 fitness</td>
 </tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List of herbivores killed</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
 </tbody>
 </table>
-<p>:return List of herbivores killed
-:rtype: list</p>
 </dd></dl>
 
 <dl class="method">
@@ -473,10 +490,12 @@ carnivore kills or not.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fitness_herb</strong> (<em>float</em>) – Fitness of herbivore</td>
 </tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Probability of carnivore killing a herbivore</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int, float</td>
+</tr>
 </tbody>
 </table>
-<p>:return Probability of carnivore killing a herbivore
-:rtype: int, float</p>
 </dd></dl>
 
 </dd></dl>
