@@ -233,6 +233,11 @@
 
 <span class="sd">        where :math:`f_k` is the amount of relevant fodder and :math:`n_k` is</span>
 <span class="sd">        the number of animals of same species in cell k.</span>
+<span class="sd">        This method cannot be called upon by an instance of the Animal class,</span>
+<span class="sd">        since there is no population for animals. This method will be</span>
+<span class="sd">        overwritten by Herbivore and Carnivore classes, and can only be called</span>
+<span class="sd">        upon from instances of herbivores and carnivores, as be have pop_herb</span>
+<span class="sd">        and pop_carn in the landscape cells.</span>
 
 <span class="sd">        :param landscape_cell: Instance of landscape class</span>
 <span class="sd">        :type landscape_cell: dict</span>
@@ -460,7 +465,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Checks the probability of death. Returns True if the animal lives.</span>
 
-<span class="sd">        :return: True is animal lives</span>
+<span class="sd">        :return: True if animal lives</span>
 <span class="sd">        :rtype: bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_death</span><span class="p">()</span>
@@ -602,16 +607,18 @@
 
 <span class="sd">        .. math::</span>
 
-<span class="sd">            \\p =</span>
+<span class="sd">            p =</span>
 <span class="sd">            \\Biggl</span>
 <span class="sd">            \\lbrace</span>
 <span class="sd">            {</span>
-<span class="sd">            0,\\text{ if \\phi_{carn} \\leq \\ \\phi_{herb} }</span>
-<span class="sd">            \\atop</span>
-<span class="sd">            \\frac{\\phi_{carn} - \\phi_{herb}}{{\\Delta \\phi}_{max},</span>
-<span class="sd">            \\text{ if } 0 &lt; \\phi_{carn} - \\phi_{herb} &lt;</span>
-<span class="sd">            {\\Delta \\phi}_{max}</span>
-<span class="sd">            \\atop</span>
+<span class="sd">            0, \\text{ if } \\phi_{\\text { carn } } \\leq \\ \\phi_{\\text</span>
+<span class="sd">            { herb } }</span>
+<span class="sd">            \\substack</span>
+<span class="sd">            \\frac{\\phi_{\\text { carn }} - \\phi_{\\text { herb }}}</span>
+<span class="sd">            {{\\Delta \\phi}_{\\text { max }},</span>
+<span class="sd">            \\text{ if } 0 &lt; \\phi_{\\text { carn }} -</span>
+<span class="sd">            \\phi_{\\text { herb }} &lt; {\\Delta \\phi}_{\\text { max }}</span>
+<span class="sd">            \\substack</span>
 <span class="sd">            1, \\text{ otherwise }</span>
 <span class="sd">            }</span>
 
