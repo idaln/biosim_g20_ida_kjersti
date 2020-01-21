@@ -21,7 +21,8 @@ __email__ = "idaln@hotmail.com & kjkv@nmbu.no"
 _DEFAULT_MOVIE_FORMAT = 'mp4'
 # Update this variable to point to your ffmpeg binary
 FFMPEG_BINARY = 'C:/Program Files/' \
-                 'ffmpeg-20200115-0dc0837-win64-static/bin/ffmpeg'
+                'ffmpeg-20200115-0dc0837-win64-static/bin/ffmpeg'
+# FFMPEG_BINARY = '__file__'
 
 
 class BioSim:
@@ -538,3 +539,4 @@ if __name__ == "__main__":
     biosim.set_animal_parameters("Herbivore", {"F": 60})
     biosim.simulate(160, 1, 5)
     plt.show()
+    biosim.make_movie()
