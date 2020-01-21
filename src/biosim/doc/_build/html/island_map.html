@@ -13,6 +13,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Landscape" href="landscape.html" />
@@ -40,20 +41,38 @@
 <p>This module provides the class for implementing the island.</p>
 <dl class="class">
 <dt id="biosim.island_map.IslandMap">
-<em class="property">class </em><code class="descclassname">biosim.island_map.</code><code class="descname">IslandMap</code><span class="sig-paren">(</span><em>geogr</em>, <em>ini_pop</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/island_map.html#IslandMap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.island_map.IslandMap" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">biosim.island_map.</code><code class="descname">IslandMap</code><span class="sig-paren">(</span><em>island_geography</em>, <em>initial_population</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/island_map.html#IslandMap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.island_map.IslandMap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Implements the island map. Map has one cell per location, represented by
-instances of landscape types.</p>
+instances of landscape types. There are several seasons for the animals
+on the island, e.g. for feeding and procreating, and all seasons run
+from the Island Map class.</p>
 <p>Initialize map class with given island geography and initial population
-of the various cells.
-:param geogr: string
-:param ini_pop: list of dictionaries</p>
+of the various cells.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>island_geography</strong> (<em>multiline str</em>) – Specifies island geography</li>
+<li><strong>initial_population</strong> (<em>list of dicts</em>) – Specifies initial population of each cell</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="biosim.island_map.IslandMap.add_population">
 <code class="descname">add_population</code><span class="sig-paren">(</span><em>population</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/island_map.html#IslandMap.add_population"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.island_map.IslandMap.add_population" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds a new population to the already existing population
-:param population: list</p>
-<blockquote>
-<div>List of dictionaries containing the new population</div></blockquote>
+<dd><p>Adds a new population to the already existing population of the island,
+in a manner similar to create_population_dict.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>population</strong> (<em>list of dicts</em>) – Specifies the new population of one or more cells</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -66,30 +85,57 @@ and makes all animals in each cell older.</p>
 <dl class="method">
 <dt id="biosim.island_map.IslandMap.check_boundaries_are_ocean">
 <code class="descname">check_boundaries_are_ocean</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/island_map.html#IslandMap.check_boundaries_are_ocean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.island_map.IslandMap.check_boundaries_are_ocean" title="Permalink to this definition">¶</a></dt>
-<dd><p>Checks that all boundary cells for the map are Ocean.
-:raise ValueError:</p>
+<dd><p>Checks that all boundary cells for the map are Ocean.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><strong>ValueError</strong> – if a boundary cell is other landscape type than
+Ocean</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="biosim.island_map.IslandMap.check_map_lines_have_equal_length">
 <code class="descname">check_map_lines_have_equal_length</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/island_map.html#IslandMap.check_map_lines_have_equal_length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.island_map.IslandMap.check_map_lines_have_equal_length" title="Permalink to this definition">¶</a></dt>
-<dd><p>Checks that all lines in the map geography are of equal length.
-:raise ValueError:</p>
+<dd><p>Checks that all lines in the map’s geography string are of equal
+length.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><strong>ValueError</strong> – if lines in map str are more than one length</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="biosim.island_map.IslandMap.create_geography_dict">
 <code class="descname">create_geography_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/island_map.html#IslandMap.create_geography_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.island_map.IslandMap.create_geography_dict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Converts string map to a dictionary with coordinates as keys and
-the landscape types as values.</p>
+<dd><p>Converts geography string to a dictionary with coordinates as keys and
+the landscape types as values. Coordinates are a tuple of x and y
+coordinates.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="biosim.island_map.IslandMap.create_map_dict">
 <code class="descname">create_map_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/island_map.html#IslandMap.create_map_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.island_map.IslandMap.create_map_dict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates dictionary of the entire map, with coordinates as keys and
-instances of landscape classes as values. The instances have the
-population of the coordinate as input.</p>
+<dd><p>Iterates through geography dictionary and creates a new dictionary of
+the entire map. This dict has coordinates as keys and
+instances of landscape classes as values. Each landscape instance has
+the population list of it’s coordinate as input.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><strong>ValueError</strong> – if invalid landscape type is given in geography
+string</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -110,7 +156,7 @@ and removes all dead animals in each cell.</p>
 <dt id="biosim.island_map.IslandMap.feeding_season">
 <code class="descname">feeding_season</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/island_map.html#IslandMap.feeding_season"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.island_map.IslandMap.feeding_season" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterates through all landscape cells on the map,
-and feeds all herbivores in each cell.</p>
+and feeds all herbivores and carnivores in each cell.</p>
 </dd></dl>
 
 <dl class="method">
@@ -164,17 +210,18 @@ True if animal has moved</td>
 <dl class="method">
 <dt id="biosim.island_map.IslandMap.neighbours_of_current_cell">
 <code class="descname">neighbours_of_current_cell</code><span class="sig-paren">(</span><em>current_coordinates</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/island_map.html#IslandMap.neighbours_of_current_cell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.island_map.IslandMap.neighbours_of_current_cell" title="Permalink to this definition">¶</a></dt>
-<dd><p>Finds all neighbours of a given cell, and those an animal can
-move to are returned.
-:param current_coordinates: tuple</p>
-<blockquote>
-<div>Location of current cell</div></blockquote>
+<dd><p>Finds all neighbouring coordinates of a given cell. Checks the
+landscape type of each coordinate. The coordinates of neighbours
+with landscape types an animal can move to, are returned.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">dict
-Has locations as keys and landscape class instance as values.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>current_coordinates</strong> (<em>tuple</em>) – Location of current cell</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">locations as keys and landscape class instance as values</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
 </tr>
 </tbody>
 </table>

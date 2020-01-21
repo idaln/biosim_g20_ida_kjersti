@@ -13,7 +13,6 @@ import pandas
 import numpy
 import matplotlib.pyplot as plt
 import subprocess
-import random
 
 __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idaln@hotmail.com & kjkv@nmbu.no"
@@ -22,7 +21,7 @@ _DEFAULT_MOVIE_FORMAT = 'mp4'
 # Update this variable to point to your ffmpeg binary
 FFMPEG_BINARY = 'C:/Program Files/' \
                 'ffmpeg-20200115-0dc0837-win64-static/bin/ffmpeg'
-# FFMPEG_BINARY = '__file__'
+# FFMPEG_BINARY = 'ffmpeg'
 
 
 class BioSim:
@@ -68,7 +67,7 @@ class BioSim:
         where img_no are consecutive image numbers starting from 0.
         img_base should contain a path and beginning of a file name.
         """
-        random.seed(seed)
+        numpy.random.seed(seed)
         self.img_base = img_base
         self.img_fmt = img_fmt
         self.img_no = 0

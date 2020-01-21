@@ -42,15 +42,17 @@
 visualization and saving graphics.</p>
 <dl class="class">
 <dt id="biosim.simulation.BioSim">
-<em class="property">class </em><code class="descclassname">biosim.simulation.</code><code class="descname">BioSim</code><span class="sig-paren">(</span><em>island_map</em>, <em>initial_population</em>, <em>seed</em>, <em>ymax_animals=None</em>, <em>cmax_animals=None</em>, <em>img_base=None</em>, <em>img_fmt='png'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/simulation.html#BioSim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.simulation.BioSim" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">biosim.simulation.</code><code class="descname">BioSim</code><span class="sig-paren">(</span><em>island_geography</em>, <em>initial_population</em>, <em>seed</em>, <em>ymax_animals=None</em>, <em>cmax_animals=None</em>, <em>img_base=None</em>, <em>img_fmt='png'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/simulation.html#BioSim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.simulation.BioSim" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class for simulating the model of an ecosystem.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>island_map</strong> – Multi-line string specifying island geography</li>
-<li><strong>initial_population</strong> – List of dictionaries specifying initial population</li>
+<li><strong>island_geography</strong> – Multi-line string specifying island
+geography</li>
+<li><strong>initial_population</strong> – List of dictionaries specifying
+initial population</li>
 <li><strong>seed</strong> – Integer used as random number seed</li>
 <li><strong>ymax_animals</strong> – Number specifying y-axis limit for graph showing
 animal numbers</li>
@@ -111,7 +113,7 @@ img_base should contain a path and beginning of a file name.</p>
 <dl class="method">
 <dt id="biosim.simulation.BioSim.create_map_graphics">
 <code class="descname">create_map_graphics</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/simulation.html#BioSim.create_map_graphics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.simulation.BioSim.create_map_graphics" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates graphic of the map of the island’s geography.</p>
+<dd><p>Creates graphic of the map of the island’s island_geography.</p>
 </dd></dl>
 
 <dl class="method">
