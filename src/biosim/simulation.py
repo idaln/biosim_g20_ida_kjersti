@@ -40,7 +40,7 @@ class BioSim:
     ):
         """
         :param island_map: Multi-line string specifying island geography
-        :param ini_pop: List of dictionaries specifying initial population
+        :param initial_population: List of dictionaries specifying initial population
         :param seed: Integer used as random number seed
         :param ymax_animals: Number specifying y-axis limit for graph showing
             animal numbers

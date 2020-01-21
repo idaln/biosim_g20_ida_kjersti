@@ -45,6 +45,7 @@
 <span class="kn">import</span> <span class="nn">math</span>
 
 
+
 <div class="viewcode-block" id="Animal"><a class="viewcode-back" href="../../animals.html#biosim.animals.Animal">[docs]</a><span class="k">class</span> <span class="nc">Animal</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parent class for herbivores and carnivores.</span>
@@ -87,18 +88,30 @@
         <span class="s2">&quot;DeltaPhiMax&quot;</span><span class="p">:</span> <span class="mf">10.0</span>
     <span class="p">}</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Animal.GET_DEFAULT_PARAMS"><a class="viewcode-back" href="../../animals.html#biosim.animals.Animal.GET_DEFAULT_PARAMS">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">GET_DEFAULT_PARAMS</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_DEFAULT_PARAMS</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a copy of the default animal parameters.</span>
 
-    <span class="nd">@classmethod</span>
+<span class="sd">        :return: Copy of default animal parameters</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_DEFAULT_PARAMS</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Animal.reset_params"><a class="viewcode-back" href="../../animals.html#biosim.animals.Animal.reset_params">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">reset_params</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">GET_DEFAULT_PARAMS</span><span class="p">()</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the animal parameters equal to default.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">GET_DEFAULT_PARAMS</span><span class="p">()</span></div>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">properties</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initializing class by unpacking all parameters given as input.</span>
+<span class="sd">        Initializing Animal class by asserting property values are valid.</span>
+<span class="sd">        :param properties: dict</span>
+<span class="sd">            Contains animal properties species, fitness, age and weight.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">has_moved_this_year</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fitness_must_be_updated</span> <span class="o">=</span> <span class="kc">True</span>
 
@@ -127,7 +140,8 @@
 <div class="viewcode-block" id="Animal.weight_loss"><a class="viewcode-back" href="../../animals.html#biosim.animals.Animal.weight_loss">[docs]</a>    <span class="k">def</span> <span class="nf">weight_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Substracts given amount of weight from the animals</span>
-<span class="sd">        total weight after each cycle, given by eta*weight</span>
+<span class="sd">        total weight after each cycle, given by</span>
+<span class="sd">        $\\eta*weight\\$</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">new_weight</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;eta&#39;</span><span class="p">])</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">new_weight</span>
@@ -136,7 +150,7 @@
 <div class="viewcode-block" id="Animal.add_eaten_fodder_to_weight"><a class="viewcode-back" href="../../animals.html#biosim.animals.Animal.add_eaten_fodder_to_weight">[docs]</a>    <span class="k">def</span> <span class="nf">add_eaten_fodder_to_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fodder</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Adds amount of weight to animals total body weight given by</span>
-<span class="sd">        beta*F. Also reserts have_moved_this_year to False.</span>
+<span class="sd">        beta*F. Also resets have_moved_this_year to False.</span>
 <span class="sd">        :param fodder</span>
 <span class="sd">               Amount of fodder available to the animal</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -168,7 +182,7 @@
 <span class="sd">        Computes the probability of moving at all, which depends on the</span>
 <span class="sd">        animal&#39;s fitness.</span>
 <span class="sd">        :return: float</span>
-<span class="sd">                Probability of moving</span>
+<span class="sd">            Probability of moving</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitness_must_be_updated</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">find_fitness</span><span class="p">()</span>
@@ -180,7 +194,7 @@
 <span class="sd">        Uses the probability of the animal moving to decide whether it should</span>
 <span class="sd">        move or not.</span>
 <span class="sd">        :return: bool</span>
-<span class="sd">                True if animal will move, False if not.</span>
+<span class="sd">            True if animal will move, False if not.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_of_animal_moving</span><span class="p">()</span>
         <span class="n">random_number</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
@@ -194,7 +208,7 @@
 <span class="sd">        Takes an instance of a landscape class, and returns the relative</span>
 <span class="sd">        abundance of fodder in that instance.</span>
 <span class="sd">        :param landscape_cell: dict</span>
-<span class="sd">                Instance of landscape class</span>
+<span class="sd">            Instance of landscape class</span>
 <span class="sd">        :return: float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">fodder_animal</span> <span class="o">=</span> <span class="n">landscape_cell</span><span class="o">.</span><span class="n">fodder_amount</span>
@@ -207,8 +221,8 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Finds the propensity for the animal to move to each of it&#39;s neighbours.</span>
 <span class="sd">        :param neighbours_of_current_cell: dict</span>
-<span class="sd">                Contains neighbours of current cell.</span>
-<span class="sd">                Location as keys, instance of landscape class as value</span>
+<span class="sd">            Contains neighbours of current cell.</span>
+<span class="sd">            Location as keys, instance of landscape class as value</span>
 <span class="sd">        :return: loc_to_propensity_dict: dict</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -227,11 +241,11 @@
 <span class="sd">        the probability of moving to each of the neighbouring cells. Returns</span>
 <span class="sd">        a dict mapping cell locations to the probability of moving there.</span>
 <span class="sd">        :param neighbours_of_current_cell: dict</span>
-<span class="sd">                Neighbours of current cell. Locations as keys,</span>
-<span class="sd">                instance of landscape class as value.</span>
+<span class="sd">            Neighbours of current cell. Locations as keys, instance of</span>
+<span class="sd">            landscape class as value.</span>
 <span class="sd">        :returns: dict</span>
-<span class="sd">                Locations of each surrounding cell as keys, probabilities for</span>
-<span class="sd">                the animal to move to each of them as values.</span>
+<span class="sd">            Locations of each surrounding cell as keys, probabilities for</span>
+<span class="sd">            the animal to move to each of them as values.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">moving_prob_for_each_loc</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">sum_prop</span> <span class="o">=</span> <span class="mi">0</span>
@@ -252,12 +266,12 @@
 <span class="sd">        Converts dictionary with locations as keys and probabilities as</span>
 <span class="sd">        values to a list of locations and a numpy array of probabilities.</span>
 <span class="sd">        :param moving_prob_for_each_loc: dict</span>
-<span class="sd">                Contains the locations of each surrounding cell as keys, and</span>
-<span class="sd">                the probabilities for the animal to move to each of them as</span>
-<span class="sd">                values.</span>
+<span class="sd">            Contains the locations of each surrounding cell as keys, and</span>
+<span class="sd">            the probabilities for the animal to move to each of them as</span>
+<span class="sd">            values.</span>
 <span class="sd">        :returns: list, array</span>
-<span class="sd">                List of locations of neighbouring cells, numpy array of the</span>
-<span class="sd">                probabilities of moving to each.</span>
+<span class="sd">            List of locations of neighbouring cells, numpy array of the</span>
+<span class="sd">            probabilities of moving to each.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">locs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">probs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
@@ -271,10 +285,10 @@
 <span class="sd">        Uses cumulative probability to decide which of the neighbouring cells</span>
 <span class="sd">        the animal will move to. Returns the coordinates of that cell.</span>
 <span class="sd">        :param neighbours_of_current_cell: dict</span>
-<span class="sd">                Neighbours of current cell. Locations as keys,</span>
-<span class="sd">                instance of landscape class as value.</span>
+<span class="sd">            Neighbours of current cell. Locations as keys,</span>
+<span class="sd">            instance of landscape class as value.</span>
 <span class="sd">        :returns: tuple</span>
-<span class="sd">                The location the animal will move to.</span>
+<span class="sd">            The location the animal will move to.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">moving_prob_for_each_loc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_move_to_each_neighbour</span><span class="p">(</span>
                 <span class="n">neighbours_of_current_cell</span>
