@@ -196,7 +196,7 @@ class Animal:
 
             \\epsilon = \\frac{f_k}{(n_k + 1)F^{'}}
 
-        where :math:`\f_k` is the amount of relevant fodder and `n_k` is the
+        where :math:`f_k` is the amount of relevant fodder and `n_k` is the
         number of animals of same species in cell k. 
 
         :param landscape_cell: Instance of landscape class
@@ -251,9 +251,9 @@ class Animal:
 
         .. math::
 
-            p = \\frac{\\pi_{i \\to j}{\\Sigma_{j \\in C^{(i)} \\pi_{i \\to j}
+            p = \\frac{\\pi_{i \\to j}}{\\Sigma_{j \\in C^{(i)} \\pi_{i \\to j}}}
 
-        where :math: \\pi_{i \\to j} is the propensity to move from cell i to
+        where :math:`\\pi_{i \\to j}` is the propensity to move from cell i to
         cell j.
 
         :param neighbours_of_current_cell: Neighbours of current cell.
@@ -492,7 +492,7 @@ class Herbivore(Animal):
 
             \\epsilon = \\frac{f_k}{(n_k + 1)F^{'}}
 
-        where :math:`\f_k` is the amount of relevant fodder and `n_k` is the
+        where :math:`f_k` is the amount of relevant fodder and `n_k` is the
         number of animals of same species in cell k.
 
         :param landscape_cell: Instance of landscape class
@@ -622,7 +622,7 @@ class Carnivore(Animal):
 
             \\epsilon = \\frac{f_k}{(n_k + 1)F^{'}}
 
-        where :math:`\f_k` is the amount of relevant fodder and `n_k` is the
+        where :math:`f_k` is the amount of relevant fodder and `n_k` is the
         number of animals of same species in cell k.
 
         :param landscape_cell: Instance of landscape class
