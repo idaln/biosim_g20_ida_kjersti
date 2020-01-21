@@ -179,13 +179,14 @@ class IslandMap:
 
     def move_single_animal(self, current_coordinates, single_animal):
         """
-        Moves an animal to the chosen neighbouring cell. New and old cell get
+        Moves an animal to the chosen neighbouring cell. New cell get
         updated population lists.
         :param current_coordinates: tuple
                 Contains x coordinate, y coordinate
-        :param single_animal:
-                Class instance of either herbivore and carnivore
+        :param single_animal: class instance
+                Either herbivore and carnivore
         :returns: bool
+                True if animal has moved
         """
         if single_animal.has_moved_this_year is False:
             neighbours_of_current_cell = self.neighbours_of_current_cell(
@@ -204,9 +205,12 @@ class IslandMap:
 
     def move_all_animals_in_cell(self, current_coordinates, current_landscape):
         """
-        Iterates through the population of a cell, and moves all animals.
+        Iterates through the population of a cell. Attempt to move all animals,
+        and updates animal population lists if an animal moved.
         :param current_coordinates: tuple
+                Contains x coordinate, y coordinate
         :param current_landscape: class instance
+                Either herbivore and carnivore
         """
         current_landscape.pop_herb = [
             animal for animal in current_landscape.pop_herb
