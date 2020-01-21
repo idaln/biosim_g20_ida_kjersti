@@ -13,6 +13,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Animals" href="animals.html" />
@@ -42,16 +43,41 @@
 <dt id="biosim.landscape.Landscape">
 <em class="property">class </em><code class="descclassname">biosim.landscape.</code><code class="descname">Landscape</code><span class="sig-paren">(</span><em>population</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/landscape.html#Landscape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.landscape.Landscape" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parent class for all landscape types.</p>
-<p>Initializes class with given population.
-:param population: A list containing dictionaries containing
-information about each animal
-:type population: list</p>
+<p>Initializes class with given population. Creates instances of
+correct species for all elements in population list, and adds the
+instances to correct population list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>population</strong> (<em>list</em>) – Contains dictionaries containing
+information about each animal</td>
+</tr>
+</tbody>
+</table>
+<dl class="classmethod">
+<dt id="biosim.landscape.Landscape.GET_DEFAULT_PARAMS">
+<em class="property">classmethod </em><code class="descname">GET_DEFAULT_PARAMS</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/landscape.html#Landscape.GET_DEFAULT_PARAMS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.landscape.Landscape.GET_DEFAULT_PARAMS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a copy of the default landscape parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Copy of default landscape parameters</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="biosim.landscape.Landscape.add_newborn_animals">
 <code class="descname">add_newborn_animals</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/landscape.html#Landscape.add_newborn_animals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.landscape.Landscape.add_newborn_animals" title="Permalink to this definition">¶</a></dt>
-<dd><p>Iterates over both population lists in turn,
-and makes all animal procreate utilizing their
-inherent birth process method.</p>
+<dd><p>Iterates over both population lists in turn, and makes all animals
+procreate utilizing their inherent birth process method.
+Adds a new class instance to population lists for each animal
+that is born.</p>
 </dd></dl>
 
 <dl class="method">
@@ -59,20 +85,41 @@ inherent birth process method.</p>
 <code class="descname">available_fodder_carnivore</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/landscape.html#Landscape.available_fodder_carnivore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.landscape.Landscape.available_fodder_carnivore" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns amount of fodder available to carnivore. That is, the total
 weight of the herbivores in the cell.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Amount of fodder available to a carnivore.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="biosim.landscape.Landscape.available_fodder_herbivore">
 <code class="descname">available_fodder_herbivore</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/landscape.html#Landscape.available_fodder_herbivore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.landscape.Landscape.available_fodder_herbivore" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns amount of fodder available to the herbivore.
-:return available_fodder: float</p>
+<dd><p>Returns amount of fodder available to an herbivore. If plenty of fodder
+is available in the cell, enough fodder will be returned to fullfill
+it’s appetite F. If not, what’s left will be returned.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Amount of fodder available to an herbivore.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="biosim.landscape.Landscape.feed_all_carnivores">
 <code class="descname">feed_all_carnivores</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/landscape.html#Landscape.feed_all_carnivores"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.landscape.Landscape.feed_all_carnivores" title="Permalink to this definition">¶</a></dt>
-<dd><p>Iterates over the population of carnivores in the cell, and feeds all
-carnivores using their inherent eating method.</p>
+<dd><p>Sorts carnivore population in the cell. Then, iterates over the
+carnivores and feeds them all, using their inherent eating method.</p>
 </dd></dl>
 
 <dl class="method">
@@ -99,24 +146,36 @@ utilizing their inherent aging method.</p>
 <dl class="method">
 <dt id="biosim.landscape.Landscape.regrowth">
 <code class="descname">regrowth</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/landscape.html#Landscape.regrowth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.landscape.Landscape.regrowth" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets amount of fodder for herbivores to maximum at the beginning of
-each year.</p>
+<dd><p>Sets amount of fodder for herbivores to maximum.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="biosim.landscape.Landscape.remove_all_dead_animals">
 <code class="descname">remove_all_dead_animals</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/landscape.html#Landscape.remove_all_dead_animals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.landscape.Landscape.remove_all_dead_animals" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterates over population lists and runs inherent death method on all
-animals. Updates the population to only contain living animals.</p>
+animals. Updates the population lists to only contain living animals.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="biosim.landscape.Landscape.remove_all_eaten_herbivores">
 <code class="descname">remove_all_eaten_herbivores</code><span class="sig-paren">(</span><em>eaten_herbivores</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/landscape.html#Landscape.remove_all_eaten_herbivores"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.landscape.Landscape.remove_all_eaten_herbivores" title="Permalink to this definition">¶</a></dt>
-<dd><p>Removed herbivores that have been eaten from pop_herb
-:param eaten_herbivores: list</p>
-<blockquote>
-<div>List of herbivores that have been eaten</div></blockquote>
+<dd><p>Removes herbivores that have been eaten from the
+herbivore population of the cell.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>eaten_herbivores</strong> (<em>list</em>) – Herbivore instances that have been eaten
+during feeding of a carnivore.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="biosim.landscape.Landscape.reset_params">
+<em class="property">classmethod </em><code class="descname">reset_params</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/landscape.html#Landscape.reset_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.landscape.Landscape.reset_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the landscape parameters equal to default.</p>
 </dd></dl>
 
 <dl class="method">
@@ -129,7 +188,7 @@ lowest. Uses lambda sorting.</p>
 <dl class="method">
 <dt id="biosim.landscape.Landscape.sort_herb_population_by_fitness">
 <code class="descname">sort_herb_population_by_fitness</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/landscape.html#Landscape.sort_herb_population_by_fitness"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.landscape.Landscape.sort_herb_population_by_fitness" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sorts herbivore populations by fitness, from highest to
+<dd><p>Sorts herbivore population by fitness, from highest to
 lowest. Uses lambda sorting.</p>
 </dd></dl>
 

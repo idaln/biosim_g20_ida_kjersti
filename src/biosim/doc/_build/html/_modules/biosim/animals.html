@@ -13,6 +13,7 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
    
@@ -108,10 +109,12 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">properties</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initializing Animal class by asserting property values are valid.</span>
-<span class="sd">        :param properties: dict</span>
-<span class="sd">            Contains animal properties species, fitness, age and weight.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
 
+<span class="sd">        :param properties: Contains animal properties species, fitness, age</span>
+<span class="sd">            and weight.</span>
+<span class="sd">        :type dict</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">has_moved_this_year</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fitness_must_be_updated</span> <span class="o">=</span> <span class="kc">True</span>
 
@@ -141,7 +144,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Substracts given amount of weight from the animals</span>
 <span class="sd">        total weight after each cycle, given by</span>
-<span class="sd">        $\\eta*weight\\$</span>
+<span class="sd">        :math:`\\eta \\cdot weight`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">new_weight</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;eta&#39;</span><span class="p">])</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">new_weight</span>
