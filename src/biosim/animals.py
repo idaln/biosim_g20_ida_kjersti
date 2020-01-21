@@ -567,11 +567,11 @@ class Carnivore(Animal):
 
         .. math::
 
-            \\p =
+            p =
             \\Biggl
             \\lbrace
             {
-            0,\\text{ if \\phi_{carn} \\leq \\ \\phi_{herb} }
+            0,\\text{ if } \\phi_{carn} \\leq \\ \\phi_{herb}
             \\atop
             \\frac{\\phi_{carn} - \\phi_{herb}}{{\\Delta \\phi}_{max},
             \\text{ if } 0 < \\phi_{carn} - \\phi_{herb} <
