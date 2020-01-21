@@ -58,7 +58,9 @@ class Animal:
     def GET_DEFAULT_PARAMS(cls):
         """
         Returns a copy of the default animal parameters.
+
         :return: Copy of default animal parameters
+        :rtype: dict
         """
         return cls._DEFAULT_PARAMS.copy()
 
