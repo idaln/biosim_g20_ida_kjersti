@@ -49,7 +49,8 @@ class Landscape:
         lowest. Uses lambda sorting.
         """
         for individual in self.pop_herb:
-            individual.find_fitness()
+            if individual.fitness_must_be_updated is True:
+                individual.find_fitness()
         self.pop_herb = sorted(self.pop_herb, key=lambda x: x.fitness,
                                reverse=True)
 
@@ -59,7 +60,8 @@ class Landscape:
         lowest. Uses lambda sorting.
         """
         for individual in self.pop_carn:
-            individual.find_fitness()
+            if individual.fitness_must_be_updated is True:
+                individual.find_fitness()
         self.pop_carn = sorted(self.pop_carn, key=lambda x: x.fitness,
                                reverse=True)
 

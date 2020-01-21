@@ -62,6 +62,7 @@ class Animal:
         Initializing class by unpacking all parameters given as input.
         """
         self.has_moved_this_year = False
+        self.fitness_must_be_updated = True
 
         if "fitness" not in properties.keys():
             self.fitness = None
@@ -83,6 +84,7 @@ class Animal:
         Adds 1 year to the age of the animal for each cycle.
         """
         self.age += 1
+        self.fitness_must_be_updated = True
 
     def weight_loss(self):
         """
@@ -91,6 +93,7 @@ class Animal:
         """
         new_weight = (1 - self.params['eta']) * self.weight
         self.weight = new_weight
+        self.fitness_must_be_updated = True
 
     def add_eaten_fodder_to_weight(self, fodder):
         """
@@ -100,6 +103,7 @@ class Animal:
                Amount of fodder available to the animal
         """
         self.weight += self.params['beta'] * fodder
+        self.fitness_must_be_updated = True
         self.has_moved_this_year = False
 
     def find_fitness(self):
@@ -116,8 +120,10 @@ class Animal:
 
         if self.weight <= 0:
             self.fitness = 0
+            self.fitness_must_be_updated = False
         else:
             self.fitness = q_plus * q_minus
+            self.fitness_must_be_updated = False
 
     def prob_of_animal_moving(self):
         """
@@ -126,7 +132,9 @@ class Animal:
         :return: float
                 Probability of moving
         """
-        self.find_fitness()
+        if self.fitness_must_be_updated is True:
+            self.find_fitness()
+        self.fitness_must_be_updated = False
         return self.fitness * self.params["mu"]
 
     def will_animal_move(self):
@@ -265,6 +273,10 @@ class Animal:
         :returns: prob
                   The probability for the animal to give birth.
         """
+        if self.fitness_must_be_updated is True:
+            self.find_fitness()
+        self.fitness_must_be_updated = False
+        
         if self.weight < self.params['zeta'] * (
                 self.params['w_birth'] + self.params['sigma_birth']
         ):
@@ -309,7 +321,9 @@ class Animal:
         Finds probability of death, which depends on the fitness of the
         animal.
         """
-        self.find_fitness()
+        if self.fitness_must_be_updated is True:
+            self.find_fitness()
+        self.fitness_must_be_updated = False
         if self.fitness == 0:
             return 1
         else:
@@ -483,6 +497,8 @@ class Carnivore(Animal):
                 animals_eaten.append(herb)
                 amount_eaten += herb.weight
         self.weight += self.params["beta"] * amount_eaten
+        self.find_fitness()
+        self.fitness_must_be_updated = False
         return animals_eaten
 
     def find_rel_abund_of_fodder(self, landscape_cell):
