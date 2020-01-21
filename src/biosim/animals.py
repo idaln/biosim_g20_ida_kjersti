@@ -194,6 +194,7 @@ class Animal:
         abundance of fodder in that instance, given by
 
         .. math::
+        
             \\epsilon = \\frac{f_k}{(n_k + 1)F^'}
 
         :param landscape_cell: Instance of landscape class
