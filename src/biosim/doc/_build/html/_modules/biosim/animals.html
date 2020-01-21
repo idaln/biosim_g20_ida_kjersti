@@ -197,8 +197,7 @@
 
 <div class="viewcode-block" id="Animal.prob_of_animal_moving"><a class="viewcode-back" href="../../animals.html#biosim.animals.Animal.prob_of_animal_moving">[docs]</a>    <span class="k">def</span> <span class="nf">prob_of_animal_moving</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Computes the probability of moving at all, which depends on the</span>
-<span class="sd">        animal&#39;s fitness.</span>
+<span class="sd">        Computes the probability of moving at all, given by :math:`\\mu \\phi`</span>
 
 <span class="sd">        :return: Probability of moving</span>
 <span class="sd">        :rtype: float</span>
@@ -232,6 +231,9 @@
 
 <span class="sd">            \\epsilon = \\frac{f_k}{(n_k + 1)F^{&#39;}}</span>
 
+<span class="sd">        where :math:`f_k` is the amount of relevant fodder and `n_k` is the</span>
+<span class="sd">        number of animals of same species in cell k. </span>
+
 <span class="sd">        :param landscape_cell: Instance of landscape class</span>
 <span class="sd">        :type landscape_cell: dict</span>
 <span class="sd">        :return: Relative abundance of fodder</span>
@@ -250,7 +252,7 @@
 
 <span class="sd">        .. math::</span>
 
-<span class="sd">            \\phi =</span>
+<span class="sd">            \\pi_{i \\to j} =</span>
 <span class="sd">            \\Biggl</span>
 <span class="sd">            \\lbrace</span>
 <span class="sd">            {</span>
@@ -277,9 +279,17 @@
 
 <div class="viewcode-block" id="Animal.prob_move_to_each_neighbour"><a class="viewcode-back" href="../../animals.html#biosim.animals.Animal.prob_move_to_each_neighbour">[docs]</a>    <span class="k">def</span> <span class="nf">prob_move_to_each_neighbour</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">neighbours_of_current_cell</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Iterates through the dict of neighbours to the current cell. Finds</span>
+<span class="sd">        Iterates through the dict of neighbours for the current cell. Finds</span>
 <span class="sd">        the probability of moving to each of the neighbouring cells. Returns</span>
 <span class="sd">        a dict mapping cell locations to the probability of moving there.</span>
+<span class="sd">        The probability is given by</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            p = \\frac{\\pi_{i \\to j}}{\\Sigma_{j \\in C^{(i)} \\pi_{i \\to j}}}</span>
+
+<span class="sd">        where :math:`\\pi_{i \\to j}` is the propensity to move from cell i to</span>
+<span class="sd">        cell j.</span>
 
 <span class="sd">        :param neighbours_of_current_cell: Neighbours of current cell.</span>
 <span class="sd">            Locations as keys, instance of landscape class as value.</span>
@@ -311,7 +321,7 @@
 <span class="sd">        :param moving_prob_for_each_loc: Contains the locations of each</span>
 <span class="sd">        surrounding cell as keys, and the probabilities for the animal to move</span>
 <span class="sd">        to each of them as values.</span>
-<span class="sd">        :type: dict</span>
+<span class="sd">        :type moving_prob_for_each_loc: dict</span>
 <span class="sd">        :return: List of locations of neighbouring cells, numpy array of the</span>
 <span class="sd">            probabilities of moving to each.</span>
 <span class="sd">        :rtype: list, array</span>
@@ -517,6 +527,9 @@
 
 <span class="sd">            \\epsilon = \\frac{f_k}{(n_k + 1)F^{&#39;}}</span>
 
+<span class="sd">        where :math:`f_k` is the amount of relevant fodder and `n_k` is the</span>
+<span class="sd">        number of animals of same species in cell k.</span>
+
 <span class="sd">        :param landscape_cell: Instance of landscape class</span>
 <span class="sd">        :type landscape_cell: dict</span>
 <span class="sd">        :return: Relative abundance of fodder</span>
@@ -643,6 +656,9 @@
 <span class="sd">        .. math::</span>
 
 <span class="sd">            \\epsilon = \\frac{f_k}{(n_k + 1)F^{&#39;}}</span>
+
+<span class="sd">        where :math:`f_k` is the amount of relevant fodder and `n_k` is the</span>
+<span class="sd">        number of animals of same species in cell k.</span>
 
 <span class="sd">        :param landscape_cell: Instance of landscape class</span>
 <span class="sd">        :type landscape_cell: dict</span>

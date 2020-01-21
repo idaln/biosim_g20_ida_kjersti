@@ -6,7 +6,7 @@
 Welcome to BioSim G20's documentation!
 ======================================
 
-This is a simple simulation of an island with
+This is a simple simulation of the ecosystem of an island with
    * five different landscape types
    * two species of animals
 
