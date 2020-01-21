@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-This module provides the class for implementing the Island and it's seasons.
+This module provides the class for implementing the island.
 """
 
 __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
@@ -14,11 +14,12 @@ import textwrap
 
 class IslandMap:
     """
-    Class that contains all island cells.
+    Implements the island map. Map has one cell per location, represented by
+    instances of landscape types.
     """
     def __init__(self, geogr, ini_pop):
         """
-        Initialize map class with given island map and initial population
+        Initialize map class with given island geography and initial population
         of the various cells.
         :param geogr: string
         :param ini_pop: list of dictionaries
@@ -55,7 +56,7 @@ class IslandMap:
 
     def check_map_lines_have_equal_length(self):
         """
-        Checks that all lines in the map are of equal length.
+        Checks that all lines in the map geography are of equal length.
         :raise ValueError:
         """
         line_lengths = []
@@ -181,7 +182,10 @@ class IslandMap:
         Moves an animal to the chosen neighbouring cell. New and old cell get
         updated population lists.
         :param current_coordinates: tuple
-        :param single_animal: class instance of animal class
+                Contains x coordinate, y coordinate
+        :param single_animal:
+                Class instance of either herbivore and carnivore
+        :returns: bool
         """
         if single_animal.has_moved_this_year is False:
             neighbours_of_current_cell = self.neighbours_of_current_cell(
