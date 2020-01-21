@@ -11,7 +11,6 @@ import numpy as np
 import math
 
 
-
 class Animal:
     """
     Parent class for herbivores and carnivores.
