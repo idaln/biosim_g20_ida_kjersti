@@ -617,7 +617,7 @@ class TestCarnivore:
         carnivore = Carnivore(example_properties)
         old_weight = carnivore.weight
         pop_herb = []
-        carnivore.eat(pop_herb)
+        carnivore.attempt_eating_all_herbivores_in_cell(pop_herb)
         assert carnivore.weight == old_weight
 
     def test_carn_gained_weight_after_eating(
@@ -633,7 +633,7 @@ class TestCarnivore:
         carnivore.params["DeltaPhiMax"] = 0.1
         herb = Herbivore(example_properties)
         herb.find_fitness()
-        carnivore.eat([herb])
+        carnivore.attempt_eating_all_herbivores_in_cell([herb])
         assert old_weight < carnivore.weight
 
     def test_list_of_herbs_returned(self, example_properties,
@@ -647,7 +647,7 @@ class TestCarnivore:
         carnivore.params["DeltaPhiMax"] = 0.1
         herb = Herbivore(example_properties)
         herb.find_fitness()
-        eaten_herbs = carnivore.eat([herb])
+        eaten_herbs = carnivore.attempt_eating_all_herbivores_in_cell([herb])
         assert type(eaten_herbs) is list
 
     def test_correct_rel_abund_fodder_carn(self, example_population_carn,
