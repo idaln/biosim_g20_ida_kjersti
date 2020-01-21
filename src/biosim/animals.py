@@ -132,12 +132,13 @@ class Animal:
         """
         Updates fitness.
         Fitness is zero if weight is zero, otherwise given by
-        . . math: :
-            `q^{+}(a, a_{\\fraq{1}{2}}, \\phi_{age}) \\cdot q^{-1}(w, w_{\\fraq{1}{2}}, phi_{weight}`
+        ..math::
+            `q^{+}(a, a_{\\fraq{1}{2}}, \\phi_{age}) \\cdot q^{-1}(w, w_{\\fraq{1}{2}}, \\phi_{weight}`
         where
-        . . math: :
-            `q^{\\pm}(x, x_{\\fraq{1}{2}, \\phi) = \\fraq{1}{1 + e^{\\pm phi(x-x_{\\fraq{1}{2}})}`
+        ..math::
+            `q^{\\pm}(x, x_{\\fraq{1}{2}, \\phi) = \\fraq{1}{1 + e^{\\pm \\phi(x-x_{\\fraq{1}{2}})}`
         """
+
         q_plus = 1/(1 + math.exp(
             self.params["phi_age"]*(self.age - self.params["a_half"])
         ))
