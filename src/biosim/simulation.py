@@ -518,31 +518,3 @@ class BioSim:
                 raise RuntimeError('ERROR: ffmpeg failed with: {}'.format(err))
         else:
             raise ValueError('Unknown movie format: ' + movie_fmt)
-
-
-if __name__ == "__main__":
-    ini_pop = [
-        {
-            "loc": (1, 1),
-            "pop": [
-                {"species": "Carnivore", "age": 5, "weight": 200}
-                for _ in range(10)
-            ]
-        },
-        {
-            "loc": (1, 1),
-            "pop": [
-                {"species": "Herbivore", "age": 5, "weight": 20}
-                for _ in range(100)
-            ]
-        }
-    ]
-
-    island = "OOOOO\nOJMJO\nODJJO\nODSJO\nOJMDO\nOOOOO"
-
-    ex_img_base = "../../data/img"
-    biosim = BioSim(island, ini_pop, 1, img_base=ex_img_base)
-    biosim.set_animal_parameters("Herbivore", {"F": 60})
-    biosim.simulate(160, 1, 5)
-    plt.show()
-    biosim.make_movie()
