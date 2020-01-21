@@ -54,7 +54,7 @@ if __name__ == "__main__":
         }
     ]
 
-    sim = BioSim(island_map=geogr, ini_pop=ini_herbs, seed=123456)
+    sim = BioSim(island_geography=geogr, ini_pop=ini_herbs, seed=123456)
 
     sim.set_animal_parameters("Herbivore", {"zeta": 3.2, "xi": 1.8})
     sim.set_animal_parameters(
