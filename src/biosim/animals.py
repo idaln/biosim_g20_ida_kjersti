@@ -616,16 +616,17 @@ class Carnivore(Animal):
         else:
             return False
 
-    def eat(self, pop_herb):
+    def attempt_eating_all_herbivores_in_cell(self, pop_herb):
         """
         Iterates through list of herbivores, and implements kill method on one
-        herbivore at the time until carnivore has satisfied it's appetite or
-        has tried to kill all herbivores without luck.
+        herbivore at a time until carnivore has satisfied it's appetite or
+        has tried to kill all herbivores without luck. After a carnivore has
+        eaten a herbivore, it's weight and fitness is updated.
 
         :param pop_herb: Herbivores available to the carnivore sorted by
                 fitness
         :type pop_herb: list
-        :return: List of herbivores killed
+        :return: Herbivores killed
         :rtype: list
         """
         amount_eaten = 0
@@ -634,9 +635,9 @@ class Carnivore(Animal):
             if amount_eaten < self.params["F"] and self.kill(herb) is True:
                 animals_eaten.append(herb)
                 amount_eaten += herb.weight
-        self.weight += self.params["beta"] * amount_eaten
-        self.find_fitness()
-        self.fitness_must_be_updated = False
+                self.weight += self.params["beta"] * amount_eaten
+                self.find_fitness()
+                self.fitness_must_be_updated = False
         return animals_eaten
 
     def find_rel_abund_of_fodder(self, landscape_cell):

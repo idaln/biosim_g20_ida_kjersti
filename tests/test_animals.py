@@ -147,11 +147,13 @@ class TestAnimal:
 
     def test_correct_fitness_calculated(self, example_properties_w_20):
         """
-        Checks that find_fitness method calculates correct value.
+        Checks that find_fitness method calculates correct value of fitness.
         """
         animal = Animal(example_properties_w_20)
         animal.find_fitness()
         assert animal.fitness == approx(0.9983411986)
+        # Value for fitness was calculated by hand using formula in
+        # find_fitness using the example properties.
 
     def test_correct_prob_of_moving(self, example_properties_w_20):
         """
@@ -161,6 +163,8 @@ class TestAnimal:
         animal = Animal(example_properties_w_20)
         animal.find_fitness()
         assert animal.prob_of_animal_moving() == approx(0.3993364794)
+        # Value for probability was calculated by hand using formula in
+        # prob_of_animal_moving using the example properties.
 
     def test_correct_bool_of_moving(self, example_properties_w_20, mocker):
         """
@@ -317,6 +321,8 @@ class TestAnimal:
         animal = Animal(example_properties_w_20)
         animal.find_fitness()
         assert animal.prob_death() == approx(0.0014929212599999687)
+        # Probability of dying was calculated by hand from formula in
+        # prob_death using example properties.
 
     def test_not_true_if_death_prob_is_one(self, example_properties_w_20):
         """
@@ -585,6 +591,8 @@ class TestCarnivore:
         carnivore.find_fitness()
         prob = carnivore.prob_kill(herb_fitness)
         assert prob == approx(0.04983411986)
+        # Probability of killing was calculated by hand from formula in
+        # prob_kill using example_properties.
 
     def test_true_when_prob__of_killing_is_one(
             self, teardown_carnivore_tests, example_properties
@@ -617,7 +625,7 @@ class TestCarnivore:
         carnivore = Carnivore(example_properties)
         old_weight = carnivore.weight
         pop_herb = []
-        carnivore.eat(pop_herb)
+        carnivore.attempt_eating_all_herbivores_in_cell(pop_herb)
         assert carnivore.weight == old_weight
 
     def test_carn_gained_weight_after_eating(
@@ -633,7 +641,7 @@ class TestCarnivore:
         carnivore.params["DeltaPhiMax"] = 0.1
         herb = Herbivore(example_properties)
         herb.find_fitness()
-        carnivore.eat([herb])
+        carnivore.attempt_eating_all_herbivores_in_cell([herb])
         assert old_weight < carnivore.weight
 
     def test_list_of_herbs_returned(self, example_properties,
@@ -647,7 +655,7 @@ class TestCarnivore:
         carnivore.params["DeltaPhiMax"] = 0.1
         herb = Herbivore(example_properties)
         herb.find_fitness()
-        eaten_herbs = carnivore.eat([herb])
+        eaten_herbs = carnivore.attempt_eating_all_herbivores_in_cell([herb])
         assert type(eaten_herbs) is list
 
     def test_correct_rel_abund_fodder_carn(self, example_population_carn,
