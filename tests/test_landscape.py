@@ -46,13 +46,13 @@ class TestLandscape:
          }
 
     @pytest.fixture
-    def setup_feeding_test(self):
+    def teardown_feeding_test(self):
         """
         Sets up parameters for test_fittest_animal_eats_first method.
+        After the test is run, we reset the parameters to their initial values.
         """
-        landscape_params = Landscape.params.copy()
         yield None
-        Landscape.params = landscape_params
+        Landscape.reset_params()
 
     def test_constructor(self, example_pop_herb):
         """
@@ -189,7 +189,7 @@ class TestLandscape:
         assert landscape.pop_herb[2].weight > test_population_feed[2]["weight"]
 
     def test_fittest_animal_eats_first(
-            self, setup_feeding_test, example_pop_herb
+            self, teardown_feeding_test, example_pop_herb
     ):
         """
         Tests that the strongest animal has eaten first, in a situation
