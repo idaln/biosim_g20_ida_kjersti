@@ -45,7 +45,7 @@ class TestAnimal:
             {"species": "Herbivore", "age": 1, "weight": 10.0}
         ]
 
-    def test_constructor(self, example_properties_w_20):
+    def test_constructor_animal(self, example_properties_w_20):
         """
         Checks that animal class can been initialized and that some parameters
         have been unpacked correctly.
@@ -184,8 +184,8 @@ class TestAnimal:
         assert animal.prob_give_birth(num_animals=1) == 0
 
     def test_prob_of_birth_if_weight_less_than_limit(self,
-                                                        example_properties_w_20
-                                                        ):
+                                                     example_properties_w_20
+                                                     ):
         """
         Asserts that prob_give_birth returns a probability of zero if the
         mothers weight is less than the given limit.
@@ -382,31 +382,33 @@ class TestHerbivore:
             {"species": "Herbivore", "age": 1, "weight": 10.0}
         ]
 
-    def test_constructor(self, example_properties):
+    def test_constructor_herbivore(self, example_properties):
         """
-        Checks that class is initialized with given weight and age.
+        Checks that Herbivore class is initialized with correct weight and age.
         """
-        h = Herbivore(example_properties)
-        assert h.age == example_properties["age"]
-        assert h.weight == example_properties["weight"]
+        herbivore = Herbivore(example_properties)
+        assert herbivore.age == example_properties["age"]
+        assert herbivore.weight == example_properties["weight"]
 
-    def test_correct_rel_abund_fodder_herb(self, example_population,
-                                           example_properties):
+    def test_correct_rel_abund_fodder_herb(
+            self, example_population, example_properties
+    ):
         """
-        Checks that method for calculating relative abundance of fodder
-        returns the correct value.
+        Checks that find_rel_abund_of_fodder returns correct amount of fodder
+        for herb in Jungle cell.
         """
         jungle = Jungle(example_population)
         jungle.regrowth()
         herbivore = Herbivore(example_properties)
         rel_abund_fodder = herbivore.find_rel_abund_of_fodder(jungle)
         assert rel_abund_fodder == 20.0
-        # 20 is rel abundance of fodder for this herbivore calculated by hand
+        # 20 is rel abundance of fodder for this herbivore, calculated by hand
 
-    def test_propensity_dict_correct_types(self, example_properties,
-                                           example_population):
+    def test_correct_types_in_propensity_dict(
+            self, example_properties, example_population
+    ):
         """
-        Asserts that the propensity_of_each_neighbouring_cell method
+        Asserts that propensity_move_to_each_neighbour method
         returns a dictionary with tuples as keys and floats as values.
         """
         herbivore = Herbivore(example_properties)
@@ -424,8 +426,9 @@ class TestHerbivore:
             assert type(loc) is tuple
             assert type(prop) is float
 
-    def test_dict_with_correct_key_and_value_types(self, example_population,
-                                                   example_properties):
+    def test_correct_types_in_prob_move_dict(
+            self, example_population, example_properties
+    ):
         """
         Asserts that the prob_move_to_each_neighbour method returns a
         dictionary with tuples as keys and floats as values.
@@ -444,8 +447,9 @@ class TestHerbivore:
             assert type(loc) is tuple
             assert type(prob) is float
 
-    def test_dict_converted_correctly_to_list_array(self, example_properties,
-                                                    example_population):
+    def test_dict_converted_correctly_to_list_and_array(
+            self, example_properties, example_population
+    ):
         """
         Asserts that the output from convert_dict_to_list_and_array
         method are of the correct types.
@@ -463,49 +467,54 @@ class TestHerbivore:
         assert type(locs) is list
         assert type(probs) is numpy.ndarray
 
-    def test_tuple_returned(self, example_population, example_properties):
+    def test_animal_will_move_to_tuple_coordinates(
+            self, example_population, example_properties
+    ):
         """
-        Asserts that the where_will_animal_move method returns a tuple
+        Asserts that the where_will_animal_move method returns a tuple.
         """
-        dict_of_neighbours = {(1, 2): Jungle(example_population),
-                              (2, 1): Jungle(example_population),
-                              (2, 3): Jungle(example_population),
-                              (3, 2): Jungle(example_population)
-                              }
-        for jungle in dict_of_neighbours.values():
+        neighbours_for_tuple = {(1, 2): Jungle(example_population),
+                                (2, 1): Jungle(example_population),
+                                (2, 3): Jungle(example_population),
+                                (3, 2): Jungle(example_population)
+                                }
+        for jungle in neighbours_for_tuple.values():
             jungle.regrowth()
         herbivore = Herbivore(example_properties)
         assert type(herbivore.find_new_coordinates(
-            dict_of_neighbours)) is tuple
+            neighbours_for_tuple)) is tuple
 
     def test_find_correct_coordinates(self):
         """
-        Implements seeding to assert that animal returned correct location to
-        move to.
+        Implements seeding to assert that find_new_coordinates returns
+        correct location for the animal to move to.
         """
         numpy.random.seed(1)
-        test_population_coords = [
+        test_population_for_coords = [
             {"species": "Herbivore", "age": 1, "weight": 10.0}
         ]
-        test_properties_coords = {
+        test_properties_for_coords = {
             "species": "Herbivore",
             "age": 1,
             "weight": 10
         }
-        dict_of_neighbours = {(1, 2): Jungle(test_population_coords),
-                              (2, 1): Jungle(test_population_coords),
-                              (2, 3): Jungle(test_population_coords),
-                              (3, 2): Jungle(test_population_coords)
-                              }
-        for jungle in dict_of_neighbours.values():
+        neighbours_for_coords = {(1, 2): Jungle(test_population_for_coords),
+                                 (2, 1): Jungle(test_population_for_coords),
+                                 (2, 3): Jungle(test_population_for_coords),
+                                 (3, 2): Jungle(test_population_for_coords)
+                                 }
+        for jungle in neighbours_for_coords.values():
             jungle.regrowth()
-        herbivore = Herbivore(test_properties_coords)
-        assert herbivore.find_new_coordinates(dict_of_neighbours) == (2, 1)
+        herbivore = Herbivore(test_properties_for_coords)
+        assert herbivore.find_new_coordinates(neighbours_for_coords) == (2, 1)
 
-    def test_coordinates_returned_when_true(self, mocker, example_properties):
+    def test_coordinates_returned_when_animal_will_move_true(
+            self, mocker, example_properties
+    ):
         """
-        Asserts that a tuple of coordinates is returned if the animal will
-        move.
+        Asserts that a tuple of coordinates is returned from
+        return_new_coordinates if the animal will move because the random
+        number is less than the probability of moving.
         """
         test_population_true = [
             {"species": "Herbivore", "age": 1, "weight": 10.0}
@@ -548,26 +557,25 @@ class TestCarnivore:
         ]
 
     @pytest.fixture
-    def setup_class(cls):
+    def setup_class(self):
         """
-        This class is for use in test_kill_when_prob_is_one, where we need to
-        change the DeltaPhiMax parameter. After test is run, we tear it down
+        This class is for use in several tests, where we need to change the
+        DeltaPhiMax parameter. After a test is run, we tear it down
         and set the parameter back to it's initial value.
-
         """
         default_params = Carnivore.params.copy()
         yield None
         Carnivore.params = default_params
 
-    def test_constructor(self, example_properties):
+    def test_constructor_carnivore(self, example_properties):
         """
-        Checks that class is initialized with given weight and age.
+        Checks that class is initialized with correct weight and age.
         """
         carnivore = Carnivore(example_properties)
         assert carnivore.age == example_properties["age"]
         assert carnivore.weight == example_properties["weight"]
 
-    def test_correct_prob(self, example_properties):
+    def test_correct_prob_of_killing(self, example_properties, setup_class):
         """
         Asserts that prob_kill returns correct probability.
         """
@@ -578,7 +586,9 @@ class TestCarnivore:
         prob = carnivore.prob_kill(herb_fitness)
         assert prob == approx(0.04983411986)
 
-    def test_kill_when_prob_is_one(self, setup_class, example_properties):
+    def test_true_when_prob__of_killing_is_one(
+            self, setup_class, example_properties
+    ):
         """
         Asserts that kill method returns True when prob_kill is one.
         """
@@ -589,7 +599,7 @@ class TestCarnivore:
         carnivore.params["DeltaPhiMax"] = 0.1
         assert carnivore.kill(herbivore) is True
 
-    def test_not_kill_when_prob_is_zero(self, example_properties):
+    def test_false_when_prob_of_killing_is_zero(self, example_properties):
         """
         Asserts that kill method returns False when prob_kill is zero.
         """
@@ -599,21 +609,23 @@ class TestCarnivore:
         carnivore.fitness = 0.5
         assert carnivore.kill(herbivore) is False
 
-    def test_carn_doesnt_eat_when_no_herbs(self, example_properties):
+    def test_carn_doesnt_eat_when_no_herbs_available(self, example_properties):
         """
-        Asserts that carnivore hasn't gained weight when there are no
-        herbivores to be eaten.
+        Asserts that carnivore hasn't gained weight after eat method when there
+        are no herbivores to be eaten.
         """
         carnivore = Carnivore(example_properties)
         old_weight = carnivore.weight
         pop_herb = []
         carnivore.eat(pop_herb)
-        new_weight = carnivore.weight
-        assert new_weight == old_weight
+        assert carnivore.weight == old_weight
 
-    def test_carn_gained_weight_after_eating(self, example_properties):
+    def test_carn_gained_weight_after_eating(
+            self, example_properties, setup_class
+    ):
         """
-        Assert that carnivore has gained weight after eating.
+        Assert that carnivore has gained weight after eat method
+        when there is a weaker herbivore available.
         """
         carnivore = Carnivore(example_properties)
         carnivore.find_fitness()
@@ -624,9 +636,10 @@ class TestCarnivore:
         carnivore.eat([herb])
         assert old_weight < carnivore.weight
 
-    def test_list_of_herbs_returned(self, example_properties):
+    def test_list_of_herbs_returned(self, example_properties, setup_class):
         """
-        Asserts that eat method returns a list of herbivore class instances.
+        Asserts that eat method returns a list of herbivore class instances
+        when the carnivore has eaten a herbivore.
         """
         carnivore = Carnivore(example_properties)
         carnivore.find_fitness()
@@ -639,8 +652,8 @@ class TestCarnivore:
     def test_correct_rel_abund_fodder_carn(self, example_population_carn,
                                            example_properties):
         """
-        Checks that method for calculating relative abundance of fodder
-        returns the correct value.
+        Checks that find_rel_abund_of_fodder returns correct value for
+        carnivores.
         """
         jungle = Jungle(example_population_carn)
         carnivore = Carnivore(example_properties)
