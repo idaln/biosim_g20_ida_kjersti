@@ -258,12 +258,12 @@ class TestAnimal:
         assert baby_weight == 5.5
         assert animal.weight > baby_weight * animal.params['xi']
 
-    def test_no_baby_when_mothers_weight_small(
+    def test_no_birth_when_mothers_weight_small(
             self, example_properties_w_40, mocker
     ):
         """
         Asserts that no baby is born from running birth_process
-        when mother's weight is too small.
+        when mother's weight is less than xi times baby's weight.
         """
         mocker.patch('numpy.random.normal', return_value=50)
         animal = Animal(example_properties_w_40)
@@ -271,45 +271,52 @@ class TestAnimal:
         baby_weight = animal.birth_process(num_animals=6)
         assert baby_weight is None
 
-    def test_mother_loses_weight(self, example_properties_w_40, mocker):
+    def test_mother_loses_weight_after_birth(
+            self, example_properties_w_40, mocker
+    ):
         """
         Test birth_process method.
-        Asserts that mother loses weight equal to xi * birth weight
+        Asserts that mother loses weight equal to xi * baby's weight after
+        giving birth.
         """
         mocker.patch('numpy.random.normal', return_value=5.5)
-        a = Animal(example_properties_w_40)
-        a.find_fitness()
-        initial_weight = a.weight
-        birth_weight = a.birth_process(num_animals=6)
-        assert a.weight == initial_weight - (a.params['xi'] * birth_weight)
+        animal = Animal(example_properties_w_40)
+        animal.find_fitness()
+        initial_weight = animal.weight
+        birth_weight = animal.birth_process(num_animals=6)
+        assert animal.weight == initial_weight - \
+            (animal.params['xi'] * birth_weight)
 
-    def test_birth_weight_different_from_zero(self, example_properties_w_40,
-                                              mocker):
+    def test_no_birth_if_baby_weight_is_zero(
+            self, example_properties_w_40, mocker
+    ):
         """
         Tests birth_process method.
-        Asserts that no baby is born if the baby weight is equal to zero.
+        Asserts that no baby is born if the baby's birth weight is
+        equal to zero.
         """
         mocker.patch('numpy.random.normal', return_value=0)
-        a = Animal(example_properties_w_40)
-        a.find_fitness()
-        assert a.birth_process(num_animals=6) is None
+        animal = Animal(example_properties_w_40)
+        animal.find_fitness()
+        assert animal.birth_process(num_animals=6) is None
 
-    def test_prob_death_is_one(self, example_properties_w_20):
+    def test_prob_death_is_one_if_fitness_zero(self, example_properties_w_20):
         """
-        Asserts that the probability of dying is one if fitness equals zero.
+        Asserts that the probability calculated from prob_death is one
+        if fitness equals zero.
         """
-        a = Animal(example_properties_w_20)
-        a.weight = 0
-        a.find_fitness()
-        assert a.prob_death() == 1
+        animal = Animal(example_properties_w_20)
+        animal.weight = 0
+        animal.find_fitness()
+        assert animal.prob_death() == 1
 
     def test_correct_prob_death(self, example_properties_w_20):
         """
-        Asserts that the probability of dying is calculated correctly.
+        Asserts that prob_death calculates the probability of dying correctly.
         """
-        a = Animal(example_properties_w_20)
-        a.find_fitness()
-        assert a.prob_death() == approx(0.0014929212599999687)
+        animal = Animal(example_properties_w_20)
+        animal.find_fitness()
+        assert animal.prob_death() == approx(0.0014929212599999687)
 
     def test_false_death_prob_is_one(self, example_properties_w_20):
         """
