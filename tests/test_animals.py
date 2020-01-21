@@ -1,9 +1,16 @@
 # -*- coding: utf-8 -*-
-import pytest
+
+"""
+Test set for Animal class interface.
+
+This set of tests checks the interface and functionality of the Animal class
+provided by the animal module of the biosim package.
+"""
 
 __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idaln@hotmail.com & kjkv@nmbu.no"
 
+import pytest
 from biosim.animals import Animal, Herbivore, Carnivore
 from biosim.landscape import Jungle
 from pytest import approx

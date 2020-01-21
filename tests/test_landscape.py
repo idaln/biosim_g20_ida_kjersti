@@ -1,4 +1,10 @@
 # -*- coding: utf-8 -*-
+"""
+Test set for Landscape class interface.
+
+This set of tests checks the interface and functionality of the Landscape class
+provided by the landscape module of the biosim package.
+"""
 
 __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idaln@hotmail.com & kjkv@nmbu.no"

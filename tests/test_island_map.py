@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
 
+"""
+Test set for IslandMap class interface.
+
+This set of tests checks the interface and functionality of the IslandMap class
+provided by the island_map module of the biosim package.
+"""
+
 __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idna@nmbu.no & kjkv@nmbu.no"
 
