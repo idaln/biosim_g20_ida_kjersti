@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+"""
+This module provides classes implementing the animals on the Island.
+"""
+
 __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idna@nmbu.no & kjkv@nmbu.no"
 

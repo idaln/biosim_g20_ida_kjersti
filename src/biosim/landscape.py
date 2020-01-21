@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+"""
+This module provides classes implementing landscape types for the Island.
+"""
+
 __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idaln@hotmail.com & kjkv@nmbu.no"
 

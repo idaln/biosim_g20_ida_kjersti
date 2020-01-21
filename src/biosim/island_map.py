@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+"""
+This module provides the class for implementing the Island and it's seasons.
+"""
+
 __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idna@nmbu.no & kjkv@nmbu.no"
 

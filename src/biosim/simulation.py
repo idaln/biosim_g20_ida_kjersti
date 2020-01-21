@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
 """
-
+This module provides classes organizing entire simulation, including
+visualization and saving graphics.
 """
+
 from biosim.animals import Animal, Herbivore, Carnivore
 from biosim.landscape import Landscape, Jungle, Savannah, Desert, Mountain, \
     Ocean
