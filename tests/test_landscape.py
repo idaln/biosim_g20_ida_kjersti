@@ -46,7 +46,7 @@ class TestLandscape:
          }
 
     @pytest.fixture
-    def setup_for_feed_test(self):
+    def setup_feeding_test(self):
         """
         Sets up parameters for test_fittest_animal_eats_first method.
         """
@@ -189,7 +189,7 @@ class TestLandscape:
         assert landscape.pop_herb[2].weight > test_population_feed[2]["weight"]
 
     def test_fittest_animal_eats_first(
-            self, setup_for_feed_test, example_pop_herb
+            self, setup_feeding_test, example_pop_herb
     ):
         """
         Tests that the strongest animal has eaten first, in a situation
