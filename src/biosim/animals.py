@@ -133,10 +133,10 @@ class Animal:
         Updates fitness.
         Fitness is zero if weight is zero, otherwise given by
         ..math::
-            `q\\^{+}(a, a_{\\fraq{1}{2}}, \\phi_{age}) \\cdot q\\^{-1}(w, w_{\\fraq{1}{2}}, \\phi_{weight}`
+        q\\^{+}(a, a_{\\fraq{1}{2}}, \\phi_{age}) \\cdot q\\^{-1}(w, w_{\\fraq{1}{2}}, \\phi_{weight}
         where
         ..math::
-            `q\\^{\\pm}(x, x_{\\fraq{1}{2}, \\phi) = \\fraq{1}{1 + e\\^{\\pm \\phi(x-x_{\\fraq{1}{2}})}`
+        q\\^{\\pm}(x, x_{\\fraq{1}{2}, \\phi) = \\fraq{1}{1 + e\\^{\\pm \\phi(x-x_{\\fraq{1}{2}})}
         """
 
         q_plus = 1/(1 + math.exp(
@@ -157,8 +157,9 @@ class Animal:
         """
         Computes the probability of moving at all, which depends on the
         animal's fitness.
-        :return: float
-            Probability of moving
+
+        :return: Probability of moving
+        :rtype: float
         """
         if self.fitness_must_be_updated is True:
             self.find_fitness()
@@ -167,10 +168,11 @@ class Animal:
 
     def will_animal_move(self):
         """
-        Uses the probability of the animal moving to decide whether it should
-        move or not.
-        :return: bool
-            True if animal will move, False if not.
+        Compared probability of animal moving and a random number to decide
+        whether the animal should move.
+
+        :return: True if animal will move, False if not.
+        :rtype: bool
         """
         prob = self.prob_of_animal_moving()
         random_number = np.random.random()
@@ -181,11 +183,15 @@ class Animal:
 
     def find_rel_abund_of_fodder(self, landscape_cell):
         """
-        Takes an instance of a landscape class, and returns the relative
-        abundance of fodder in that instance.
-        :param landscape_cell: dict
-            Instance of landscape class
-        :return: float
+        Takes an instance of a landscape class and returns the relative
+        abundance of fodder in that instance, given by
+        ..math::
+        \\epsilon = \\fraq{f_k}{(n_k + 1)F^'}
+
+        :param landscape_cell: Instance of landscape class
+        :type landscape_cell: dict
+        :return: Relative abundance of fodder
+        :rtype: float
         """
         fodder_animal = landscape_cell.fodder_amount
         num_animals = len(landscape_cell.population)
@@ -196,10 +202,12 @@ class Animal:
     def propensity_move_to_each_neighbour(self, neighbours_of_current_cell):
         """
         Finds the propensity for the animal to move to each of it's neighbours.
-        :param neighbours_of_current_cell: dict
-            Contains neighbours of current cell.
+
+        :param neighbours_of_current_cell: Contains neighbours of current cell.
             Location as keys, instance of landscape class as value
-        :return: loc_to_propensity_dict: dict
+        :type: dict
+        :return: Maps location to it's propensity.
+        :rtype: dict
         """
 
         loc_to_propensity_dict = {}
