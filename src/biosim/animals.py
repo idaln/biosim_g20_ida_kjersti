@@ -162,8 +162,7 @@ class Animal:
 
     def prob_of_animal_moving(self):
         """
-        Computes the probability of moving at all, which depends on the
-        animal's fitness.
+        Computes the probability of moving at all, given by :math:`\\mu \\phi`
 
         :return: Probability of moving
         :rtype: float
@@ -197,6 +196,9 @@ class Animal:
 
             \\epsilon = \\frac{f_k}{(n_k + 1)F^{'}}
 
+        where :math:`\f_k` is the amount of relevant fodder and `n_k` is the
+        number of animals of same species in cell k. 
+
         :param landscape_cell: Instance of landscape class
         :type landscape_cell: dict
         :return: Relative abundance of fodder
@@ -215,7 +217,7 @@ class Animal:
 
         .. math::
 
-            \\phi =
+            \\pi_{i \\to j} =
             \\Biggl
             \\lbrace
             {
@@ -242,9 +244,17 @@ class Animal:
 
     def prob_move_to_each_neighbour(self, neighbours_of_current_cell):
         """
-        Iterates through the dict of neighbours to the current cell. Finds
+        Iterates through the dict of neighbours for the current cell. Finds
         the probability of moving to each of the neighbouring cells. Returns
         a dict mapping cell locations to the probability of moving there.
+        The probability is given by
+
+        .. math::
+
+            p = \\frac{\\pi_{i \\to j}{\\Sigma_{j \\in C^{(i)} \\pi_{i \\to j}
+
+        where :math: \\pi_{i \\to j} is the propensity to move from cell i to
+        cell j.
 
         :param neighbours_of_current_cell: Neighbours of current cell.
             Locations as keys, instance of landscape class as value.
@@ -276,7 +286,7 @@ class Animal:
         :param moving_prob_for_each_loc: Contains the locations of each
         surrounding cell as keys, and the probabilities for the animal to move
         to each of them as values.
-        :type: dict
+        :type moving_prob_for_each_loc: dict
         :return: List of locations of neighbouring cells, numpy array of the
             probabilities of moving to each.
         :rtype: list, array
@@ -482,6 +492,9 @@ class Herbivore(Animal):
 
             \\epsilon = \\frac{f_k}{(n_k + 1)F^{'}}
 
+        where :math:`\f_k` is the amount of relevant fodder and `n_k` is the
+        number of animals of same species in cell k.
+
         :param landscape_cell: Instance of landscape class
         :type landscape_cell: dict
         :return: Relative abundance of fodder
@@ -608,6 +621,9 @@ class Carnivore(Animal):
         .. math::
 
             \\epsilon = \\frac{f_k}{(n_k + 1)F^{'}}
+
+        where :math:`\f_k` is the amount of relevant fodder and `n_k` is the
+        number of animals of same species in cell k.
 
         :param landscape_cell: Instance of landscape class
         :type landscape_cell: dict
