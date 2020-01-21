@@ -142,7 +142,7 @@ class Animal:
 
         .. math::
 
-            q^{\\pm}(x, x_{\\frac{1}{2}, \\phi) = \\frac{1}{1 + e^
+            q^{\\pm}(x, x_{\\frac{1}{2}}, \\phi) = \\frac{1}{1 + e^
             {\\pm \\phi(x-x_{\\frac{1}{2}})}
 
         """
@@ -237,7 +237,7 @@ class Animal:
         :param neighbours_of_current_cell: Neighbours of current cell.
             Locations as keys, instance of landscape class as value.
         :type neighbours_of_current_cell: dict
-        :returns: Locations of each surrounding cell as keys, probabilities for
+        :return: Locations of each surrounding cell as keys, probabilities for
             the animal to move to each of them as values.
         :rtype: dict
 
@@ -265,7 +265,7 @@ class Animal:
         surrounding cell as keys, and the probabilities for the animal to move
         to each of them as values.
         :type: dict
-        :returns: List of locations of neighbouring cells, numpy array of the
+        :return: List of locations of neighbouring cells, numpy array of the
             probabilities of moving to each.
         :rtype: list, array
         """
@@ -285,7 +285,7 @@ class Animal:
             Locations as keys,
             instance of landscape class as value.
         :type neighbours_of_current_cell: dict
-        :returns: The location the animal will move to.
+        :return: The location the animal will move to.
         :rtype: tuple
 
         """
@@ -331,7 +331,7 @@ class Animal:
 
         :param num_animals: Number of animals of same species in cell
         :type num_animals: int
-        :returns: The probability for the animal to give birth.
+        :return: The probability for the animal to give birth.
         :rtype: float
         """
         if self.fitness_must_be_updated is True:
@@ -352,8 +352,8 @@ class Animal:
         Checks probability of giving birth and returns True if a baby is to be
         born.
 
-        :returns True if animal shall give birth
-        :rtype bool
+        :return: True if animal shall give birth
+        :rtype: bool
         """
         prob = self.prob_give_birth(num_animals)
         random_number = np.random.random()
@@ -366,7 +366,7 @@ class Animal:
         If birth takes place, a birth weight is returned and weight of mother
         is reduced according to given formula.
 
-        :returns Returns weight of the baby that is born, or None if no baby
+        :return: Returns weight of the baby that is born, or None if no baby
                 is born.
         :rtype: float, None
         """
@@ -400,8 +400,8 @@ class Animal:
         """
         Checks the probability of death. Returns True if the animal lives.
 
-        :return True is animal lives
-        :rtype bool
+        :return: True is animal lives
+        :rtype: bool
         """
         prob = self.prob_death()
         random_number = np.random.random()
@@ -465,6 +465,7 @@ class Herbivore(Animal):
         abundance of fodder for herbivores in that instance, given by
 
         .. math::
+
             \\epsilon = \\frac{f_k}{(n_k + 1)F^'}
 
         :param landscape_cell: Instance of landscape class
@@ -535,7 +536,7 @@ class Carnivore(Animal):
 
         :param fitness_herb: Fitness of herbivore
         :type fitness_herb: float
-        :return Probability of carnivore killing a herbivore
+        :return: Probability of carnivore killing a herbivore
         :rtype: int, float
         """
         if self.fitness <= fitness_herb:
@@ -571,7 +572,7 @@ class Carnivore(Animal):
         :param pop_herb: Herbivores available to the carnivore sorted by
                 fitness
         :type pop_herb: list
-        :return List of herbivores killed
+        :return: List of herbivores killed
         :rtype: list
         """
         amount_eaten = 0
@@ -591,6 +592,7 @@ class Carnivore(Animal):
         abundance of fodder in that instance, given by
 
         .. math::
+
             \\epsilon = \\frac{f_k}{(n_k + 1)F^'}
 
         :param landscape_cell: Instance of landscape class
