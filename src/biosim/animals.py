@@ -135,14 +135,14 @@ class Animal:
 
         .. math::
 
-            q\\^{+}(a, a_{\\frac{1}{2}}, \\phi_{age}) \\cdot q\\^{-}
-            (w, w_{\\frac{1}{2}}, \\phi_{weight}
+            q^{+}(a, a_{\\frac{1}{2}}, \\phi_{age}) \\cdot q^{-}
+            (w, w_{\\frac{1}{2}}, \\phi_{weight})
 
         where
 
         .. math::
 
-            q\\^{\\pm}(x, x_{\\frac{1}{2}, \\phi) = \\frac{1}{1 + e\\^
+            q^{\\pm}(x, x_{\\frac{1}{2}, \\phi) = \\frac{1}{1 + e^
             {\\pm \\phi(x-x_{\\frac{1}{2}})}
 
         """
@@ -194,7 +194,8 @@ class Animal:
         Takes an instance of a landscape class and returns the relative
         abundance of fodder in that instance, given by
 
-        .. math:: \\epsilon = \\frac{f_k}{(n_k + 1)F^'}
+        .. math::
+            \\epsilon = \\frac{f_k}{(n_k + 1)F^'}
 
         :param landscape_cell: Instance of landscape class
         :type landscape_cell: dict
@@ -383,7 +384,7 @@ class Animal:
         Finds probability of death, which depends on the fitness of the
         animal.
 
-        :return 1 if fitness is zero, :math:`\\omega \\cdot (1 - \\phi)`
+        :return: 1 if fitness is zero, :math:`\\omega \\cdot (1 - \\phi)`
             otherwise
         :rtype: float, int
         """
@@ -463,7 +464,8 @@ class Herbivore(Animal):
         Takes an instance of a landscape class, and returns the relative
         abundance of fodder for herbivores in that instance, given by
 
-        .. math:: \\epsilon = \\frac{f_k}{(n_k + 1)F^'}
+        .. math::
+            \\epsilon = \\frac{f_k}{(n_k + 1)F^'}
 
         :param landscape_cell: Instance of landscape class
         :type landscape_cell: dict
@@ -588,7 +590,8 @@ class Carnivore(Animal):
         Takes an instance of a landscape class, and returns the relative
         abundance of fodder in that instance, given by
 
-        .. math:: \\epsilon = \\frac{f_k}{(n_k + 1)F^'}
+        .. math::
+            \\epsilon = \\frac{f_k}{(n_k + 1)F^'}
 
         :param landscape_cell: Instance of landscape class
         :type: dict
