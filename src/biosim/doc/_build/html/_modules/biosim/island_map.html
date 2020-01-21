@@ -222,8 +222,7 @@
 
 <span class="sd">        :param current_coordinates: Location of current cell</span>
 <span class="sd">        :type current_coordinates: tuple</span>
-
-<span class="sd">        :return: locations as keys and landscape class instance as values</span>
+<span class="sd">        :return: Locations as keys and landscape class instance as values</span>
 <span class="sd">        :rtype: dict</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">neighbours_of_current_cell</span> <span class="o">=</span> <span class="p">{}</span>
@@ -248,8 +247,9 @@
 
 <span class="sd">        :param current_coordinates: x coordinate, y coordinate</span>
 <span class="sd">        :type current_coordinates: tuple</span>
-<span class="sd">        :param single_animal: Either herbivore or carnivore that tries to move</span>
-<span class="sd">        :type single_animal: class instance</span>
+<span class="sd">        :param single_animal: animal that tries to move</span>
+<span class="sd">        :type single_animal: class &#39;__main__.Herbivore&#39; or</span>
+<span class="sd">            class &#39;__main__.Carnivore&#39;</span>
 
 <span class="sd">        :return: True if animal has moved, False if not</span>
 <span class="sd">        :rtype: bool</span>
@@ -277,7 +277,8 @@
 <span class="sd">        :param current_coordinates: x coordinate, y coordinate</span>
 <span class="sd">        :type current_coordinates: tuple</span>
 <span class="sd">        :param current_landscape: Landscape type of current cell</span>
-<span class="sd">        :type current_landscape: class instance</span>
+<span class="sd">        :type current_landscape: class &#39;__main__.Jungle&#39;,</span>
+<span class="sd">            class &#39;__main__.Desert&#39;, class &#39;__main__.Savannah&#39;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">current_landscape</span><span class="o">.</span><span class="n">pop_herb</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">animal</span> <span class="k">for</span> <span class="n">animal</span> <span class="ow">in</span> <span class="n">current_landscape</span><span class="o">.</span><span class="n">pop_herb</span>

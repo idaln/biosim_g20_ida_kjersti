@@ -1,9 +1,16 @@
 # -*- coding: utf-8 -*-
-import pytest
+
+"""
+Test set for Animal class interface.
+
+This set of tests checks the interface and functionality of the Animal class
+provided by the animal module of the biosim package.
+"""
 
 __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idaln@hotmail.com & kjkv@nmbu.no"
 
+import pytest
 from biosim.animals import Animal, Herbivore, Carnivore
 from biosim.landscape import Jungle
 from pytest import approx
@@ -15,7 +22,7 @@ class TestAnimal:
     Tests for Animal class.
     """
     @pytest.fixture
-    def example_properties(self):
+    def example_properties_w_20(self):
         return {
             "species": "animal",
             "age": 5,
@@ -38,35 +45,33 @@ class TestAnimal:
             {"species": "Herbivore", "age": 1, "weight": 10.0}
         ]
 
-    def test_constructor(self, example_properties):
+    def test_constructor(self, example_properties_w_20):
         """
-        Checks that class has been initialized and some parameters have
-        been unpacked correctly.
+        Checks that animal class can been initialized and that some parameters
+        have been unpacked correctly.
         """
-        # Animal.params = test_params
-        # Det her går ann, men da må alle tester endres
-        a = Animal(example_properties)
-        assert a.age == 5
-        assert a.params['a_half'] == 60
-        assert a.params['omega'] == 0.9
+        animal = Animal(example_properties_w_20)
+        assert animal.age == 5
+        assert animal.params['a_half'] == 60
+        assert animal.params['omega'] == 0.9
 
-    def test_invalid_age(self):
+    def test_error_raised_from_invalid_age(self):
         """
-        Tests that ValueError is raised if animal with negative age is created.
+        Tests that ValueError is raised if animal with negative age is
+        initialized.
         """
         properties_age = {
             "species": "animal",
             "age": -5,
             "weight": 40
         }
-
         with pytest.raises(ValueError):
             Animal(properties_age)
 
-    def test_negative_weight(self):
+    def test_error_raised_from_negative_weight(self):
         """
         Tests that ValueError is raised if animal with negative weight is
-        created.
+        initialized.
         """
         properties_weight = {
             "species": "animal",
@@ -76,10 +81,10 @@ class TestAnimal:
         with pytest.raises(ValueError):
             Animal(properties_weight)
 
-    def test_weight_zero(self):
+    def test_error_raised_from_weight_zero(self):
         """
         Tests that ValueError is raised if animal with weight zero is
-        created.
+        initialized.
         """
         properties_weight_zero = {
             "species": "animal",
@@ -89,117 +94,128 @@ class TestAnimal:
         with pytest.raises(ValueError):
             Animal(properties_weight_zero)
 
-    def test_is_animal_one_year_older(self, example_properties):
+    def test_is_animal_one_year_older(self, example_properties_w_20):
         """
-        Checks that animal is one year older than last year.
+        Checks that animal is one year older than last year after running
+        make_animal_one_year_older method.
         """
-        a = Animal(example_properties)
-        initial_age = a.age
-        a.make_animal_one_year_older()
-        assert a.age - initial_age == 1
+        animal = Animal(example_properties_w_20)
+        initial_age = animal.age
+        animal.make_animal_one_year_older()
+        assert animal.age - initial_age == 1
 
-    def test_has_animal_lost_weight(self, example_properties):
+    def test_has_animal_lost_weight(self, example_properties_w_20):
         """
-        Checks that weight after weight loss is less than initial weight
+        Checks that weight after weight loss is less than initial weight after
+        running weight_loss method
         """
-        a = Animal(example_properties)
-        initial_weight = a.weight
-        a.weight_loss()
-        assert a.weight < initial_weight
+        animal = Animal(example_properties_w_20)
+        initial_weight = animal.weight
+        animal.weight_loss()
+        assert animal.weight < initial_weight
 
-    def test_has_animal_gained_weight(self, example_properties):
+    def test_has_animal_gained_weight_from_eating(
+            self, example_properties_w_20
+    ):
         """
-        Checks that animal has gained weight after eating.
+        Checks that herbivore has gained weight after running
+        add_eaten_fodder_to_weight method.
         """
-        a = Animal(example_properties)
+        animal = Animal(example_properties_w_20)
         test_fodder = 8
-        initial_weight = a.weight
-        a.add_eaten_fodder_to_weight(test_fodder)
-        assert a.weight > initial_weight
+        initial_weight = animal.weight
+        animal.add_eaten_fodder_to_weight(test_fodder)
+        assert animal.weight > initial_weight
 
-    def test_fitness_between_zero_and_one(self, example_properties):
+    def test_fitness_between_zero_and_one(self, example_properties_w_20):
         """
-        Checks that fitness is between 0 and 1.
+        Checks that find_fitness method calculates a fitness between 0 and 1.
         """
-        a = Animal(example_properties)
-        a.find_fitness()
-        assert 0 <= a.fitness <= 1
+        animal = Animal(example_properties_w_20)
+        animal.find_fitness()
+        assert 0 <= animal.fitness <= 1
 
-    def test_fitness_zero_if_weight_zero(self, example_properties):
+    def test_fitness_zero_if_weight_zero(self, example_properties_w_20):
         """
-        Checks that fitness is zero if weight is zero.
+        Checks that find_fitness method calculates a fitness of zero if
+        weight of the animal is zero.
         """
-        a = Animal(example_properties)
-        a.weight = 0
-        a.find_fitness()
-        assert a.fitness == 0
+        animal = Animal(example_properties_w_20)
+        animal.weight = 0
+        animal.find_fitness()
+        assert animal.fitness == 0
 
-    def test_correct_fitness(self, example_properties):
+    def test_correct_fitness_calculated(self, example_properties_w_20):
         """
-        Checks that fitness formula yields correct value.
+        Checks that find_fitness method calculates correct value.
         """
-        a = Animal(example_properties)
-        a.find_fitness()
-        assert a.fitness == approx(0.9983411986)
+        animal = Animal(example_properties_w_20)
+        animal.find_fitness()
+        assert animal.fitness == approx(0.9983411986)
 
-    def test_correct_prob_of_moving(self, example_properties):
+    def test_correct_prob_of_moving(self, example_properties_w_20):
         """
-        Asserts that method calculates the probability of moving correctly.
+        Asserts that prob_of_animal_moving calculates the correct probability
+        of moving.
         """
-        animal = Animal(example_properties)
+        animal = Animal(example_properties_w_20)
         animal.find_fitness()
         assert animal.prob_of_animal_moving() == approx(0.3993364794)
 
-    def test_correct_bool_of_moving(self, example_properties, mocker):
+    def test_correct_bool_of_moving(self, example_properties_w_20, mocker):
         """
-        Asserts that method returns True when a certain random number
-        is drawn.
+        Asserts that will_animal_move method returns True for a certain
+        probability and a specific random number.
         """
         mocker.patch('numpy.random.random', return_value=0.1)
-        animal = Animal(example_properties)
+        animal = Animal(example_properties_w_20)
         animal.fitness = 1
         assert animal.will_animal_move() is True
 
-    def test_prob_give_birth_one_animal_in_square(self, example_properties):
+    def test_prob_of_birth_with_one_animal_in_cell(self,
+                                                   example_properties_w_20
+                                                   ):
         """
-        Asserts that if there is only one animal in the square, then the
-        probability of giving birth is zero.
+        Asserts that if there is only one animal in the cell, then the
+        prob_give_birth method returns a probability of zero.
         """
-        a = Animal(example_properties)
-        a.find_fitness()
-        assert a.prob_give_birth(num_animals=1) == 0
+        animal = Animal(example_properties_w_20)
+        animal.find_fitness()
+        assert animal.prob_give_birth(num_animals=1) == 0
 
-    def test_prob_give_birth_weight_less_than_limit(self, example_properties):
+    def test_prob_of_birth_if_weight_less_than_limit(self,
+                                                        example_properties_w_20
+                                                        ):
         """
-        Asserts that probability of giving birth is zero if the mothers
-        weight is less than a given limit.
+        Asserts that prob_give_birth returns a probability of zero if the
+        mothers weight is less than the given limit.
         """
-        a = Animal(example_properties)
-        a.find_fitness()
-        assert a.prob_give_birth(num_animals=6) == 0
+        animal = Animal(example_properties_w_20)
+        animal.find_fitness()
+        assert animal.prob_give_birth(num_animals=6) == 0
 
-    def test_correct_birth_prob(self, example_properties_w_40):
+    def test_correct_prob_of_birth(self, example_properties_w_40):
         """
-        Asserts that the calculated probability is correct.
+        Asserts that prob_give_birth calculates the correct probability of
+        giving birth.
         """
-        a = Animal(example_properties_w_40)
-        a.find_fitness()
-        assert a.prob_give_birth(num_animals=6) == 1
+        animal = Animal(example_properties_w_40)
+        animal.find_fitness()
+        assert animal.prob_give_birth(num_animals=6) == 1
 
-    def test_birth_prob_is_one(self, example_properties_w_40):
+    def test_true_if_birth_prob_one(self, example_properties_w_40):
         """
-        Tests will_birth_take_place method.
-        Checks if True is returned if probability of giving birth is 1.
+        Tests the will_birth_take_place method by checking if True is returned
+        when the probability of giving birth is 1.
         """
-        a = Animal(example_properties_w_40)
-        a.find_fitness()
-        assert a.will_birth_take_place(num_animals=6) is True
+        animal = Animal(example_properties_w_40)
+        animal.find_fitness()
+        assert animal.will_birth_take_place(num_animals=6) is True
 
-    def test_num_more_than_birth_prob(self, mocker):
+    def test_false_if_rand_num_more_than_birth_prob(self, mocker):
         """
-        Tests will_birth_take_place method.
-        Checks if False is returned if random number larger than the
-        probability is drawn.
+        Tests will_birth_take_place method by checking if False is returned
+        when a random number larger than a specific probability is drawn.
         """
         test_properties_prob = {
             "species": "animal",
@@ -207,15 +223,14 @@ class TestAnimal:
             "weight": 30
         }
         mocker.patch('numpy.random.random', return_value=0.95)
-        a = Animal(test_properties_prob)
-        a.find_fitness()
-        assert a.will_birth_take_place(num_animals=6) is not True
+        animal = Animal(test_properties_prob)
+        animal.find_fitness()
+        assert animal.will_birth_take_place(num_animals=6) is not True
 
-    def test_num_less_than_birth_prob(self, mocker):
+    def test_true_if_rand_num_less_than_birth_prob(self, mocker):
         """
-        Tests will_birth_take_place method.
-        Checks if True is returned if random number less than the
-        probability is drawn.
+        Tests will_birth_take_place method. Checks if True is returned when
+        random number less than a specific probability is drawn.
         """
         test_properties_num_less = {
             "species": "animal",
@@ -223,67 +238,91 @@ class TestAnimal:
             "weight": 30
         }
         mocker.patch('numpy.random.random', return_value=0.8)
-        a = Animal(test_properties_num_less)
-        a.find_fitness()
-        assert a.will_birth_take_place(num_animals=6) is True
+        animal = Animal(test_properties_num_less)
+        animal.find_fitness()
+        assert animal.will_birth_take_place(num_animals=6) is True
 
-    def test_mothers_weight_large_enough(self, example_properties_w_40,
-                                         mocker):
+    def test_baby_weight_returned_when_mothers_weight_large_enough(
+            self, example_properties_w_40, mocker
+    ):
         """
-        Tests birth_process method.
-        After birth, we check that no birth took place if the predicted baby
-        weight times xi is larger than the mother's weight.
+        After running birth_process, we check that a birth took place by
+        testing if baby's weight is a float of given value and that the baby's
+        weight times xi was smaller than the mother's weight.
         """
         mocker.patch('numpy.random.normal', return_value=5.5)
-        a = Animal(example_properties_w_40)
-        a.find_fitness()
-        assert a.weight > a.birth_process(num_animals=6) * a.params['xi']
+        animal = Animal(example_properties_w_40)
+        animal.find_fitness()
+        baby_weight = animal.birth_process(num_animals=6)
+        assert type(baby_weight) is float
+        assert baby_weight == 5.5
+        assert animal.weight > baby_weight * animal.params['xi']
 
-    def test_mother_loses_weight(self, example_properties_w_40, mocker):
+    def test_no_birth_when_mothers_weight_small(
+            self, example_properties_w_40, mocker
+    ):
+        """
+        Asserts that no baby is born from running birth_process
+        when mother's weight is less than xi times baby's weight.
+        """
+        mocker.patch('numpy.random.normal', return_value=50)
+        animal = Animal(example_properties_w_40)
+        animal.find_fitness()
+        baby_weight = animal.birth_process(num_animals=6)
+        assert baby_weight is None
+
+    def test_mother_loses_weight_after_birth(
+            self, example_properties_w_40, mocker
+    ):
         """
         Test birth_process method.
-        Asserts that mother loses weight equal to xi * birth weight
+        Asserts that mother loses weight equal to xi * baby's weight after
+        giving birth.
         """
         mocker.patch('numpy.random.normal', return_value=5.5)
-        a = Animal(example_properties_w_40)
-        a.find_fitness()
-        initial_weight = a.weight
-        birth_weight = a.birth_process(num_animals=6)
-        assert a.weight == initial_weight - (a.params['xi'] * birth_weight)
+        animal = Animal(example_properties_w_40)
+        animal.find_fitness()
+        initial_weight = animal.weight
+        birth_weight = animal.birth_process(num_animals=6)
+        assert animal.weight == initial_weight - \
+            (animal.params['xi'] * birth_weight)
 
-    def test_birth_weight_different_from_zero(self, example_properties_w_40,
-                                              mocker):
+    def test_no_birth_if_baby_weight_is_zero(
+            self, example_properties_w_40, mocker
+    ):
         """
         Tests birth_process method.
-        Asserts that no baby is born if the baby weight is equal to zero.
+        Asserts that no baby is born if the baby's birth weight is
+        equal to zero.
         """
         mocker.patch('numpy.random.normal', return_value=0)
-        a = Animal(example_properties_w_40)
-        a.find_fitness()
-        assert a.birth_process(num_animals=6) is None
+        animal = Animal(example_properties_w_40)
+        animal.find_fitness()
+        assert animal.birth_process(num_animals=6) is None
 
-    def test_prob_death_is_one(self, example_properties):
+    def test_prob_death_is_one_if_fitness_zero(self, example_properties_w_20):
         """
-        Asserts that the probability of dying is one if fitness equals zero.
+        Asserts that the probability calculated from prob_death is one
+        if fitness equals zero.
         """
-        a = Animal(example_properties)
-        a.weight = 0
-        a.find_fitness()
-        assert a.prob_death() == 1
+        animal = Animal(example_properties_w_20)
+        animal.weight = 0
+        animal.find_fitness()
+        assert animal.prob_death() == 1
 
-    def test_correct_prob_death(self, example_properties):
+    def test_correct_prob_death(self, example_properties_w_20):
         """
-        Asserts that the probability of dying is calculated correctly.
+        Asserts that prob_death calculates the probability of dying correctly.
         """
-        a = Animal(example_properties)
-        a.find_fitness()
-        assert a.prob_death() == approx(0.0014929212599999687)
+        animal = Animal(example_properties_w_20)
+        animal.find_fitness()
+        assert animal.prob_death() == approx(0.0014929212599999687)
 
-    def test_false_death_prob_is_one(self, example_properties):
+    def test_false_death_prob_is_one(self, example_properties_w_20):
         """
         Assert that False is returned if probability of dying is one.
         """
-        a = Animal(example_properties)
+        a = Animal(example_properties_w_20)
         a.weight = 0
         a.find_fitness()
         assert a.will_animal_live() is not True
@@ -296,23 +335,23 @@ class TestAnimal:
         a = Animal(example_properties_w_40)
         assert a.will_animal_live() is True
 
-    def test_num_less_than_death_prob(self, example_properties, mocker):
+    def test_num_less_than_death_prob(self, example_properties_w_20, mocker):
         """
         Asserts that True is not returned if the random number is less than
         the death probability.
         """
         mocker.patch('numpy.random.random', return_value=0.0005)
-        a = Animal(example_properties)
+        a = Animal(example_properties_w_20)
         a.find_fitness()
         assert a.will_animal_live() is not True
 
-    def test_num_more_than_death_prob(self, example_properties, mocker):
+    def test_num_more_than_death_prob(self, example_properties_w_20, mocker):
         """
         Asserts that True is returned if the random number is larger than
         the death probability.
         """
         mocker.patch('numpy.random.random', return_value=0.5)
-        a = Animal(example_properties)
+        a = Animal(example_properties_w_20)
         a.find_fitness()
         assert a.will_animal_live() is True
 

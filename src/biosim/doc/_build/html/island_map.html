@@ -177,7 +177,8 @@ animals, and updates animal population lists if an animal moved.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>current_coordinates</strong> (<em>tuple</em>) – x coordinate, y coordinate</li>
-<li><strong>current_landscape</strong> (<em>class instance</em>) – Landscape type of current cell</li>
+<li><strong>current_landscape</strong> (<em>class '__main__.Jungle'</em><em>,
+</em><em>class '__main__.Desert'</em><em>, </em><em>class '__main__.Savannah'</em>) – Landscape type of current cell</li>
 </ul>
 </td>
 </tr>
@@ -199,7 +200,8 @@ The new cell gets updated population lists.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>current_coordinates</strong> (<em>tuple</em>) – x coordinate, y coordinate</li>
-<li><strong>single_animal</strong> (<em>class instance</em>) – Either herbivore or carnivore that tries to move</li>
+<li><strong>single_animal</strong> (<em>class '__main__.Herbivore'</em><em> or
+</em><em>class '__main__.Carnivore'</em>) – animal that tries to move</li>
 </ul>
 </td>
 </tr>
@@ -225,7 +227,7 @@ with landscape types an animal can move to, are returned.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>current_coordinates</strong> (<em>tuple</em>) – Location of current cell</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">locations as keys and landscape class instance as values</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Locations as keys and landscape class instance as values</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
 </tr>

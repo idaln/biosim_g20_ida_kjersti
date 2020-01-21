@@ -176,8 +176,8 @@
 
 <span class="sd">        .. math::</span>
 
-<span class="sd">            q^{\\pm}(x, x_{\\frac{1}{2}}, \\phi) = \\frac{1}{1 + e^</span>
-<span class="sd">            {\\pm \\phi(x-x_{\\frac{1}{2}})}</span>
+<span class="sd">            q^{\\pm}(x, x_{\\frac{1}{2}}, \\phi) = \\frac{1}{1 + e^{\\pm</span>
+<span class="sd">            \\phi(x-x_{\\frac{1}{2}})}}</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -197,8 +197,7 @@
 
 <div class="viewcode-block" id="Animal.prob_of_animal_moving"><a class="viewcode-back" href="../../animals.html#biosim.animals.Animal.prob_of_animal_moving">[docs]</a>    <span class="k">def</span> <span class="nf">prob_of_animal_moving</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Computes the probability of moving at all, which depends on the</span>
-<span class="sd">        animal&#39;s fitness.</span>
+<span class="sd">        Computes the probability of moving at all, given by :math:`\\mu \\phi`.</span>
 
 <span class="sd">        :return: Probability of moving</span>
 <span class="sd">        :rtype: float</span>
@@ -229,7 +228,11 @@
 <span class="sd">        abundance of fodder in that instance, given by</span>
 
 <span class="sd">        .. math::</span>
-<span class="sd">            \\epsilon = \\frac{f_k}{(n_k + 1)F^&#39;}</span>
+
+<span class="sd">            \\epsilon = \\frac{f_k}{(n_k + 1)F^{&#39;}}</span>
+
+<span class="sd">        where :math:`f_k` is the amount of relevant fodder and :math:`n_k` is</span>
+<span class="sd">        the number of animals of same species in cell k.</span>
 
 <span class="sd">        :param landscape_cell: Instance of landscape class</span>
 <span class="sd">        :type landscape_cell: dict</span>
@@ -244,7 +247,19 @@
 
 <div class="viewcode-block" id="Animal.propensity_move_to_each_neighbour"><a class="viewcode-back" href="../../animals.html#biosim.animals.Animal.propensity_move_to_each_neighbour">[docs]</a>    <span class="k">def</span> <span class="nf">propensity_move_to_each_neighbour</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">neighbours_of_current_cell</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Finds the propensity for the animal to move to each of it&#39;s neighbours.</span>
+<span class="sd">        Finds the propensity for the animal to move to each of it&#39;s neighbours,</span>
+<span class="sd">        given by</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            \\pi_{i \\to j} =</span>
+<span class="sd">            \\Biggl</span>
+<span class="sd">            \\lbrace</span>
+<span class="sd">            {</span>
+<span class="sd">            0,\\text{ if j is Mountain or Ocean }</span>
+<span class="sd">            \\atop</span>
+<span class="sd">            e^{\\lambda \\epsilon j}, \\text{ otherwise }</span>
+<span class="sd">            }</span>
 
 <span class="sd">        :param neighbours_of_current_cell: Contains neighbours of current cell.</span>
 <span class="sd">            Location as keys, instance of landscape class as value</span>
@@ -264,9 +279,18 @@
 
 <div class="viewcode-block" id="Animal.prob_move_to_each_neighbour"><a class="viewcode-back" href="../../animals.html#biosim.animals.Animal.prob_move_to_each_neighbour">[docs]</a>    <span class="k">def</span> <span class="nf">prob_move_to_each_neighbour</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">neighbours_of_current_cell</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Iterates through the dict of neighbours to the current cell. Finds</span>
+<span class="sd">        Iterates through the dict of neighbours for the current cell. Finds</span>
 <span class="sd">        the probability of moving to each of the neighbouring cells. Returns</span>
 <span class="sd">        a dict mapping cell locations to the probability of moving there.</span>
+<span class="sd">        The probability is given by</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            p = \\frac{\\pi_{i \\to j}}{\\Sigma_{j \\in C^{(i)}</span>
+<span class="sd">            \\pi_{i \\to j}}}</span>
+
+<span class="sd">        where :math:`\\pi_{i \\to j}` is the propensity to move from cell i to</span>
+<span class="sd">        cell j.</span>
 
 <span class="sd">        :param neighbours_of_current_cell: Neighbours of current cell.</span>
 <span class="sd">            Locations as keys, instance of landscape class as value.</span>
@@ -274,7 +298,6 @@
 <span class="sd">        :return: Locations of each surrounding cell as keys, probabilities for</span>
 <span class="sd">            the animal to move to each of them as values.</span>
 <span class="sd">        :rtype: dict</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">moving_prob_for_each_loc</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">sum_prop</span> <span class="o">=</span> <span class="mi">0</span>
@@ -296,9 +319,9 @@
 <span class="sd">        values to a list of locations and a numpy array of probabilities.</span>
 
 <span class="sd">        :param moving_prob_for_each_loc: Contains the locations of each</span>
-<span class="sd">        surrounding cell as keys, and the probabilities for the animal to move</span>
-<span class="sd">        to each of them as values.</span>
-<span class="sd">        :type: dict</span>
+<span class="sd">            surrounding cell as keys, and the probabilities for the animal to move</span>
+<span class="sd">            to each of them as values.</span>
+<span class="sd">        :type moving_prob_for_each_loc: dict</span>
 <span class="sd">        :return: List of locations of neighbouring cells, numpy array of the</span>
 <span class="sd">            probabilities of moving to each.</span>
 <span class="sd">        :rtype: list, array</span>
@@ -361,7 +384,10 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Checks that weight of animal is more than given limit. If so,</span>
 <span class="sd">        probability of giving birth is calculated from</span>
-<span class="sd">        :math:`min(1, \\gamma \\cdot \\phi \\cdot (N-1)`</span>
+<span class="sd">        :math:`min(1, \\gamma \\cdot \\phi \\cdot (N-1)`. Probability of</span>
+<span class="sd">        giving birth is zero if</span>
+<span class="sd">        :math:`w &lt; \\zeta  \\cdot (w_{\\text birth } +</span>
+<span class="sd">        \\sigma_{\\text birth })`</span>
 
 <span class="sd">        :param num_animals: Number of animals of same species in cell</span>
 <span class="sd">        :type num_animals: int</span>
@@ -398,7 +424,7 @@
 <div class="viewcode-block" id="Animal.birth_process"><a class="viewcode-back" href="../../animals.html#biosim.animals.Animal.birth_process">[docs]</a>    <span class="k">def</span> <span class="nf">birth_process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_animals</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        If birth takes place, a birth weight is returned and weight of mother</span>
-<span class="sd">        is reduced according to given formula.</span>
+<span class="sd">        is reduced by :math:`\\xi \\cdot birth weight`</span>
 
 <span class="sd">        :return: Returns weight of the baby that is born, or None if no baby</span>
 <span class="sd">                is born.</span>
@@ -489,7 +515,9 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">properties</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initializes herbivore animal with given properties.</span>
-<span class="sd">        :param properties: dict storing age, weight and fitness of herbivore</span>
+
+<span class="sd">        :param properties: Contains age, weight and fitness of herbivore</span>
+<span class="sd">        :type properties: dict</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">properties</span><span class="p">)</span>
 
@@ -500,7 +528,10 @@
 
 <span class="sd">        .. math::</span>
 
-<span class="sd">            \\epsilon = \\frac{f_k}{(n_k + 1)F^&#39;}</span>
+<span class="sd">            \\epsilon = \\frac{f_k}{(n_k + 1)F^{&#39;}}</span>
+
+<span class="sd">        where :math:`f_k` is the amount of relevant fodder and :math:`n_k` is</span>
+<span class="sd">        the number of animals of same species in cell k.</span>
 
 <span class="sd">        :param landscape_cell: Instance of landscape class</span>
 <span class="sd">        :type landscape_cell: dict</span>
@@ -567,6 +598,22 @@
 <div class="viewcode-block" id="Carnivore.prob_kill"><a class="viewcode-back" href="../../animals.html#biosim.animals.Carnivore.prob_kill">[docs]</a>    <span class="k">def</span> <span class="nf">prob_kill</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fitness_herb</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculates the probability of a carnivore killing a herbivore.</span>
+<span class="sd">        Probability is given by</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            \\p =</span>
+<span class="sd">            \\Biggl</span>
+<span class="sd">            \\lbrace</span>
+<span class="sd">            {</span>
+<span class="sd">            0,\\text{ if \\phi_{carn} \\leq \\ \\phi_{herb} }</span>
+<span class="sd">            \\atop</span>
+<span class="sd">            \\frac{\\phi_{carn} - \\phi_{herb}}{{\\Delta \\phi}_{max},</span>
+<span class="sd">            \\text{ if } 0 &lt; \\phi_{carn} - \\phi_{herb} &lt;</span>
+<span class="sd">            {\\Delta \\phi}_{max}</span>
+<span class="sd">            \\atop</span>
+<span class="sd">            1, \\text{ otherwise }</span>
+<span class="sd">            }</span>
 
 <span class="sd">        :param fitness_herb: Fitness of herbivore</span>
 <span class="sd">        :type fitness_herb: float</span>
@@ -627,10 +674,13 @@
 
 <span class="sd">        .. math::</span>
 
-<span class="sd">            \\epsilon = \\frac{f_k}{(n_k + 1)F^&#39;}</span>
+<span class="sd">            \\epsilon = \\frac{f_k}{(n_k + 1)F^{&#39;}}</span>
+
+<span class="sd">        where :math:`f_k` is the amount of relevant fodder and :math:`n_k` is</span>
+<span class="sd">        the number of animals of same species in cell k.</span>
 
 <span class="sd">        :param landscape_cell: Instance of landscape class</span>
-<span class="sd">        :type: dict</span>
+<span class="sd">        :type landscape_cell: dict</span>
 <span class="sd">        :return: Relative abundance of fodder for the carnivore</span>
 <span class="sd">        :rtype: float</span>
 <span class="sd">        &quot;&quot;&quot;</span>

@@ -133,7 +133,7 @@
 <div class="viewcode-block" id="BioSim.reset_params"><a class="viewcode-back" href="../../simulation.html#biosim.simulation.BioSim.reset_params">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">reset_params</span><span class="p">():</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Resets parameters of all classes.</span>
+<span class="sd">        Resets parameters of all landscape and animal classes.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">class_name</span> <span class="ow">in</span> <span class="p">[</span><span class="n">Landscape</span><span class="p">,</span> <span class="n">Jungle</span><span class="p">,</span> <span class="n">Savannah</span><span class="p">,</span> <span class="n">Desert</span><span class="p">,</span> <span class="n">Mountain</span><span class="p">,</span>
                            <span class="n">Ocean</span><span class="p">,</span> <span class="n">Animal</span><span class="p">,</span> <span class="n">Herbivore</span><span class="p">,</span> <span class="n">Carnivore</span><span class="p">]:</span>
@@ -519,7 +519,9 @@
 
 <span class="sd">        :param movie_fmt: str</span>
 <span class="sd">            format for movie (default=&#39;mp4&#39;)</span>
-<span class="sd">        :note: Requires ffmpeg in file path</span>
+
+<span class="sd">        :note: Requires ffmpeg to work. Update ffmpeg binary at top of this</span>
+<span class="sd">            file.</span>
 
 <span class="sd">        The movie is stored as img_base + movie_fmt.</span>
 

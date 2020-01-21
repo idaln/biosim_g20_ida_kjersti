@@ -87,7 +87,7 @@ and weight.</td>
 <dt id="biosim.animals.Animal.birth_process">
 <code class="descname">birth_process</code><span class="sig-paren">(</span><em>num_animals</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Animal.birth_process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Animal.birth_process" title="Permalink to this definition">¶</a></dt>
 <dd><p>If birth takes place, a birth weight is returned and weight of mother
-is reduced according to given formula.</p>
+is reduced by <span class="math notranslate nohighlight">\(\xi \cdot birth weight\)</span></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -110,20 +110,13 @@ values to a list of locations and a numpy array of probabilities.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>moving_prob_for_each_loc</strong> – Contains the locations of each</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>moving_prob_for_each_loc</strong> (<em>dict</em>) – Contains the locations of each
+surrounding cell as keys, and the probabilities for the animal to move
+to each of them as values.</td>
 </tr>
-</tbody>
-</table>
-<p>surrounding cell as keys, and the probabilities for the animal to move
-to each of them as values.
-:type: dict
-:return: List of locations of neighbouring cells, numpy array of the</p>
-<blockquote>
-<div>probabilities of moving to each.</div></blockquote>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List of locations of neighbouring cells, numpy array of the
+probabilities of moving to each.</td>
+</tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list, array</td>
 </tr>
 </tbody>
@@ -140,8 +133,8 @@ Fitness is zero if weight is zero, otherwise given by</p>
 (w, w_{\frac{1}{2}}, \phi_{weight})\]</div>
 <p>where</p>
 <div class="math notranslate nohighlight">
-\[q^{\pm}(x, x_{\frac{1}{2}}, \phi) = \frac{1}{1 + e^
-{\pm \phi(x-x_{\frac{1}{2}})}\]</div>
+\[q^{\pm}(x, x_{\frac{1}{2}}, \phi) = \frac{1}{1 + e^{\pm
+\phi(x-x_{\frac{1}{2}})}}\]</div>
 </dd></dl>
 
 <dl class="method">
@@ -171,7 +164,9 @@ instance of landscape class as value.</td>
 <dd><p>Takes an instance of a landscape class and returns the relative
 abundance of fodder in that instance, given by</p>
 <div class="math notranslate nohighlight">
-\[\epsilon = \frac{f_k}{(n_k + 1)F^'}\]</div>
+\[\epsilon = \frac{f_k}{(n_k + 1)F^{'}}\]</div>
+<p>where <span class="math notranslate nohighlight">\(f_k\)</span> is the amount of relevant fodder and <span class="math notranslate nohighlight">\(n_k\)</span> is
+the number of animals of same species in cell k.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -215,7 +210,10 @@ otherwise</td>
 <code class="descname">prob_give_birth</code><span class="sig-paren">(</span><em>num_animals</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Animal.prob_give_birth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Animal.prob_give_birth" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks that weight of animal is more than given limit. If so,
 probability of giving birth is calculated from
-<span class="math notranslate nohighlight">\(min(1, \gamma \cdot \phi \cdot (N-1)\)</span></p>
+<span class="math notranslate nohighlight">\(min(1, \gamma \cdot \phi \cdot (N-1)\)</span>. Probability of
+giving birth is zero if
+<span class="math notranslate nohighlight">\(w &lt; \zeta  \cdot (w_{\text birth } +
+\sigma_{\text birth })\)</span></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -233,9 +231,15 @@ probability of giving birth is calculated from
 <dl class="method">
 <dt id="biosim.animals.Animal.prob_move_to_each_neighbour">
 <code class="descname">prob_move_to_each_neighbour</code><span class="sig-paren">(</span><em>neighbours_of_current_cell</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Animal.prob_move_to_each_neighbour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Animal.prob_move_to_each_neighbour" title="Permalink to this definition">¶</a></dt>
-<dd><p>Iterates through the dict of neighbours to the current cell. Finds
+<dd><p>Iterates through the dict of neighbours for the current cell. Finds
 the probability of moving to each of the neighbouring cells. Returns
-a dict mapping cell locations to the probability of moving there.</p>
+a dict mapping cell locations to the probability of moving there.
+The probability is given by</p>
+<div class="math notranslate nohighlight">
+\[p = \frac{\pi_{i \to j}}{\Sigma_{j \in C^{(i)}
+\pi_{i \to j}}}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\pi_{i \to j}\)</span> is the propensity to move from cell i to
+cell j.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -255,8 +259,7 @@ the animal to move to each of them as values.</td>
 <dl class="method">
 <dt id="biosim.animals.Animal.prob_of_animal_moving">
 <code class="descname">prob_of_animal_moving</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Animal.prob_of_animal_moving"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Animal.prob_of_animal_moving" title="Permalink to this definition">¶</a></dt>
-<dd><p>Computes the probability of moving at all, which depends on the
-animal’s fitness.</p>
+<dd><p>Computes the probability of moving at all, given by <span class="math notranslate nohighlight">\(\mu \phi\)</span>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -272,7 +275,17 @@ animal’s fitness.</p>
 <dl class="method">
 <dt id="biosim.animals.Animal.propensity_move_to_each_neighbour">
 <code class="descname">propensity_move_to_each_neighbour</code><span class="sig-paren">(</span><em>neighbours_of_current_cell</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Animal.propensity_move_to_each_neighbour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Animal.propensity_move_to_each_neighbour" title="Permalink to this definition">¶</a></dt>
-<dd><p>Finds the propensity for the animal to move to each of it’s neighbours.</p>
+<dd><p>Finds the propensity for the animal to move to each of it’s neighbours,
+given by</p>
+<div class="math notranslate nohighlight">
+\[\pi_{i \to j} =
+\Biggl
+\lbrace
+{
+0,\text{ if j is Mountain or Ocean }
+\atop
+e^{\lambda \epsilon j}, \text{ otherwise }
+}\]</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -379,15 +392,24 @@ born.</p>
 <dt id="biosim.animals.Herbivore">
 <em class="property">class </em><code class="descclassname">biosim.animals.</code><code class="descname">Herbivore</code><span class="sig-paren">(</span><em>properties</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Herbivore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Herbivore" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class for herbivores.</p>
-<p>Initializes herbivore animal with given properties.
-:param properties: dict storing age, weight and fitness of herbivore</p>
+<p>Initializes herbivore animal with given properties.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>properties</strong> (<em>dict</em>) – Contains age, weight and fitness of herbivore</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="biosim.animals.Herbivore.find_rel_abund_of_fodder">
 <code class="descname">find_rel_abund_of_fodder</code><span class="sig-paren">(</span><em>landscape_cell</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Herbivore.find_rel_abund_of_fodder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Herbivore.find_rel_abund_of_fodder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes an instance of a landscape class, and returns the relative
 abundance of fodder for herbivores in that instance, given by</p>
 <div class="math notranslate nohighlight">
-\[\epsilon = \frac{f_k}{(n_k + 1)F^'}\]</div>
+\[\epsilon = \frac{f_k}{(n_k + 1)F^{'}}\]</div>
+<p>where <span class="math notranslate nohighlight">\(f_k\)</span> is the amount of relevant fodder and <span class="math notranslate nohighlight">\(n_k\)</span> is
+the number of animals of same species in cell k.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -444,18 +466,18 @@ fitness</td>
 <dd><p>Takes an instance of a landscape class, and returns the relative
 abundance of fodder in that instance, given by</p>
 <div class="math notranslate nohighlight">
-\[\epsilon = \frac{f_k}{(n_k + 1)F^'}\]</div>
+\[\epsilon = \frac{f_k}{(n_k + 1)F^{'}}\]</div>
+<p>where <span class="math notranslate nohighlight">\(f_k\)</span> is the amount of relevant fodder and <span class="math notranslate nohighlight">\(n_k\)</span> is
+the number of animals of same species in cell k.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>landscape_cell</strong> – Instance of landscape class</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>landscape_cell</strong> (<em>dict</em>) – Instance of landscape class</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">dict</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Relative abundance of fodder for the carnivore</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Relative abundance of fodder for the carnivore</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
 </tr>
 </tbody>
 </table>
@@ -483,7 +505,21 @@ carnivore kills or not.</p>
 <dl class="method">
 <dt id="biosim.animals.Carnivore.prob_kill">
 <code class="descname">prob_kill</code><span class="sig-paren">(</span><em>fitness_herb</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Carnivore.prob_kill"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Carnivore.prob_kill" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates the probability of a carnivore killing a herbivore.</p>
+<dd><p>Calculates the probability of a carnivore killing a herbivore.
+Probability is given by</p>
+<div class="math notranslate nohighlight">
+\[\p =
+\Biggl
+\lbrace
+{
+0,\text{ if \phi_{carn} \leq \ \phi_{herb} }
+\atop
+\frac{\phi_{carn} - \phi_{herb}}{{\Delta \phi}_{max},
+\text{ if } 0 &lt; \phi_{carn} - \phi_{herb} &lt;
+{\Delta \phi}_{max}
+\atop
+1, \text{ otherwise }
+}\]</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
