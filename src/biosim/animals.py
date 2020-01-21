@@ -578,12 +578,12 @@ class Carnivore(Animal):
             {
             0, \\text{ if } {\\phi_{\\text { carn } } \\leq \\phi_{\\text
             { herb } } }
-            \\substack
+            \\atop
             {\\frac{\\phi_{\\text { carn }} - \\phi_{\\text { herb } } }
             {{\\Delta \\phi}_{\\text { max } } },
             \\text{ if } { 0 < \\phi_{\\text { carn }} -
             \\phi_{\\text { herb }} < {\\Delta \\phi}_{\\text { max } } }
-            \\substack
+            \\atop
             1, \\text{ otherwise }
             }}
 
