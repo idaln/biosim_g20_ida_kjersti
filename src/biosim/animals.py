@@ -11,7 +11,6 @@ import numpy as np
 import math
 
 
-
 class Animal:
     """
     Parent class for herbivores and carnivores.
@@ -210,7 +209,23 @@ class Animal:
 
     def propensity_move_to_each_neighbour(self, neighbours_of_current_cell):
         """
-        Finds the propensity for the animal to move to each of it's neighbours.
+        Finds the propensity for the animal to move to each of it's neighbours,
+        given by
+
+        .. math::
+
+            \\phi =
+            \lbrace
+            {
+            0,\text{ if }
+            {
+            l(\underline{x}) =
+            \frac { p(\underline{x}|M ) } { p(\underline{x}|U) }
+            \geq
+            \frac { p(U) }{ p(M) } }
+            \atop
+            U, \text{ otherwise }
+            }
 
         :param neighbours_of_current_cell: Contains neighbours of current cell.
             Location as keys, instance of landscape class as value
@@ -327,7 +342,8 @@ class Animal:
         """
         Checks that weight of animal is more than given limit. If so,
         probability of giving birth is calculated from
-        :math:`min(1, \\gamma \\cdot \\phi \\cdot (N-1)`
+        :math:`min(1, \\gamma \\cdot \\phi \\cdot (N-1)`. Probability of
+        giving birth is zero if :math:`w < \\zeta (w_{birth} + \\sigma_{birth}`
 
         :param num_animals: Number of animals of same species in cell
         :type num_animals: int
@@ -364,7 +380,7 @@ class Animal:
     def birth_process(self, num_animals):
         """
         If birth takes place, a birth weight is returned and weight of mother
-        is reduced according to given formula.
+        is reduced by :math:`\\xi \\cdot birth weight`
 
         :return: Returns weight of the baby that is born, or None if no baby
                 is born.
