@@ -74,10 +74,12 @@ class Animal:
     def __init__(self, properties):
         """
         Initializing Animal class by asserting property values are valid.
-        :param properties: dict
-            Contains animal properties species, fitness, age and weight.
-        """
 
+        :param properties: Contains animal properties species, fitness, age
+            and weight.
+        :type dict
+
+        """
         self.has_moved_this_year = False
         self.fitness_must_be_updated = True
 
@@ -107,7 +109,7 @@ class Animal:
         """
         Substracts given amount of weight from the animals
         total weight after each cycle, given by
-        $\\eta*weight\\$
+        :math: '\\eta*weight\\'
         """
         new_weight = (1 - self.params['eta']) * self.weight
         self.weight = new_weight
