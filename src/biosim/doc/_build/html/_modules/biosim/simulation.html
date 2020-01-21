@@ -57,7 +57,7 @@
 <span class="c1"># Update this variable to point to your ffmpeg binary</span>
 <span class="n">FFMPEG_BINARY</span> <span class="o">=</span> <span class="s1">&#39;C:/Program Files/&#39;</span> \
                 <span class="s1">&#39;ffmpeg-20200115-0dc0837-win64-static/bin/ffmpeg&#39;</span>
-<span class="c1"># FFMPEG_BINARY = &#39;__file__&#39;</span>
+<span class="c1"># FFMPEG_BINARY = &#39;ffmpeg&#39;</span>
 
 
 <div class="viewcode-block" id="BioSim"><a class="viewcode-back" href="../../simulation.html#biosim.simulation.BioSim">[docs]</a><span class="k">class</span> <span class="nc">BioSim</span><span class="p">:</span>
@@ -66,7 +66,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">island_map</span><span class="p">,</span>
+        <span class="n">island_geography</span><span class="p">,</span>
         <span class="n">initial_population</span><span class="p">,</span>
         <span class="n">seed</span><span class="p">,</span>
         <span class="n">ymax_animals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -75,8 +75,10 @@
         <span class="n">img_fmt</span><span class="o">=</span><span class="s2">&quot;png&quot;</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        :param island_map: Multi-line string specifying island geography</span>
-<span class="sd">        :param initial_population: List of dictionaries specifying initial population</span>
+<span class="sd">        :param island_geography: Multi-line string specifying island</span>
+<span class="sd">            geography</span>
+<span class="sd">        :param initial_population: List of dictionaries specifying</span>
+<span class="sd">            initial population</span>
 <span class="sd">        :param seed: Integer used as random number seed</span>
 <span class="sd">        :param ymax_animals: Number specifying y-axis limit for graph showing</span>
 <span class="sd">            animal numbers</span>
@@ -112,7 +114,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cmax</span> <span class="o">=</span> <span class="n">cmax_animals</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">island_map</span> <span class="o">=</span> <span class="n">IslandMap</span><span class="p">(</span><span class="n">island_map</span><span class="p">,</span> <span class="n">initial_population</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">island_map</span> <span class="o">=</span> <span class="n">IslandMap</span><span class="p">(</span><span class="n">island_geography</span><span class="p">,</span> <span class="n">initial_population</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">island_map</span><span class="o">.</span><span class="n">create_map_dict</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">num_years_simulated</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">final_year</span> <span class="o">=</span> <span class="kc">None</span>
@@ -372,7 +374,7 @@
 
 <div class="viewcode-block" id="BioSim.create_map_graphics"><a class="viewcode-back" href="../../simulation.html#biosim.simulation.BioSim.create_map_graphics">[docs]</a>    <span class="k">def</span> <span class="nf">create_map_graphics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates graphic of the map of the island&#39;s geography.</span>
+<span class="sd">        Creates graphic of the map of the island&#39;s island_geography.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1">#                   R    G    B</span>
         <span class="n">rgb_value</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;O&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>  <span class="c1"># blue</span>

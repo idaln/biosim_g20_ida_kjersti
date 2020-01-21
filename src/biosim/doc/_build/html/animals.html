@@ -87,30 +87,45 @@ and weight.</td>
 <dt id="biosim.animals.Animal.birth_process">
 <code class="descname">birth_process</code><span class="sig-paren">(</span><em>num_animals</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Animal.birth_process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Animal.birth_process" title="Permalink to this definition">¶</a></dt>
 <dd><p>If birth takes place, a birth weight is returned and weight of mother
-is reduced according to given formula.
-:returns birth_weight or None: float or None</p>
-<blockquote>
-<div>Returns weight of the baby that is born, or None if no baby
-is born.</div></blockquote>
+is reduced according to given formula.</p>
+<dl class="docutils">
+<dt>:returns Returns weight of the baby that is born, or None if no baby</dt>
+<dd>is born.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float, None</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="staticmethod">
 <dt id="biosim.animals.Animal.convert_dict_to_list_and_array">
 <em class="property">static </em><code class="descname">convert_dict_to_list_and_array</code><span class="sig-paren">(</span><em>moving_prob_for_each_loc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Animal.convert_dict_to_list_and_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Animal.convert_dict_to_list_and_array" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts dictionary with locations as keys and probabilities as
-values to a list of locations and a numpy array of probabilities.
-:param moving_prob_for_each_loc: dict</p>
-<blockquote>
-<div>Contains the locations of each surrounding cell as keys, and
-the probabilities for the animal to move to each of them as
-values.</div></blockquote>
+values to a list of locations and a numpy array of probabilities.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list, array
-List of locations of neighbouring cells, numpy array of the
-probabilities of moving to each.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>moving_prob_for_each_loc</strong> – Contains the locations of each</td>
+</tr>
+</tbody>
+</table>
+<p>surrounding cell as keys, and the probabilities for the animal to move
+to each of them as values.
+:type: dict
+:returns: List of locations of neighbouring cells, numpy array of the</p>
+<blockquote>
+<div>probabilities of moving to each.</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list, array</td>
 </tr>
 </tbody>
 </table>
@@ -122,29 +137,30 @@ probabilities of moving to each.</td>
 <dd><p>Updates fitness.
 Fitness is zero if weight is zero, otherwise given by</p>
 <div class="math notranslate nohighlight">
-\[\]</div>
-<p>q^{+}(a, a_{fraq{1}{2}}, phi_{age}) cdot q^{-}(w, w_{fraq{1}{2}}, phi_{weight}</p>
+\[q^{+}(a, a_{\frac{1}{2}}, \phi_{age}) \cdot q^{-}
+(w, w_{\frac{1}{2}}, \phi_{weight})\]</div>
 <p>where</p>
 <div class="math notranslate nohighlight">
-\[\]</div>
-<p>q^{pm}(x, x_{fraq{1}{2}, phi) = fraq{1}{1 + e^{pm phi(x-x_{fraq{1}{2}})}</p>
+\[q^{\pm}(x, x_{\frac{1}{2}, \phi) = \frac{1}{1 + e^
+{\pm \phi(x-x_{\frac{1}{2}})}\]</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="biosim.animals.Animal.find_new_coordinates">
 <code class="descname">find_new_coordinates</code><span class="sig-paren">(</span><em>neighbours_of_current_cell</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Animal.find_new_coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Animal.find_new_coordinates" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uses cumulative probability to decide which of the neighbouring cells
-the animal will move to. Returns the coordinates of that cell.
-:param neighbours_of_current_cell: dict</p>
-<blockquote>
-<div>Neighbours of current cell. Locations as keys,
-instance of landscape class as value.</div></blockquote>
+the animal will move to. Returns the coordinates of that cell.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">tuple
-The location the animal will move to.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>neighbours_of_current_cell</strong> (<em>dict</em>) – Neighbours of current cell.
+Locations as keys,
+instance of landscape class as value.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The location the animal will move to.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">tuple</td>
 </tr>
 </tbody>
 </table>
@@ -156,8 +172,7 @@ The location the animal will move to.</td>
 <dd><p>Takes an instance of a landscape class and returns the relative
 abundance of fodder in that instance, given by</p>
 <div class="math notranslate nohighlight">
-\[\]</div>
-<p>epsilon = fraq{f_k}{(n_k + 1)F^’}</p>
+\[\epsilon = \frac{f_k}{(n_k + 1)F^'}\]</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -183,16 +198,37 @@ abundance of fodder in that instance, given by</p>
 <code class="descname">prob_death</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Animal.prob_death"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Animal.prob_death" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds probability of death, which depends on the fitness of the
 animal.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">1 if fitness is zero, <span class="math notranslate nohighlight">\(\omega \cdot (1 - \phi)\)</span>
+otherwise</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float, int</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="biosim.animals.Animal.prob_give_birth">
 <code class="descname">prob_give_birth</code><span class="sig-paren">(</span><em>num_animals</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Animal.prob_give_birth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Animal.prob_give_birth" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks that weight of animal is more than given limit. If so,
-probability of giving birth is calculated from formula (8).
-:returns: prob</p>
-<blockquote>
-<div>The probability for the animal to give birth.</div></blockquote>
+probability of giving birth is calculated from
+<span class="math notranslate nohighlight">\(min(1, \gamma \cdot \phi \cdot (N-1)\)</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>num_animals</strong> (<em>int</em>) – Number of animals of same species in cell</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The probability for the animal to give birth.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -200,18 +236,18 @@ probability of giving birth is calculated from formula (8).
 <code class="descname">prob_move_to_each_neighbour</code><span class="sig-paren">(</span><em>neighbours_of_current_cell</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Animal.prob_move_to_each_neighbour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Animal.prob_move_to_each_neighbour" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterates through the dict of neighbours to the current cell. Finds
 the probability of moving to each of the neighbouring cells. Returns
-a dict mapping cell locations to the probability of moving there.
-:param neighbours_of_current_cell: dict</p>
-<blockquote>
-<div>Neighbours of current cell. Locations as keys, instance of
-landscape class as value.</div></blockquote>
+a dict mapping cell locations to the probability of moving there.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">dict
-Locations of each surrounding cell as keys, probabilities for
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>neighbours_of_current_cell</strong> (<em>dict</em>) – Neighbours of current cell.
+Locations as keys, instance of landscape class as value.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Locations of each surrounding cell as keys, probabilities for
 the animal to move to each of them as values.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
 </tr>
 </tbody>
 </table>
@@ -242,14 +278,12 @@ animal’s fitness.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>neighbours_of_current_cell</strong> – Contains neighbours of current cell.
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>neighbours_of_current_cell</strong> (<em>dict</em>) – Contains neighbours of current cell.
 Location as keys, instance of landscape class as value</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">dict</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Maps location to it’s propensity.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Maps location to it’s propensity.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
 </tr>
 </tbody>
 </table>
@@ -265,8 +299,21 @@ Location as keys, instance of landscape class as value</td>
 <dt id="biosim.animals.Animal.return_new_coordinates">
 <code class="descname">return_new_coordinates</code><span class="sig-paren">(</span><em>neighbours_of_current_cell</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Animal.return_new_coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Animal.return_new_coordinates" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks whether the animal will move or not, and if so, returns the
-new coordinates.
-:return: tuple or None</p>
+new coordinates.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>neighbours_of_current_cell</strong> (<em>dict</em>) – Neighbours of current cell.
+Locations as keys,
+instance of landscape class as value.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Location animal will move to.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">tuple or None</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -280,8 +327,9 @@ total weight after each cycle, given by
 <dl class="method">
 <dt id="biosim.animals.Animal.will_animal_live">
 <code class="descname">will_animal_live</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Animal.will_animal_live"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Animal.will_animal_live" title="Permalink to this definition">¶</a></dt>
-<dd><p>Checks the probability of death. Returns True if the animal lives.
-:return bool</p>
+<dd><p>Checks the probability of death. Returns True if the animal lives.</p>
+<p>:return True is animal lives
+:rtype bool</p>
 </dd></dl>
 
 <dl class="method">
@@ -305,8 +353,9 @@ whether the animal should move.</p>
 <dt id="biosim.animals.Animal.will_birth_take_place">
 <code class="descname">will_birth_take_place</code><span class="sig-paren">(</span><em>num_animals</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Animal.will_birth_take_place"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Animal.will_birth_take_place" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks probability of giving birth and returns True if a baby is to be
-born.
-:returns bool</p>
+born.</p>
+<p>:returns True if animal shall give birth
+:rtype bool</p>
 </dd></dl>
 
 </dd></dl>
@@ -321,15 +370,18 @@ born.
 <dt id="biosim.animals.Herbivore.find_rel_abund_of_fodder">
 <code class="descname">find_rel_abund_of_fodder</code><span class="sig-paren">(</span><em>landscape_cell</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Herbivore.find_rel_abund_of_fodder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Herbivore.find_rel_abund_of_fodder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes an instance of a landscape class, and returns the relative
-abundance of fodder for herbivores in that instance.
-:param landscape_cell: dict</p>
-<blockquote>
-<div>Instance of landscape class</div></blockquote>
+abundance of fodder for herbivores in that instance, given by</p>
+<div class="math notranslate nohighlight">
+\[\epsilon = \frac{f_k}{(n_k + 1)F^'}\]</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">float</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>landscape_cell</strong> (<em>dict</em>) – Instance of landscape class</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Relative abundance of fodder</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
 </tr>
 </tbody>
 </table>
@@ -341,37 +393,52 @@ abundance of fodder for herbivores in that instance.
 <dt id="biosim.animals.Carnivore">
 <em class="property">class </em><code class="descclassname">biosim.animals.</code><code class="descname">Carnivore</code><span class="sig-paren">(</span><em>properties</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Carnivore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Carnivore" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class for Carnivores.</p>
-<p>Initializes carnivore animal with given properties.
-:param properties: dict storing age, weight and fitness of herbivore</p>
+<p>Initializes carnivore animal with given properties.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>properties</strong> (<em>dict</em>) – Contains age, weight and fitness of herbivore.</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="biosim.animals.Carnivore.eat">
 <code class="descname">eat</code><span class="sig-paren">(</span><em>pop_herb</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Carnivore.eat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Carnivore.eat" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterates through list of herbivores, and implements kill method on one
 herbivore at the time until carnivore has satisfied it’s appetite or
-has tried to kill all herbivores without luck.
-:param pop_herb: list</p>
-<blockquote>
-<div>List of herbivores available to the carnivore sorted by
-fitness</div></blockquote>
-<dl class="docutils">
-<dt>:return list</dt>
-<dd>List of herbivores killed</dd>
-</dl>
+has tried to kill all herbivores without luck.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pop_herb</strong> (<em>list</em>) – Herbivores available to the carnivore sorted by
+fitness</td>
+</tr>
+</tbody>
+</table>
+<p>:return List of herbivores killed
+:rtype: list</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="biosim.animals.Carnivore.find_rel_abund_of_fodder">
 <code class="descname">find_rel_abund_of_fodder</code><span class="sig-paren">(</span><em>landscape_cell</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Carnivore.find_rel_abund_of_fodder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Carnivore.find_rel_abund_of_fodder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes an instance of a landscape class, and returns the relative
-abundance of fodder in that instance.
-:param landscape_cell: dict</p>
-<blockquote>
-<div>Instance of landscape class</div></blockquote>
+abundance of fodder in that instance, given by</p>
+<div class="math notranslate nohighlight">
+\[\epsilon = \frac{f_k}{(n_k + 1)F^'}\]</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">float</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>landscape_cell</strong> – Instance of landscape class</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">dict</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Relative abundance of fodder for the carnivore</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
 </tr>
 </tbody>
 </table>
@@ -381,15 +448,16 @@ abundance of fodder in that instance.
 <dt id="biosim.animals.Carnivore.kill">
 <code class="descname">kill</code><span class="sig-paren">(</span><em>herb</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Carnivore.kill"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Carnivore.kill" title="Permalink to this definition">¶</a></dt>
 <dd><p>Implements prob_kill and a random number to decide whether a
-carnivore kills or not.
-:param herb: class ‘__main__.Herbivore’</p>
-<blockquote>
-<div>Herbivore to be killed</div></blockquote>
+carnivore kills or not.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">bool</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>herb</strong> (<em>class '__main__.Herbivore'</em>) – Herbivore to be killed</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if carnivore shall kill</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
 </tr>
 </tbody>
 </table>
@@ -399,6 +467,16 @@ carnivore kills or not.
 <dt id="biosim.animals.Carnivore.prob_kill">
 <code class="descname">prob_kill</code><span class="sig-paren">(</span><em>fitness_herb</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Carnivore.prob_kill"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#biosim.animals.Carnivore.prob_kill" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the probability of a carnivore killing a herbivore.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fitness_herb</strong> (<em>float</em>) – Fitness of herbivore</td>
+</tr>
+</tbody>
+</table>
+<p>:return Probability of carnivore killing a herbivore
+:rtype: int, float</p>
 </dd></dl>
 
 </dd></dl>

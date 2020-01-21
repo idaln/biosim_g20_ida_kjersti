@@ -170,13 +170,15 @@
 
 <span class="sd">        .. math::</span>
 
-<span class="sd">        q\\^{+}(a, a_{\\fraq{1}{2}}, \\phi_{age}) \\cdot q\\^{-}(w, w_{\\fraq{1}{2}}, \\phi_{weight}</span>
+<span class="sd">            q^{+}(a, a_{\\frac{1}{2}}, \\phi_{age}) \\cdot q^{-}</span>
+<span class="sd">            (w, w_{\\frac{1}{2}}, \\phi_{weight})</span>
 
 <span class="sd">        where</span>
 
 <span class="sd">        .. math::</span>
 
-<span class="sd">        q\\^{\\pm}(x, x_{\\fraq{1}{2}, \\phi) = \\fraq{1}{1 + e\\^{\\pm \\phi(x-x_{\\fraq{1}{2}})}</span>
+<span class="sd">            q^{\\pm}(x, x_{\\frac{1}{2}, \\phi) = \\frac{1}{1 + e^</span>
+<span class="sd">            {\\pm \\phi(x-x_{\\frac{1}{2}})}</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -228,8 +230,7 @@
 <span class="sd">        abundance of fodder in that instance, given by</span>
 
 <span class="sd">        .. math::</span>
-<span class="sd">        </span>
-<span class="sd">        \\epsilon = \\fraq{f_k}{(n_k + 1)F^&#39;}</span>
+<span class="sd">            \\epsilon = \\frac{f_k}{(n_k + 1)F^&#39;}</span>
 
 <span class="sd">        :param landscape_cell: Instance of landscape class</span>
 <span class="sd">        :type landscape_cell: dict</span>
@@ -248,7 +249,7 @@
 
 <span class="sd">        :param neighbours_of_current_cell: Contains neighbours of current cell.</span>
 <span class="sd">            Location as keys, instance of landscape class as value</span>
-<span class="sd">        :type: dict</span>
+<span class="sd">        :type neighbours_of_current_cell: dict</span>
 <span class="sd">        :return: Maps location to it&#39;s propensity.</span>
 <span class="sd">        :rtype: dict</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -267,12 +268,14 @@
 <span class="sd">        Iterates through the dict of neighbours to the current cell. Finds</span>
 <span class="sd">        the probability of moving to each of the neighbouring cells. Returns</span>
 <span class="sd">        a dict mapping cell locations to the probability of moving there.</span>
-<span class="sd">        :param neighbours_of_current_cell: dict</span>
-<span class="sd">            Neighbours of current cell. Locations as keys, instance of</span>
-<span class="sd">            landscape class as value.</span>
-<span class="sd">        :returns: dict</span>
-<span class="sd">            Locations of each surrounding cell as keys, probabilities for</span>
+
+<span class="sd">        :param neighbours_of_current_cell: Neighbours of current cell.</span>
+<span class="sd">            Locations as keys, instance of landscape class as value.</span>
+<span class="sd">        :type neighbours_of_current_cell: dict</span>
+<span class="sd">        :returns: Locations of each surrounding cell as keys, probabilities for</span>
 <span class="sd">            the animal to move to each of them as values.</span>
+<span class="sd">        :rtype: dict</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">moving_prob_for_each_loc</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">sum_prop</span> <span class="o">=</span> <span class="mi">0</span>
@@ -292,13 +295,14 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Converts dictionary with locations as keys and probabilities as</span>
 <span class="sd">        values to a list of locations and a numpy array of probabilities.</span>
-<span class="sd">        :param moving_prob_for_each_loc: dict</span>
-<span class="sd">            Contains the locations of each surrounding cell as keys, and</span>
-<span class="sd">            the probabilities for the animal to move to each of them as</span>
-<span class="sd">            values.</span>
-<span class="sd">        :returns: list, array</span>
-<span class="sd">            List of locations of neighbouring cells, numpy array of the</span>
+
+<span class="sd">        :param moving_prob_for_each_loc: Contains the locations of each</span>
+<span class="sd">        surrounding cell as keys, and the probabilities for the animal to move</span>
+<span class="sd">        to each of them as values.</span>
+<span class="sd">        :type: dict</span>
+<span class="sd">        :returns: List of locations of neighbouring cells, numpy array of the</span>
 <span class="sd">            probabilities of moving to each.</span>
+<span class="sd">        :rtype: list, array</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">locs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">probs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
@@ -311,11 +315,14 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Uses cumulative probability to decide which of the neighbouring cells</span>
 <span class="sd">        the animal will move to. Returns the coordinates of that cell.</span>
-<span class="sd">        :param neighbours_of_current_cell: dict</span>
-<span class="sd">            Neighbours of current cell. Locations as keys,</span>
+
+<span class="sd">        :param neighbours_of_current_cell: Neighbours of current cell.</span>
+<span class="sd">            Locations as keys,</span>
 <span class="sd">            instance of landscape class as value.</span>
-<span class="sd">        :returns: tuple</span>
-<span class="sd">            The location the animal will move to.</span>
+<span class="sd">        :type neighbours_of_current_cell: dict</span>
+<span class="sd">        :returns: The location the animal will move to.</span>
+<span class="sd">        :rtype: tuple</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">moving_prob_for_each_loc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_move_to_each_neighbour</span><span class="p">(</span>
                 <span class="n">neighbours_of_current_cell</span>
@@ -340,7 +347,13 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Checks whether the animal will move or not, and if so, returns the</span>
 <span class="sd">        new coordinates.</span>
-<span class="sd">        :return: tuple or None</span>
+
+<span class="sd">        :param neighbours_of_current_cell: Neighbours of current cell.</span>
+<span class="sd">            Locations as keys,</span>
+<span class="sd">            instance of landscape class as value.</span>
+<span class="sd">        :type neighbours_of_current_cell: dict</span>
+<span class="sd">        :return: Location animal will move to.</span>
+<span class="sd">        :rtype: tuple or None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">will_animal_move</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_new_coordinates</span><span class="p">(</span><span class="n">neighbours_of_current_cell</span><span class="p">)</span></div>
@@ -348,9 +361,13 @@
 <div class="viewcode-block" id="Animal.prob_give_birth"><a class="viewcode-back" href="../../animals.html#biosim.animals.Animal.prob_give_birth">[docs]</a>    <span class="k">def</span> <span class="nf">prob_give_birth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_animals</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Checks that weight of animal is more than given limit. If so,</span>
-<span class="sd">        probability of giving birth is calculated from formula (8).</span>
-<span class="sd">        :returns: prob</span>
-<span class="sd">                  The probability for the animal to give birth.</span>
+<span class="sd">        probability of giving birth is calculated from</span>
+<span class="sd">        :math:`min(1, \\gamma \\cdot \\phi \\cdot (N-1)`</span>
+
+<span class="sd">        :param num_animals: Number of animals of same species in cell</span>
+<span class="sd">        :type num_animals: int</span>
+<span class="sd">        :returns: The probability for the animal to give birth.</span>
+<span class="sd">        :rtype: float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitness_must_be_updated</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">find_fitness</span><span class="p">()</span>
@@ -369,7 +386,9 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Checks probability of giving birth and returns True if a baby is to be</span>
 <span class="sd">        born.</span>
-<span class="sd">        :returns bool</span>
+
+<span class="sd">        :returns True if animal shall give birth</span>
+<span class="sd">        :rtype bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_give_birth</span><span class="p">(</span><span class="n">num_animals</span><span class="p">)</span>
         <span class="n">random_number</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
@@ -381,10 +400,10 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        If birth takes place, a birth weight is returned and weight of mother</span>
 <span class="sd">        is reduced according to given formula.</span>
-<span class="sd">        :returns birth_weight or None: float or None</span>
-<span class="sd">                Returns weight of the baby that is born, or None if no baby</span>
-<span class="sd">                is born.</span>
 
+<span class="sd">        :returns Returns weight of the baby that is born, or None if no baby</span>
+<span class="sd">                is born.</span>
+<span class="sd">        :rtype: float, None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">bool_birth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">will_birth_take_place</span><span class="p">(</span><span class="n">num_animals</span><span class="p">)</span>
         <span class="n">birth_weight</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span>
@@ -399,6 +418,10 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Finds probability of death, which depends on the fitness of the</span>
 <span class="sd">        animal.</span>
+
+<span class="sd">        :return: 1 if fitness is zero, :math:`\\omega \\cdot (1 - \\phi)`</span>
+<span class="sd">            otherwise</span>
+<span class="sd">        :rtype: float, int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitness_must_be_updated</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">find_fitness</span><span class="p">()</span>
@@ -411,7 +434,9 @@
 <div class="viewcode-block" id="Animal.will_animal_live"><a class="viewcode-back" href="../../animals.html#biosim.animals.Animal.will_animal_live">[docs]</a>    <span class="k">def</span> <span class="nf">will_animal_live</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Checks the probability of death. Returns True if the animal lives.</span>
-<span class="sd">        :return bool</span>
+
+<span class="sd">        :return True is animal lives</span>
+<span class="sd">        :rtype bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_death</span><span class="p">()</span>
         <span class="n">random_number</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
@@ -472,10 +497,15 @@
 <div class="viewcode-block" id="Herbivore.find_rel_abund_of_fodder"><a class="viewcode-back" href="../../animals.html#biosim.animals.Herbivore.find_rel_abund_of_fodder">[docs]</a>    <span class="k">def</span> <span class="nf">find_rel_abund_of_fodder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landscape_cell</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Takes an instance of a landscape class, and returns the relative</span>
-<span class="sd">        abundance of fodder for herbivores in that instance.</span>
-<span class="sd">        :param landscape_cell: dict</span>
-<span class="sd">                Instance of landscape class</span>
-<span class="sd">        :return: float</span>
+<span class="sd">        abundance of fodder for herbivores in that instance, given by</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            \\epsilon = \\frac{f_k}{(n_k + 1)F^&#39;}</span>
+
+<span class="sd">        :param landscape_cell: Instance of landscape class</span>
+<span class="sd">        :type landscape_cell: dict</span>
+<span class="sd">        :return: Relative abundance of fodder</span>
+<span class="sd">        :rtype: float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">fodder_herb</span> <span class="o">=</span> <span class="n">landscape_cell</span><span class="o">.</span><span class="n">fodder_amount</span>
         <span class="n">num_herbs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">landscape_cell</span><span class="o">.</span><span class="n">pop_herb</span><span class="p">)</span>
@@ -528,13 +558,20 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">properties</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initializes carnivore animal with given properties.</span>
-<span class="sd">        :param properties: dict storing age, weight and fitness of herbivore</span>
+
+<span class="sd">        :param properties: Contains age, weight and fitness of herbivore.</span>
+<span class="sd">        :type properties: dict</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">properties</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Carnivore.prob_kill"><a class="viewcode-back" href="../../animals.html#biosim.animals.Carnivore.prob_kill">[docs]</a>    <span class="k">def</span> <span class="nf">prob_kill</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fitness_herb</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculates the probability of a carnivore killing a herbivore.</span>
+
+<span class="sd">        :param fitness_herb: Fitness of herbivore</span>
+<span class="sd">        :type fitness_herb: float</span>
+<span class="sd">        :return Probability of carnivore killing a herbivore</span>
+<span class="sd">        :rtype: int, float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitness</span> <span class="o">&lt;=</span> <span class="n">fitness_herb</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">0</span>
@@ -547,9 +584,11 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Implements prob_kill and a random number to decide whether a</span>
 <span class="sd">        carnivore kills or not.</span>
-<span class="sd">        :param herb: class &#39;__main__.Herbivore&#39;</span>
-<span class="sd">                Herbivore to be killed</span>
-<span class="sd">        :return: bool</span>
+
+<span class="sd">        :param herb: Herbivore to be killed</span>
+<span class="sd">        :type herb: class &#39;__main__.Herbivore&#39;</span>
+<span class="sd">        :return: True if carnivore shall kill</span>
+<span class="sd">        :rtype: bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">random_number</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
         <span class="n">prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_kill</span><span class="p">(</span><span class="n">herb</span><span class="o">.</span><span class="n">fitness</span><span class="p">)</span>
@@ -563,11 +602,12 @@
 <span class="sd">        Iterates through list of herbivores, and implements kill method on one</span>
 <span class="sd">        herbivore at the time until carnivore has satisfied it&#39;s appetite or</span>
 <span class="sd">        has tried to kill all herbivores without luck.</span>
-<span class="sd">        :param pop_herb: list</span>
-<span class="sd">                List of herbivores available to the carnivore sorted by</span>
+
+<span class="sd">        :param pop_herb: Herbivores available to the carnivore sorted by</span>
 <span class="sd">                fitness</span>
-<span class="sd">        :return list</span>
-<span class="sd">                List of herbivores killed</span>
+<span class="sd">        :type pop_herb: list</span>
+<span class="sd">        :return List of herbivores killed</span>
+<span class="sd">        :rtype: list</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">amount_eaten</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">animals_eaten</span> <span class="o">=</span> <span class="p">[]</span>
@@ -583,10 +623,15 @@
 <div class="viewcode-block" id="Carnivore.find_rel_abund_of_fodder"><a class="viewcode-back" href="../../animals.html#biosim.animals.Carnivore.find_rel_abund_of_fodder">[docs]</a>    <span class="k">def</span> <span class="nf">find_rel_abund_of_fodder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landscape_cell</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Takes an instance of a landscape class, and returns the relative</span>
-<span class="sd">        abundance of fodder in that instance.</span>
-<span class="sd">        :param landscape_cell: dict</span>
-<span class="sd">                Instance of landscape class</span>
-<span class="sd">        :return: float</span>
+<span class="sd">        abundance of fodder in that instance, given by</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            \\epsilon = \\frac{f_k}{(n_k + 1)F^&#39;}</span>
+
+<span class="sd">        :param landscape_cell: Instance of landscape class</span>
+<span class="sd">        :type: dict</span>
+<span class="sd">        :return: Relative abundance of fodder for the carnivore</span>
+<span class="sd">        :rtype: float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">fodder_carn</span> <span class="o">=</span> <span class="n">landscape_cell</span><span class="o">.</span><span class="n">available_fodder_carnivore</span><span class="p">()</span>
         <span class="n">num_carns</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">landscape_cell</span><span class="o">.</span><span class="n">pop_carn</span><span class="p">)</span>
