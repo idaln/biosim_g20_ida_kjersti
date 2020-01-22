@@ -143,7 +143,8 @@ class Landscape:
         self.sort_carn_population_by_fitness()
         for carn in self.pop_carn:
             self.sort_herb_population_by_fitness()
-            eaten_herbivores = carn.attempt_eating_all_herbivores_in_cell(self.pop_herb)
+            eaten_herbivores = carn.attempt_eating_all_herbivores_in_cell(
+                self.pop_herb)
             self.remove_all_eaten_herbivores(eaten_herbivores)
 
     def remove_all_eaten_herbivores(self, eaten_herbivores):
