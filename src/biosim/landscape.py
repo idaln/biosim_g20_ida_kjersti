@@ -97,7 +97,7 @@ class Landscape:
         is available in the cell, enough fodder will be returned to fulfill
         it's appetite F. If not, what's left will be returned.
 
-        :return: Amount of fodder available to an herbivore.
+        :return: Amount of fodder available to an herbivore
         :rtype: float
         """
         desired_fodder_amount = Herbivore.params["F"]
@@ -116,7 +116,7 @@ class Landscape:
         Returns amount of fodder available to a carnivore. That is, the total
         weight of the herbivores in the cell.
 
-        :return: Amount of fodder available to a carnivore.
+        :return: Amount of fodder available to a carnivore
         :rtype: float
         """
         available_fodder_amount = 0
@@ -126,9 +126,9 @@ class Landscape:
 
     def feed_all_herbivores(self):
         """
-        Updates fodder amount of the cell and sorts the herbivore population.
-        Then, iterates over the population of herbivores and feeds all,
-        utilizing the eating method.
+        Updates fodder amount of the cell and sorts the herbivore population by
+        fitness. Then, iterates over the population of herbivores and feeds
+        all, utilizing the eating method.
         """
         self.regrowth()
         self.sort_herb_population_by_fitness()
@@ -137,8 +137,10 @@ class Landscape:
 
     def feed_all_carnivores(self):
         """
-        Sorts carnivore population in the cell. Then, iterates over the
-        carnivores and feeds them all, using their eating method.
+        Sorts carnivore population in the cell by fitness. Then, iterates over
+        the carnivores and feeds them all, using their eating method,
+        attempt_eating_all_herbivores_in_cell. Lastly it removes eaten
+        herbivores from herbivore population, with remove_all_eaten_herbivores.
         """
         self.sort_carn_population_by_fitness()
         for carn in self.pop_carn:
@@ -270,7 +272,7 @@ class Savannah(Landscape):
 
         .. math::
 
-            f_{ij} \\leftarrow f_{ij} + \\alpha \\cdot (f^{Sav max} - f_{ij})
+            f_{ij} \\leftarrow f_{ij} + \\alpha \\cdot (f^{Sav_max} - f_{ij})
 
         """
         self.fodder_amount = ((1 - self.params["alpha"]) * self.fodder_amount)\
