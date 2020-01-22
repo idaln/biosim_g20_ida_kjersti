@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+"""
+This module provides classes implementing landscape types for the Island.
+"""
+
 __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idaln@hotmail.com & kjkv@nmbu.no"
 
@@ -8,7 +12,9 @@ from biosim.animals import Herbivore, Carnivore
 
 class Landscape:
     """
-    Parent class for all landscape types.
+    Parent class for all landscape types. Landscape cell stores the instances
+    of all animals in the cell, and has methods for running all animal methods
+    for each animal.
     """
     _DEFAULT_PARAMS = {
         "f_max": 800,
@@ -22,180 +28,198 @@ class Landscape:
 
     @classmethod
     def GET_DEFAULT_PARAMS(cls):
+        """
+        Returns a copy of the default landscape parameters.
+
+        :return: Copy of default landscape parameters
+        :rtype: dict
+        """
         return cls._DEFAULT_PARAMS.copy()
 
     @classmethod
     def reset_params(cls):
+        """
+        Sets the landscape parameters equal to default.
+        """
         cls.params = cls.GET_DEFAULT_PARAMS()
 
     def __init__(self, population):
         """
-        Initializes class with given population.
-        :param population: list of dictionaries
+        Initializes class with given population. Creates instances of
+        correct species for all elements in population list, and adds the
+        instances to correct population list.
+
+        :param population: Contains dictionaries containing
+            information about each animal
+        :type population: list
         """
         self.fodder_amount = 0
         self.pop_carn = []
         self.pop_herb = []
         
-        for individual in population:
-            if individual["species"] is "Herbivore":
-                self.pop_herb.append(Herbivore(individual))
+        for animal_info in population:
+            if animal_info["species"] is "Herbivore":
+                self.pop_herb.append(Herbivore(animal_info))
             else:
-                self.pop_carn.append(Carnivore(individual))
+                self.pop_carn.append(Carnivore(animal_info))
 
     def sort_herb_population_by_fitness(self):
         """
-        Sorts herbivore populations by fitness, from highest to
-        lowest. Uses the Bubble Sort algorithm.
+        Sorts herbivore population by fitness, from highest to
+        lowest. Uses lambda sorting.
         """
-        for individual in self.pop_herb:
-            individual.find_fitness()
-        n = len(self.pop_herb)
-        while n > 0:
-            i = 1
-            while i < n:
-                if self.pop_herb[i].fitness > self.pop_herb[i - 1].fitness:
-                    self.pop_herb[i], self.pop_herb[i - 1] = \
-                        self.pop_herb[i - 1], self.pop_herb[i]
-                i += 1
-            n -= 1
+        for herb in self.pop_herb:
+            if herb.fitness_must_be_updated is True:
+                herb.find_fitness()
+        self.pop_herb = sorted(self.pop_herb, key=lambda x: x.fitness,
+                               reverse=True)
 
     def sort_carn_population_by_fitness(self):
         """
         Sorts carnivore population by fitness, from highest to
-        lowest. Uses the Bubble Sort algorithm.
+        lowest. Uses lambda sorting.
         """
-        for individual in self.pop_carn:
-            individual.find_fitness()
-        n = len(self.pop_carn)
-        while n > 0:
-            i = 1
-            while i < n:
-                if self.pop_carn[i].fitness > self.pop_carn[i - 1].fitness:
-                    self.pop_carn[i], self.pop_carn[i - 1] = \
-                        self.pop_carn[i - 1], self.pop_carn[i]
-                i += 1
-            n -= 1
+        for carn in self.pop_carn:
+            if carn.fitness_must_be_updated is True:
+                carn.find_fitness()
+        self.pop_carn = sorted(self.pop_carn, key=lambda x: x.fitness,
+                               reverse=True)
 
     def regrowth(self):
         """
-        Sets amount of fodder for herbivores to maximum at the beginning of
-        each year.
+        Sets amount of fodder for herbivores to maximum.
         """
         self.fodder_amount = self.params["f_max"]
 
     def available_fodder_herbivore(self):
         """
-        Returns amount of fodder available to the herbivore.
-        :return available_fodder: float
+        Returns amount of fodder available to an herbivore. If plenty of fodder
+        is available in the cell, enough fodder will be returned to fulfill
+        it's appetite F. If not, what's left will be returned.
+
+        :return: Amount of fodder available to an herbivore
+        :rtype: float
         """
-        desired_fodder = Herbivore.params["F"]
-        old_fodder = self.fodder_amount
-        if self.fodder_amount >= desired_fodder:
-            self.fodder_amount -= desired_fodder
-            return desired_fodder
-        elif 0 < self.fodder_amount < desired_fodder:
+        desired_fodder_amount = Herbivore.params["F"]
+        previous_fodder_amount = self.fodder_amount
+        if self.fodder_amount >= desired_fodder_amount:
+            self.fodder_amount -= desired_fodder_amount
+            return desired_fodder_amount
+        elif 0 < self.fodder_amount < desired_fodder_amount:
             self.fodder_amount = 0
-            return old_fodder
+            return previous_fodder_amount
         else:
             return 0
 
     def available_fodder_carnivore(self):
         """
-        Returns amount of fodder available to carnivore. That is, the total
+        Returns amount of fodder available to a carnivore. That is, the total
         weight of the herbivores in the cell.
+
+        :return: Amount of fodder available to a carnivore
+        :rtype: float
         """
-        available_fodder = 0
+        available_fodder_amount = 0
         for herb in self.pop_herb:
-            available_fodder += herb.weight
-        return available_fodder
+            available_fodder_amount += herb.weight
+        return available_fodder_amount
 
     def feed_all_herbivores(self):
         """
-        Iterates over the population of herbivores and feeds all animals,
-        utilizing the eating method inherent to the animal instance.
+        Updates fodder amount of the cell and sorts the herbivore population by
+        fitness. Then, iterates over the population of herbivores and feeds
+        all, utilizing the eating method.
         """
         self.regrowth()
         self.sort_herb_population_by_fitness()
         for herb in self.pop_herb:
             herb.add_eaten_fodder_to_weight(self.available_fodder_herbivore())
 
-    def remove_all_eaten_herbivores(self, eaten_herbivores):
-        """
-        Removed herbivores that have been eaten from pop_herb
-        :param eaten_herbivores: list
-                List of herbivores that have been eaten
-        """
-        self.pop_herb = [herb for herb in self.pop_herb
-                         if herb not in eaten_herbivores]
-
     def feed_all_carnivores(self):
         """
-        Iterates over the population of carnivores in the cell, and feeds all
-        carnivores using their inherent eating method.
+        Sorts carnivore population in the cell by fitness. Then, iterates over
+        the carnivores and feeds them all, using their eating method,
+        attempt_eating_all_herbivores_in_cell. Lastly it removes eaten
+        herbivores from herbivore population, with remove_all_eaten_herbivores.
         """
         self.sort_carn_population_by_fitness()
         for carn in self.pop_carn:
             self.sort_herb_population_by_fitness()
-            eaten_herbivores = carn.eat(self.pop_herb)
+            eaten_herbivores = carn.attempt_eating_all_herbivores_in_cell(
+                self.pop_herb)
             self.remove_all_eaten_herbivores(eaten_herbivores)
+
+    def remove_all_eaten_herbivores(self, eaten_herbivores):
+        """
+        Removes herbivores that have been eaten from the
+        herbivore population of the cell.
+
+        :param eaten_herbivores: Herbivore instances that have been eaten
+            during feeding of a carnivore.
+        :type eaten_herbivores: list
+        """
+        self.pop_herb = [herb for herb in self.pop_herb
+                         if herb not in eaten_herbivores]
 
     def add_newborn_animals(self):
         """
-        Iterates over both population lists in turn,
-        and makes all animal procreate utilizing their
-        inherent birth process method.
+        Iterates over both population lists of grown animals, in turn, and
+        makes all animals procreate using the animal's birth_process_method.
+        If birth_process returns a weight, a new animal will be born.
+        Thus, a new class instance is added to the
+        correct population list.
         """
-        num_animals = len(self.pop_herb)
-        for animal in self.pop_herb[:num_animals]:
-            baby_weight = animal.birth_process(num_animals)
+        initial_num_herbs = len(self.pop_herb)
+        for animal in self.pop_herb[:initial_num_herbs]:
+            baby_weight = animal.birth_process(initial_num_herbs)
             if type(baby_weight) is (float or int):
                 self.pop_herb.append(
                     Herbivore({"species": "Herbivore",
                                "age": 0,
                                "weight": baby_weight})
                 )
+                self.pop_herb[-1].fitness_must_be_updated = True
 
-        num_animals = len(self.pop_carn)
-        for animal in self.pop_carn[:num_animals]:
-            baby_weight = animal.birth_process(num_animals)
+        initial_num_carns = len(self.pop_carn)
+        for animal in self.pop_carn[:initial_num_carns]:
+            baby_weight = animal.birth_process(initial_num_carns)
             if type(baby_weight) is (float or int):
                 self.pop_carn.append(
                     Carnivore({"species": "Carnivore",
                                "age": 0,
                                "weight": baby_weight})
                 )
+                self.pop_carn[-1].fitness_must_be_updated = True
 
     def make_all_animals_older(self):
         """
-        Iterates over population lists and ages all animals one year
-        utilizing their inherent aging method.
+        Iterates over population lists and ages all animals one year.
         """
-        for animal in (self.pop_herb + self.pop_carn):
+        for animal in self.pop_herb + self.pop_carn:
             animal.make_animal_one_year_older()
 
     def make_all_animals_lose_weight(self):
         """
-        Iterates over population lists and makes all animals lose weight
-        utilizing their inherent weight loss method.
+        Iterates over population lists and makes all animals lose weight.
         """
-        for animal in (self.pop_herb + self.pop_carn):
+        for animal in self.pop_herb + self.pop_carn:
             animal.weight_loss()
 
     def remove_all_dead_animals(self):
         """
-        Iterates over population lists and runs inherent death method on all
-        animals. Updates the population to only contain living animals.
+        Iterates over population lists and runs the death method of all the
+        animals. Updates the population lists to only contain living animals.
         """
-        self.pop_herb = [animal for animal in self.pop_herb
-                         if animal.will_animal_live() is True]
-        self.pop_carn = [animal for animal in self.pop_carn
-                         if animal.will_animal_live() is True]
+        self.pop_herb = [herb for herb in self.pop_herb
+                         if herb.will_animal_live() is True]
+        self.pop_carn = [carn for carn in self.pop_carn
+                         if carn.will_animal_live() is True]
 
 
 class Jungle(Landscape):
     """
-    Class for Jungle landscape type.
+    Represents jungle cells on the island. All animals can stay in this
+    landscape type, and there is food for herbivores.
     """
     _DEFAULT_PARAMS = {
         "f_max": 800,
@@ -207,14 +231,19 @@ class Jungle(Landscape):
 
     def __init__(self, population):
         """
-        Initializes class.
+        Initializes class as subclass of Landscape.
+
+        :param population: Contains dictionaries with
+            information about each animal.
+        :type population: list
         """
         super().__init__(population)
 
 
 class Savannah(Landscape):
     """
-    Class for Savannah landscape type.
+    Represents savannah cells on the island. All animals can stay in this
+    landscape type, and there is food for herbivores.
     """
     _DEFAULT_PARAMS = {
         "f_max": 300,
@@ -228,15 +257,24 @@ class Savannah(Landscape):
 
     def __init__(self, population):
         """
-        Initializes class.
-        :param population: list of dicts
-                 List of properties of the initial population of animals
+        Initializes class as subclass of Landscape.
+
+        :param population: Contains dictionaries with
+            information about each animal.
+        :type population: list
         """
         super().__init__(population)
+        self.fodder_amount = self.params["f_max"]
 
     def regrowth(self):
         """
-        Sets amount of fodder for herbivores to the value given by formula (1).
+        Sets amount of fodder for herbivores to the value given by
+
+        .. math::
+
+            f_{ij} \\leftarrow f_{ij} + \\alpha \\cdot
+            (f^{\\text { Sav max } } - f_{ij})
+
         """
         self.fodder_amount = ((1 - self.params["alpha"]) * self.fodder_amount)\
             + (self.params["alpha"] * self.params["f_max"])
@@ -244,7 +282,8 @@ class Savannah(Landscape):
 
 class Desert(Landscape):
     """
-    Class for Desert landscape type.
+    Represents desert cells on the island. All animals can stay in this
+    landscape type, but there is no food for herbivores.
     """
     _DEFAULT_PARAMS = {
         "f_max": 0
@@ -256,16 +295,19 @@ class Desert(Landscape):
 
     def __init__(self, population):
         """
-        Initializes class.
-        :param population: list of dicts
-                 List of properties of the initial population of animals
+        Initializes class as subclass of Landscape.
+
+        :param population: Contains dictionaries with
+            information about each animal.
+        :type population: list
         """
         super().__init__(population)
 
 
 class Mountain(Landscape):
     """
-    Class for Mountain landscape type.
+    Represents mountain cells on the island. This is a passive cell
+    where animals cannot stay, so inherited methods should not be used.
     """
     _DEFAULT_PARAMS = {
         "f_max": 0
@@ -277,17 +319,19 @@ class Mountain(Landscape):
 
     def __init__(self, population):
         """
-        Initializes class.
-        :param population: list of dicts
-                 List of properties of the initial population of animals.
-                 Should be empty.
+        Initializes class as subclass of Landscape.
+
+        :param population: Contains dictionaries with
+            information about each animal. Should be empty.
+        :type population: list
         """
         super().__init__(population)
 
 
 class Ocean(Landscape):
     """
-    Class for Ocean landscape type.
+    Represents ocean cells around the island. This is a passive cell
+    where animals cannot stay, so inherited methods should not be used.
     """
     _DEFAULT_PARAMS = {
         "f_max": 0
@@ -299,24 +343,10 @@ class Ocean(Landscape):
 
     def __init__(self, population):
         """
-        Initializes class.
-        :param population: list of dicts
-                 List of properties of the initial population of animals.
-                 Should be empty.
+        Initializes class as subclass of Landscape.
+
+        :param population: Contains dictionaries with
+            information about each animal. Should be empty.
+        :type population: list
         """
         super().__init__(population)
-
-
-if __name__ == "__main__":
-    import numpy
-    test_population = [
-        {"species": "Herbivore", "age": 1, "weight": 5.0},
-        {"species": "Carnivore", "age": 5, "weight": 6.0},
-        {"species": "Herbivore", "age": 1, "weight": 5.0},
-        {"species": "Carnivore", "age": 2, "weight": 10.0},
-        {"species": "Carnivore", "age": 10, "weight": 90.0},
-        {"species": "Herbivore", "age": 1, "weight": 5.0},
-    ]
-    savannah = Savannah(test_population)
-    total_pop = savannah.pop_carn + savannah.pop_herb
-    print(total_pop)
