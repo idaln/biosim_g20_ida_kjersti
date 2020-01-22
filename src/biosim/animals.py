@@ -74,18 +74,12 @@ class Animal:
         """
         Initializing Animal class by asserting property values are valid.
 
-        :param properties: Contains animal properties species, fitness, age
-            and weight.
+        :param properties: Contains animal properties species, age
+            and weight. May also contain fitness.
         :type properties: dict
-
         """
         self.has_moved_this_year = False
         self.fitness_must_be_updated = True
-
-        if "fitness" not in properties.keys():
-            self.fitness = None
-        else:
-            self.fitness = properties["fitness"]
 
         if properties["age"] < 0:
             raise ValueError('Age must be nonnegative')
@@ -96,6 +90,11 @@ class Animal:
             raise ValueError('Weight must be positive')
         else:
             self.weight = properties["weight"]
+
+        if "fitness" not in properties.keys():
+            self.fitness = None
+        else:
+            self.fitness = properties["fitness"]
 
     def make_animal_one_year_older(self):
         """
@@ -155,10 +154,9 @@ class Animal:
 
         if self.weight <= 0:
             self.fitness = 0
-            self.fitness_must_be_updated = False
         else:
             self.fitness = q_plus * q_minus
-            self.fitness_must_be_updated = False
+        self.fitness_must_be_updated = False
 
     def prob_of_animal_moving(self):
         """
@@ -170,12 +168,12 @@ class Animal:
         """
         if self.fitness_must_be_updated is True:
             self.find_fitness()
-        self.fitness_must_be_updated = False
+            self.fitness_must_be_updated = False
         return self.fitness * self.params["mu"]
 
     def will_animal_move(self):
         """
-        Compared probability of animal moving and a random number to decide
+        Compares probability of animal moving and a random number to decide
         whether the animal should move.
 
         :return: True if animal will move, False if not
@@ -233,19 +231,18 @@ class Animal:
             }
 
         :param neighbours_of_current_cell: Contains neighbours of current cell.
-            Location as keys, instance of landscape class as value
+            Location as keys, instances of landscape classes as value
         :type neighbours_of_current_cell: dict
-        :return: Maps location to it's propensity.
+        :return: Locations of each surrounding cell as keys, propensities for
+            the animal to move to each of them as values.
         :rtype: dict
         """
-
         loc_to_propensity_dict = {}
         for loc, landscape_instance in neighbours_of_current_cell.items():
             loc_to_propensity_dict[loc] = math.exp(
                 self.params["lambda"] * self.find_rel_abund_of_fodder(
                     landscape_instance)
             )
-
         return loc_to_propensity_dict
 
     def prob_move_to_each_neighbour(self, neighbours_of_current_cell):
@@ -264,7 +261,7 @@ class Animal:
         cell j.
 
         :param neighbours_of_current_cell: Neighbours of current cell.
-            Locations as keys, instance of landscape class as value.
+            Locations as keys, instances of landscape classes as values.
         :type neighbours_of_current_cell: dict
         :return: Locations of each surrounding cell as keys, probabilities for
             the animal to move to each of them as values.
@@ -290,8 +287,8 @@ class Animal:
         values to a list of locations and a numpy array of probabilities.
 
         :param moving_prob_for_each_loc: Contains the locations of each
-            surrounding cell as keys, and the probabilities for the animal to move
-            to each of them as values.
+            surrounding cell as keys, and the probabilities for the animal
+            to move to each of them as values.
         :type moving_prob_for_each_loc: dict
         :return: List of locations of neighbouring cells, numpy array of the
             probabilities of moving to each.
@@ -299,9 +296,11 @@ class Animal:
         """
         locs = []
         probs = np.array([])
+
         for loc, prob in moving_prob_for_each_loc.items():
             locs.append(loc)
             probs = np.append(probs, np.array([prob]))
+
         return locs, probs
 
     def find_new_coordinates(self, neighbours_of_current_cell):
@@ -310,8 +309,7 @@ class Animal:
         the animal will move to. Returns the coordinates of that cell.
 
         :param neighbours_of_current_cell: Neighbours of current cell.
-            Locations as keys,
-            instance of landscape class as value.
+            Locations as keys, instances of landscape classes as values.
         :type neighbours_of_current_cell: dict
         :return: The location the animal will move to.
         :rtype: tuple
@@ -338,12 +336,11 @@ class Animal:
 
     def return_new_coordinates(self, neighbours_of_current_cell):
         """
-        Checks whether the animal will move or not, and if so, returns the
-        new coordinates.
+        Checks whether the animal will move or not, and if it will move,
+        returns the new coordinates.
 
         :param neighbours_of_current_cell: Neighbours of current cell.
-            Locations as keys,
-            instance of landscape class as value.
+            Locations as keys, instances of landscape classes as values.
         :type neighbours_of_current_cell: dict
         :return: Location animal will move to.
         :rtype: tuple or None
@@ -353,7 +350,8 @@ class Animal:
 
     def prob_give_birth(self, num_animals):
         """
-        Checks that weight of animal is more than given limit. If so,
+        If neccessary, finds fitness of animal.
+        Then, checks that weight of animal is more than given limit. If so,
         probability of giving birth is calculated from
         :math:`min(1, \\gamma \\cdot \\phi \\cdot (N-1)`. Probability of
         giving birth is zero if
@@ -380,8 +378,8 @@ class Animal:
 
     def will_birth_take_place(self, num_animals):
         """
-        Checks probability of giving birth and returns True if a baby is to be
-        born.
+        Compares probability of giving birth with a random number,
+        and returns True if a baby is to be born.
 
         :return: True if animal shall give birth
         :rtype: bool
@@ -394,8 +392,10 @@ class Animal:
 
     def birth_process(self, num_animals):
         """
-        If birth takes place, a birth weight is returned and weight of mother
-        is reduced by :math:`\\xi \\cdot birth weight`
+        Finds out if a birth should take place, and then draws baby's birth
+        weight from normal distribution.
+        If a birth should take place, the birth weight is returned and
+        weight of mother is reduced by :math:`\\xi \\cdot birth weight`
 
         :return: Returns weight of the baby that is born, or None if no baby
                 is born.
@@ -408,11 +408,13 @@ class Animal:
         if bool_birth is True and birth_weight > 0 and \
                 self.weight > birth_weight * self.params['xi']:
             self.weight -= birth_weight * self.params['xi']
+            self.fitness_must_be_updated = True
             return birth_weight
 
     def prob_death(self):
         """
-        Finds probability of death, which depends on the fitness of the
+        If neccessary, first finds fitness of animal.
+        Then, finds probability of death, which depends on the fitness of the
         animal.
 
         :return: 1 if fitness is zero, :math:`\\omega \\cdot (1 - \\phi)`
@@ -429,7 +431,8 @@ class Animal:
 
     def will_animal_live(self):
         """
-        Checks the probability of death. Returns True if the animal lives.
+        Compares the probability of death with a random number, and returns
+        True if the animal lives.
 
         :return: True if animal lives
         :rtype: bool
@@ -443,7 +446,7 @@ class Animal:
 
 class Herbivore(Animal):
     """
-    Class for herbivores.
+    Class for herbivores. Herbivores feed on plant fodder.
     """
     _DEFAULT_PARAMS = {
         "w_birth": 8.0,
@@ -487,7 +490,8 @@ class Herbivore(Animal):
         """
         Initializes herbivore animal with given properties.
 
-        :param properties: Contains age, weight and fitness of herbivore
+        :param properties: Contains age, weight and species of herbivore. May
+            also contain fitness.
         :type properties: dict
         """
         super().__init__(properties)
@@ -505,7 +509,8 @@ class Herbivore(Animal):
         the number of animals of same species in cell k.
 
         :param landscape_cell: Instance of landscape class
-        :type landscape_cell: dict
+        :type landscape_cell: '__main__.Jungle', '__main__.Desert',
+            '__main__.Savannah'
         :return: Relative abundance of fodder
         :rtype: float
         """
@@ -517,7 +522,7 @@ class Herbivore(Animal):
 
 class Carnivore(Animal):
     """
-    Class for Carnivores.
+    Class for Carnivores. Carnivores feed on herbivores.
     """
     _DEFAULT_PARAMS = {
         "w_birth": 6.0,
@@ -561,7 +566,8 @@ class Carnivore(Animal):
         """
         Initializes carnivore animal with given properties.
 
-        :param properties: Contains age, weight and fitness of herbivore.
+        :param properties: Contains age, weight and species of carnivore. May
+            also contain fitness.
         :type properties: dict
         """
         super().__init__(properties)
@@ -603,7 +609,7 @@ class Carnivore(Animal):
     def kill(self, herb):
         """
         Implements prob_kill and a random number to decide whether a
-        carnivore kills or not.
+        carnivore kills a herbivore or not.
 
         :param herb: Herbivore to be killed
         :type herb: class '__main__.Herbivore'
@@ -612,6 +618,7 @@ class Carnivore(Animal):
         """
         random_number = np.random.random()
         prob = self.prob_kill(herb.fitness)
+
         if random_number <= prob:
             return True
         else:
@@ -619,7 +626,7 @@ class Carnivore(Animal):
 
     def attempt_eating_all_herbivores_in_cell(self, pop_herb):
         """
-        Iterates through list of herbivores, and implements kill method on one
+        Iterates through list of herbivores. Implements kill method on one
         herbivore at a time until carnivore has satisfied it's appetite or
         has tried to kill all herbivores without luck. After a carnivore has
         eaten a herbivore, it's weight and fitness is updated.
@@ -644,7 +651,7 @@ class Carnivore(Animal):
     def find_rel_abund_of_fodder(self, landscape_cell):
         """
         Takes an instance of a landscape class, and returns the relative
-        abundance of fodder in that instance, given by
+        abundance of fodder for carnivores in that instance, given by
 
         .. math::
 
@@ -654,7 +661,8 @@ class Carnivore(Animal):
         the number of animals of same species in cell k.
 
         :param landscape_cell: Instance of landscape class
-        :type landscape_cell: dict
+        :type landscape_cell: '__main__.Jungle', '__main__.Desert',
+            '__main__.Savannah'
         :return: Relative abundance of fodder for the carnivore
         :rtype: float
         """
