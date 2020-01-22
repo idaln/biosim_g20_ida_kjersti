@@ -226,7 +226,7 @@ class BioSim:
         :param num_years: number of years to simulate
         :param vis_years: years between visualization updates
         :param img_years: years between visualizations saved to files
-        (default: vis_years)
+            (default: vis_years)
 
         Image files will be numbered consecutively.
         """
