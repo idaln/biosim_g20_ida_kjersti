@@ -1,8 +1,8 @@
-#BIOSIM G20
-##Exam Project in INF200 January 2020
-###Authors: Ida Lunde Naalsund & Kjersti Rustad Kvisberg
+# BIOSIM G20
+## Exam Project in INF200 January 2020
+### Authors: Ida Lunde Naalsund & Kjersti Rustad Kvisberg
 
-### Description
+## Description
 ***Background***
 
 This package contains a modelling of the ecosystem of Rossumøya. The project
@@ -14,7 +14,7 @@ carnivore.
 Our quest has been to find out whether both species can survive in the long
 term. 
 
-### Contents
+## Contents
 - examples
     * check_sim.py
     * population_generator.py
@@ -29,7 +29,7 @@ term.
     * test_island_map.py
     * test_landscape.py
 
-### Usage
+## Usage
 ```python
 import biosim
 ```
@@ -91,5 +91,5 @@ animals.Herbivore(
 Similarly for the Carnivore class. Each animal on the island is an instance of
 one of these classes, and they have methods for e.g. eating and procreating.
 
-### Badges
+## Badges
 All tests pass.
