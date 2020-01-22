@@ -18,7 +18,6 @@ __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idaln@hotmail.com & kjkv@nmbu.no"
 
 _DEFAULT_MOVIE_FORMAT = 'mp4'
-
 # Update this variable to point to your ffmpeg binary
 FFMPEG_BINARY = 'ffmpeg'
 
