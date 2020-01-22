@@ -205,17 +205,16 @@ class IslandMap:
     def move_single_animal(self, current_coordinates, single_animal):
         """
         If the animal has not moved so far this year, it's neighbours are
-        found. Then, the new coordinates of the animal is chosen.
+        found. Then, the new coordinates of the animal are chosen.
         If they are None, the animal does not move.
         If they are a tuple, the animal is moved to the chosen cell.
-        The new cell gets updated population lists.
+        The new cell receives updated population lists.
 
         :param current_coordinates: x coordinate, y coordinate
         :type current_coordinates: tuple
-        :param single_animal: animal that tries to move
+        :param single_animal: Animal that tries to move
         :type single_animal: class '__main__.Herbivore' or
             class '__main__.Carnivore'
-
         :return: True if animal has moved, False if not
         :rtype: bool
         """
