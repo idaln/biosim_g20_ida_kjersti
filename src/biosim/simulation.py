@@ -258,7 +258,7 @@ class BioSim:
             self._fig = plt.figure(figsize=(13, 8))
             self._fig.subplots_adjust(hspace=0.2, wspace=0.2)
 
-        # Add left upper subplot with features for map of island
+        # Add upper left subplot with features for map of island
         if self._map_ax is None:
             self._map_ax = self._fig.add_subplot(2, 2, 1)
             self._map_ax.set_position(pos=[0, 0.55, 0.4, 0.3])
@@ -338,7 +338,9 @@ class BioSim:
 
     def create_map_graphics(self):
         """
-        Creates graphic of the map of the island's island_geography.
+        Creates graphic of the map of the island's island_geography. The
+        island map is static and the different landscape types are represented
+        by different colours.
         """
         #                   R    G    B
         rgb_value = {'O': (0.0, 0.0, 1.0),  # blue
@@ -394,7 +396,9 @@ class BioSim:
 
     def create_array_herbs(self):
         """
-        Creates array used to create heat map of herbivore population.
+        Creates array used to create heat map of herbivore population. Each
+        cell in the array represents a cell on the island map and contains
+        number of herbivores at that location.
         """
         df = self.animal_distribution
         num_rows = df["Row"].iloc[-1] + 1
@@ -410,7 +414,7 @@ class BioSim:
 
     def update_heat_map_herbs(self):
         """
-        Update visualization of heat map for herbivores.
+        Updates visualization of heat map for herbivores.
         """
         if self._img_herb_axis is not None:
             self._img_herb_axis.set_data(self.create_array_herbs())
@@ -427,7 +431,9 @@ class BioSim:
 
     def create_array_carns(self):
         """
-        Creates arrays used to create heat map of carnivore population.
+        Creates array used to create heat map of carnivore population. Each
+        cell in the array represents a cell on the island map and contains
+        number of carnivores at that location.
         """
         df = self.animal_distribution
         num_rows = df["Row"].iloc[-1] + 1
@@ -443,7 +449,7 @@ class BioSim:
 
     def update_heat_map_carns(self):
         """
-        Update visualization of heat map for carnivores.
+        Updates visualization of heat map for carnivores.
         """
         if self._img_carn_axis is not None:
             self._img_carn_axis.set_data(self.create_array_carns())
@@ -501,9 +507,6 @@ class BioSim:
 
         if movie_fmt == 'mp4':
             try:
-                # Parameters chosen according to
-                # http://trac.ffmpeg.org/wiki/Encode/H.264,
-                # section "Compatibility"
                 subprocess.check_call([FFMPEG_BINARY,
                                        '-i',
                                        '{}_%05d.png'.format(self.img_base),
