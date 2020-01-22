@@ -273,7 +273,7 @@ class Savannah(Landscape):
         .. math::
 
             f_{ij} \\leftarrow f_{ij} + \\alpha \\cdot
-            (f^{\\text Sav max } - f_{ij})
+            (f^{\\text { Sav max } } - f_{ij})
 
         """
         self.fodder_amount = ((1 - self.params["alpha"]) * self.fodder_amount)\
