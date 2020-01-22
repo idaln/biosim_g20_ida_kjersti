@@ -204,7 +204,8 @@ class Animal:
         carnivores, as we have pop_herb and pop_carn in the landscape cells.
 
         :param landscape_cell: Instance of landscape class
-        :type landscape_cell: dict
+        :type landscape_cell: '__main__.Jungle', '__main__.Desert',
+            '__main__.Savannah'
         :return: Relative abundance of fodder
         :rtype: float
         """
