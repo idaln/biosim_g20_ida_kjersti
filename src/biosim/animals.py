@@ -638,15 +638,15 @@ class Carnivore(Animal):
         :rtype: list
         """
         amount_eaten = 0
-        herb_individuals_eaten = []
+        animals_eaten = []
         for herb in reversed(pop_herb):
             if amount_eaten < self.params["F"] and self.kill(herb) is True:
-                herb_individuals_eaten.append(herb)
+                animals_eaten.append(herb)
                 amount_eaten += herb.weight
                 self.weight += self.params["beta"] * amount_eaten
                 self.find_fitness()
                 self.fitness_must_be_updated = False
-        return herb_individuals_eaten
+        return animals_eaten
 
     def find_rel_abund_of_fodder(self, landscape_cell):
         """
