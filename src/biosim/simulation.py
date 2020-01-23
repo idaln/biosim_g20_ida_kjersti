@@ -521,35 +521,3 @@ class BioSim:
                 raise RuntimeError('ERROR: ffmpeg failed with: {}'.format(err))
         else:
             raise ValueError('Unknown movie format: ' + movie_fmt)
-
-
-if __name__ == '__main__':
-    isl_geogr = """\
-                   OOOOOOOOOOOOOOOOOOOOOO
-                   OJJJJJJJJJJOOOOOOOOOOO
-                   OOOSSSSSSJJJJJJJJJJJJO
-                   OOSSSSJJJJJJJJJJJJJJOO
-                   OOSSSSSSSSSSJJJJJJJOOO
-                   OSSSSSJJJJJJJJJJJJJOOO
-                   OSSSSSJJJDDDDJSSJJJOOO
-                   OSSJJJJJDDDJJJSSSSSOOO
-                   OOSSSSJJJDDJJJSSSOOOOO
-                   OSSSJJJJJDDJJJJJJJSSOO
-                   OSSSSJJJJMMMJJJOOSSSOO
-                   OOSSSSJJJMMMMMSOOOSSOO
-                   OOOSSSSJJJJMMMMOOOOOOO
-                   OOOOOOOOOOOOOOOOOOOOOO"""
-    ini_pop = Population(n_herbivores=30,
-                         coord_herb=[(1, 10), (7, 5), (10, 13)]
-                         )
-    app_pop = Population(n_carnivores=20,
-                         coord_carn=[(10, 1), (5, 7), (12, 10)])
-    ini_pop = ini_pop.get_animals()
-    app_pop = app_pop.get_animals()
-    imgbase = '../../data/img'
-    biosim = BioSim(isl_geogr, ini_pop, 1, img_base=imgbase,
-                    cmax_animals={"Herbivore": 400, "Carnivore": 100})
-    biosim.simulate(100, 1, 5)
-    biosim.add_population(app_pop)
-    biosim.simulate(200, 1, 5)
-    biosim.make_movie()
