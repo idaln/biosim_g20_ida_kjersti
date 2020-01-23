@@ -549,7 +549,7 @@ if __name__ == '__main__':
     imgbase = '../../data/img'
     biosim = BioSim(isl_geogr, ini_pop, 1, img_base=imgbase,
                     cmax_animals={"Herbivore": 400, "Carnivore": 100})
-    biosim.simulate(100, 1, 3)
+    biosim.simulate(100, 1, 5)
     biosim.add_population(app_pop)
-    biosim.simulate(100, 1, 3)
+    biosim.simulate(200, 1, 5)
     biosim.make_movie()
