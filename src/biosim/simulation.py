@@ -13,15 +13,13 @@ import pandas
 import numpy
 import matplotlib.pyplot as plt
 import subprocess
-from examples.population_generator import Population
 
 __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idaln@hotmail.com & kjkv@nmbu.no"
 
 _DEFAULT_MOVIE_FORMAT = 'mp4'
 # Update this variable to point to your ffmpeg binary
-FFMPEG_BINARY = 'C:/Program Files/' \
-                'ffmpeg-20200115-0dc0837-win64-static/bin/ffmpeg'
+FFMPEG_BINARY = 'ffmpeg'
 
 
 class BioSim:
