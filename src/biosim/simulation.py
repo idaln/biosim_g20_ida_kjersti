@@ -335,6 +335,7 @@ class BioSim:
         # Features for carnivore heat map
         self._heat_map_carn_ax.title.set_text('Carnivore distribution')
         self._heat_map_carn_ax.set_ylabel('y coordinate')
+        self._heat_map_carn_ax.set_xlabel('x coordinate')
 
     def plot_map_only(self):
         kart = """OOOOO
@@ -584,33 +585,49 @@ if __name__ == '__main__':
                 OOOSSSSJJJJJJJOOOOOOO
                 OOOSSSSSSOOOOOOOOOOOO
                 OOOOOOOOOOOOOOOOOOOOO"""
-    isl_geogr = """\
-                   OOOOOOOOOOOOOOOOOOOOOO
-                   OJJJJJJJJJJOOOOOOOOOOO
-                   OOOSSSSSSJJJJJJJJJJJJO
-                   OOSSSSJJJJJJJJJJJJJJOO
-                   OOSSSSSSSSSSJJJJJJJOOO
-                   OSSSSSJJJJJJJJJJJJJOOO
-                   OSSSSSJJJDDDDJSSJJJOOO
-                   OSSJJJJJDDDJJJSSSSSOOO
-                   OOSSSSJJJDDJJJSSSOOOOO
-                   OSSSJJJJJDDJJJJJJJSSOO
-                   OSSSSJJJJMMMJJJOOSSSOO
-                   OOSSSSJJJMMMMMSOOOSSOO
-                   OOOSSSSJJJJMMMMOOOOOOO
-                   OOOOOOOOOOOOOOOOOOOOOO"""
-    ini_pop = Population(n_herbivores=30,
-                         coord_herb=[(1, 10), (7, 5), (10, 13)]
-                         )
-    app_pop = Population(n_carnivores=20,
-                         coord_carn=[(10, 1), (5, 7), (12, 10)])
-    ini_pop = ini_pop.get_animals()
-    app_pop = app_pop.get_animals()
-    imgbase = '../../data/img'
-    biosim = BioSim(rossum, ini_pop, 1, img_base=imgbase,
-                    cmax_animals={"Herbivore": 400, "Carnivore": 100})
-    #biosim.simulate(100, 1, 5)
-    #biosim.add_population(app_pop)
-    #biosim.simulate(200, 1, 5)
-    #biosim.make_movie()
-    biosim.plot_map_only()
+
+    ini_herbs = [
+        {
+            "loc": (10, 11),
+            "pop": [
+                {"species": "Herbivore", "age": 5, "weight": 20}
+                for _ in range(150)
+            ],
+        }
+    ]
+    ini_carns = [
+        {
+            "loc": (10, 11),
+            "pop": [
+                {"species": "Carnivore", "age": 5, "weight": 20}
+                for _ in range(40)
+            ],
+        }
+    ]
+
+    sim = BioSim(island_geography=rossum,
+                 initial_population=ini_herbs,
+                 seed=123456, img_base='../../data2/img',
+                 cmax_animals={"Herbivore": 200,
+                               "Carnivore": 100})
+
+    sim.set_animal_parameters("Herbivore", {"zeta": 3.2, "xi": 1.8})
+    sim.set_animal_parameters(
+        "Carnivore",
+        {
+            "a_half": 70,
+            "phi_age": 0.5,
+            "omega": 0.3,
+            "F": 65,
+            "DeltaPhiMax": 9.0,
+        },
+    )
+    sim.set_landscape_parameters("J", {"f_max": 700})
+
+    sim.simulate(num_years=100, vis_years=1, img_years=5)
+
+    sim.add_population(population=ini_carns)
+    sim.simulate(num_years=900, vis_years=1, img_years=5)
+    sim.make_movie()
+
+    input("Press ENTER")
